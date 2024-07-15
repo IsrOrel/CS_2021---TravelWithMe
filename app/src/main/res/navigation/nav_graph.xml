@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/my_Trips">
+
+    <fragment
+        android:id="@+id/home_screen"
+        android:name="com.example.travelwithme.Home_screen"
+        android:label="home_screen"
+        tools:layout="@layout/home_screen" >
+        <action
+            android:id="@+id/action_home_screen_to_attractions"
+            app:destination="@id/attractions"
+            app:popUpTo="@id/home_screen" />
+        <action
+            android:id="@+id/action_home_screen_to_calander"
+            app:destination="@id/calander"
+            app:popUpTo="@id/home_screen" />
+        <action
+            android:id="@+id/action_home_screen_to_my_Trips"
+            app:destination="@id/my_Trips"
+            app:popUpTo="@id/my_Trips" />
+    </fragment>
+    <fragment
+        android:id="@+id/attractions"
+        android:name="com.example.travelwithme.Attractions"
+        android:label="attractions"
+        tools:layout="@layout/attractions" >
+        <action
+            android:id="@+id/action_attractions_to_home_screen"
+            app:destination="@id/home_screen"
+            app:popUpTo="@id/home_screen" />
+    </fragment>
+    <fragment
+        android:id="@+id/calander"
+        android:name="com.example.travelwithme.Calander"
+        android:label="calander"
+        tools:layout="@layout/calander" >
+        <action
+            android:id="@+id/action_calander_to_home_screen"
+            app:destination="@id/home_screen"
+            app:popUpTo="@id/home_screen" />
+    </fragment>
+    <fragment
+        android:id="@+id/my_Trips"
+        android:name="com.example.travelwithme.My_Trips"
+        android:label="my__trips"
+        tools:layout="@layout/my__trips" >
+        <action
+            android:id="@+id/action_my_Trips_to_home_screen"
+            app:destination="@id/home_screen"
+            app:popUpTo="@id/my_Trips" />
+        <action
+            android:id="@+id/action_my_Trips_to_add_flight"
+            app:destination="@id/add_flight" />
+    </fragment>
+    <fragment
+        android:id="@+id/add_flight"
+        android:name="com.example.travelwithme.Add_flight"
+        android:label="add__flight"
+        tools:layout="@layout/add__flight" >
+        <action
+            android:id="@+id/action_add_flight_to_my_Trips"
+            app:destination="@id/my_Trips"
+            app:popUpTo="@id/my_Trips" />
+        <action
+            android:id="@+id/action_add_flight_to_add_Hotel"
+            app:destination="@id/add_Hotel"
+            app:popUpTo="@id/add_flight" />
+    </fragment>
+    <fragment
+        android:id="@+id/add_Hotel"
+        android:name="com.example.travelwithme.Add_Hotel"
+        android:label="add__hotel"
+        tools:layout="@layout/add__hotel" >
+        <action
+            android:id="@+id/action_add_Hotel_to_add_flight"
+            app:destination="@id/add_flight"
+            app:popUpTo="@id/add_flight" />
+        <action
+            android:id="@+id/action_add_Hotel_to_home_screen"
+            app:destination="@id/home_screen"
+            app:popUpTo="@id/add_flight" />
+    </fragment>
+</navigation>
