@@ -1,11 +1,12 @@
 package com.example.travelwithme
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.travelwithme.databinding.AddFlightBinding
 
@@ -22,10 +23,19 @@ class Add_flight : Fragment() {
     }
     override fun onViewCreated(view: android.view.View, savedInstanceState: android.os.Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.DoneBtn.setOnClickListener {
+        val citiesSpinner: Spinner = binding.citiesspinner
+        val adapter: ArrayAdapter<CharSequence> = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.cities,
+            android.R.layout.simple_spinner_item
+        )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        citiesSpinner.adapter = adapter
+
+        binding.doneBtn.setOnClickListener {
             findNavController().navigate(R.id.action_add_flight_to_add_Hotel)
         }
-        binding.Return.setOnClickListener {
+        binding.return1.setOnClickListener {
             findNavController().navigate(R.id.action_add_flight_to_my_Trips)
         }
 

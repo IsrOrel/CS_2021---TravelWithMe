@@ -3,26 +3,69 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/blur_plane"
     android:orientation="vertical"
     tools:context=".Add_flight">
 
  <TextView
+     android:id="@+id/textviewheader"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:layout_marginBottom="20dp"
+     android:gravity="center_horizontal"
+     android:text="Check-in your flight"
+     android:textColor="#FFFFFF"
+     android:textSize="34sp" />
+
+ <TextView
+     android:id="@+id/textViewfrom"
      android:layout_width="wrap_content"
      android:layout_height="wrap_content"
-     android:text="flight Screen"
-     android:textSize="20dp"
-     />
- <Button
-     android:id="@+id/Return"
+     android:layout_marginBottom="20dp"
+     android:text="From: "
+     android:textColor="#FFFFFF"
+     android:textColorLink="#FFFFFF"
+     android:textSize="24sp" />
+
+ <TextView
+     android:id="@+id/textViewto"
      android:layout_width="wrap_content"
      android:layout_height="wrap_content"
-     android:text="return"/>
- <Button
-     android:id="@+id/Done_btn"
+     android:text="To: "
+     android:textColor="#FFFFFF"
+     android:textSize="24sp" />
+
+ <Spinner
+     android:id="@+id/citiesspinner"
      android:layout_width="wrap_content"
-     android:layout_height="wrap_content"
-     android:text="Done"
-     />
+     android:layout_height="40dp" />
+
+ <CalendarView
+     android:id="@+id/calendarView"
+     android:layout_width="match_parent"
+     android:layout_height="243dp" />
+
+ <LinearLayout
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     android:gravity="bottom|center"
+     android:orientation="vertical">
+
+  <Button
+      android:id="@+id/done_btn"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Done" />
+
+  <Button
+      android:id="@+id/return1"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="end"
+      android:text="return"
+      android:textAlignment="gravity" />
+
+ </LinearLayout>
 
 
 </LinearLayout>
