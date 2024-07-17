@@ -69,6 +69,12 @@ class Add_flight : Fragment() {
         checkLocationPermissions()
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Ensure permissions are checked again on resume
+        checkLocationPermissions()
+    }
+
     private fun checkLocationPermissions() {
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
@@ -78,6 +84,7 @@ class Add_flight : Fragment() {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
+            // Request permissions
             ActivityCompat.requestPermissions(
                 requireActivity(),
                 arrayOf(
@@ -92,24 +99,6 @@ class Add_flight : Fragment() {
         }
     }
 
-    private fun datePickerDialog() {
-        val builder = MaterialDatePicker.Builder.dateRangePicker()
-        builder.setTitleText("Select date range")
-
-        val dateRangePicker = builder.build()
-        dateRangePicker.addOnPositiveButtonClickListener { selection ->
-            if (selection != null) {
-                val startDate = selection.first
-                val endDate = selection.second
-                val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                val selectedDateRange = "${sdf.format(Date(startDate))} - ${sdf.format(Date(endDate))}"
-                selectedDate.text = selectedDateRange
-            }
-        }
-
-        dateRangePicker.show(parentFragmentManager, "dateRangePicker")
-    }
-
     private fun getLastKnownLocation() {
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
@@ -122,9 +111,18 @@ class Add_flight : Fragment() {
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location: Location? ->
                     location?.let {
+                        // Update UI with location information
                         val address = getCityAndCountryFromLocation(it)
                         binding.textViewfrom.text = "From: $address"
                     }
+                    // Handle case where location is null (e.g., if location services are disabled)
+                    location ?: run {
+                        binding.textViewfrom.text = "Location unavailable"
+                    }
+                }
+                .addOnFailureListener { e ->
+                    // Handle failure to get location
+                    binding.textViewfrom.text = "Failed to get location: ${e.message}"
                 }
         }
     }
@@ -148,12 +146,30 @@ class Add_flight : Fragment() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                // Permissions granted, get last known location
+                // Permissions granted, get last known location immediately
                 getLastKnownLocation()
             } else {
                 // Permission denied, handle accordingly
             }
         }
+    }
+
+    private fun datePickerDialog() {
+        val builder = MaterialDatePicker.Builder.dateRangePicker()
+        builder.setTitleText("Select date range")
+
+        val dateRangePicker = builder.build()
+        dateRangePicker.addOnPositiveButtonClickListener { selection ->
+            if (selection != null) {
+                val startDate = selection.first
+                val endDate = selection.second
+                val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                val selectedDateRange = "${sdf.format(Date(startDate))} - ${sdf.format(Date(endDate))}"
+                selectedDate.text = selectedDateRange
+            }
+        }
+
+        dateRangePicker.show(parentFragmentManager, "dateRangePicker")
     }
 
     override fun onDestroyView() {

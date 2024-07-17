@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.google.gms.google.services)
     kotlin("kapt")
+    "androidx.navigation.safeargs.kotlin"
 }
 
 android {
