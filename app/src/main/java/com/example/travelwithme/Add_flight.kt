@@ -30,6 +30,7 @@ class Add_flight : Fragment() {
     private val binding get() = _binding!!
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

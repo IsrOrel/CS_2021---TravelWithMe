@@ -3,22 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/travel_back"
+    android:gravity="center"
     android:orientation="vertical"
-    tools:context=".My_Trips"
-    android:background="@drawable/travel_back">
+    tools:context=".My_Trips">
 
     <Button
         android:id="@+id/AddTrip"
+        style="@style/Widget.MaterialComponents.Button.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Trip"
-        />
+        android:text="Add Trip" />
+
     <Button
         android:id="@+id/ThisTrip"
+        style="@style/Widget.MaterialComponents.Button.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="This trip"
-        />
+        android:text="This trip" />
 
 
 </LinearLayout>

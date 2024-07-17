@@ -3,6 +3,9 @@
     <style name="Base.Theme.TravelWithMe" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="buttonStyle">
+            round
+        </item>
     </style>
 
     <style name="Theme.TravelWithMe" parent="Base.Theme.TravelWithMe" />
