@@ -42,13 +42,14 @@ class Attractions : Fragment() {
         )
 
         val attractions = listOf(
-            Attraction_Data(R.drawable.icon_restaurant, "Restaurant 1", "Great food place", "City 1"),
-            Attraction_Data(R.drawable.icon_museum, "Museum 1", "Historical artifacts", "City 2"),
-            Attraction_Data(R.drawable.icon_park, "Park 1", "Beautiful park", "City 3"),
-            Attraction_Data(R.drawable.icon_shopping, "Shopping 1", "Shopping mall", "City 4"),
-            Attraction_Data(R.drawable.icon_nightlife, "Nightlife 1", "Night clubs", "City 5"),
-            Attraction_Data(R.drawable.icon_beach, "Beach 1", "Sunny beach", "City 6")
+            Attraction_Data(id = 0, image = R.drawable.icon_restaurant, title = "Restaurant 1", description = "Great food place", place = "City 1"),
+            Attraction_Data(id = 0, image = R.drawable.icon_museum, title = "Museum 1", description = "Historical artifacts", place = "City 2"),
+            Attraction_Data(id = 0, image = R.drawable.icon_park, title = "Park 1", description = "Beautiful park", place = "City 3"),
+            Attraction_Data(id = 0, image = R.drawable.icon_shopping, title = "Shopping 1", description = "Shopping mall", place = "City 4"),
+            Attraction_Data(id = 0, image = R.drawable.icon_nightlife, title = "Nightlife 1", description = "Night clubs", place = "City 5"),
+            Attraction_Data(id = 0, image = R.drawable.icon_beach, title = "Beach 1", description = "Sunny beach", place = "City 6")
         )
+
 
         setupCategoryRecyclerView(categories)
         setupAttractionRecyclerView(attractions)

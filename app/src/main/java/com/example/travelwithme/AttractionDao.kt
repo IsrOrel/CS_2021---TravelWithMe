@@ -28,5 +28,7 @@ interface AttractionDao {
 
     @Delete
     fun deleteAttraction(attraction: Attraction_Data)
+    @Query("SELECT * FROM attractions WHERE id = :id")
+    fun getAttractionById(id: Int): Attraction_Data?
 
 }
