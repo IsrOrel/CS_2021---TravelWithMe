@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".My_Trips"
-    android:background="@drawable/Travel_Back">
+    android:background="@drawable/travel_back">
 
     <Button
         android:id="@+id/AddTrip"
