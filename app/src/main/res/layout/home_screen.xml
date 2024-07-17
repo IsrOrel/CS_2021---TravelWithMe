@@ -161,7 +161,9 @@
             android:layout_gravity="center"
             android:background="@drawable/rounded_background"
             android:orientation="horizontal"
-            android:layout_marginTop="30dp">
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -214,7 +216,9 @@
             android:layout_gravity="center"
             android:layout_marginTop="35dp"
             android:background="@drawable/rounded_background"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -294,16 +298,6 @@
             android:id="@+id/fact3"
             android:padding="10dp"
             android:layout_margin="8dp"/>
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded_background"
-            android:padding="10dp"
-            android:text="Your Text Here"
-            android:textColor="@android:color/black"
-            android:textSize="18sp" />
 
     </LinearLayout>
 </ScrollView>

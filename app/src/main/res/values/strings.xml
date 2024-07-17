@@ -6,5 +6,22 @@
         <item>Amsterdam, Netherlands</item>
         <item>Rome, Italy</item>
     </string-array>
+    <string-array name="facts_london">
+        <item>London Underground was opened in 1863 for locomotive trains. In 1890, it became the world’s first metro system when electric trains began operating.</item>
+        <item>When the King is in Buckingham Palace you can see her royal flag flying from the flagpole. This flag, which is called the Royal Standard, must only be flown from buildings where the King is present.</item>
+        <item>London Eye is 135 meters tall and has a diameter of 120 meters. It has 32 capsules and a ride takes 30 minutes. The entire wheel weighs more than 1,000 tons.</item>
+    </string-array>
+
+    <string-array name="facts_amsterdam">
+        <item>Amsterdam has more canals than Venice and more bridges than Paris</item>
+        <item>The smallest house in the world was built around 1738, and it measures only 2.02 m in width and 5 m in-depth, and has just one room per floor. Find it at the Oude Hoogstraat 22.</item>
+        <item>There are 4 times more bicycles than cars in Amsterdam</item>
+    </string-array>
+
+    <string-array name="facts_rome">
+        <item>Rome has 280 fountains and more than 900 churches.</item>
+        <item>Law in Rome allows cats to live without disruption in the place they were born. Wild cats can be climbing the walls of the Colosseum, and sleeping among the ruins of the Forum.</item>
+        <item>Rome has a museum dedicated entirely to pasta.</item>
+    </string-array>
 </resources>
 
