@@ -88,21 +88,23 @@ class Add_flight : Fragment() {
     }
 
     private fun datePickerDialog() {
-        val builder = MaterialDatePicker.Builder.datePicker()
-        builder.setTitleText("Select a date")
+        val builder = MaterialDatePicker.Builder.dateRangePicker()
+        builder.setTitleText("Select date range")
 
-        val datePicker = builder.build()
-        datePicker.addOnPositiveButtonClickListener { selection ->
-            // Formatting the selected date as a string
-            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-            val selectedDateString = sdf.format(Date(selection))
-
-            // Displaying the selected date in the TextView
-            selectedDate.text = selectedDateString
+        val dateRangePicker = builder.build()
+        dateRangePicker.addOnPositiveButtonClickListener { selection ->
+            if (selection != null) {
+                val startDate = selection.first
+                val endDate = selection.second
+                val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                val selectedDateRange = "${sdf.format(Date(startDate))} - ${sdf.format(Date(endDate))}"
+                selectedDate.text = selectedDateRange
+            }
         }
 
-        datePicker.show(parentFragmentManager, "datePicker")
+        dateRangePicker.show(parentFragmentManager, "dateRangePicker")
     }
+
 
     private fun getLastKnownLocation() {
         if (ActivityCompat.checkSelfPermission(

@@ -28,18 +28,24 @@
      android:textColorLink="#FFFFFF"
      android:textSize="24sp" />
 
- <TextView
-     android:id="@+id/textViewto"
-     android:layout_width="wrap_content"
-     android:layout_height="wrap_content"
-     android:text="To: "
-     android:textColor="#FFFFFF"
-     android:textSize="24sp" />
+ <LinearLayout
+     android:layout_width="match_parent"
+     android:layout_height="246dp"
+     android:orientation="horizontal">
 
- <Spinner
-     android:id="@+id/citiesspinner"
-     android:layout_width="wrap_content"
-     android:layout_height="40dp" />
+  <TextView
+      android:id="@+id/textViewto"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="To: "
+      android:textColor="#FFFFFF"
+      android:textSize="24sp" />
+
+  <Spinner
+      android:id="@+id/citiesspinner"
+      android:layout_width="wrap_content"
+      android:layout_height="40dp" />
+ </LinearLayout>
 
  <TextView
      android:id="@+id/selectedDate"
