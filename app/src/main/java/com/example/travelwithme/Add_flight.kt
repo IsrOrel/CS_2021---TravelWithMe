@@ -66,6 +66,10 @@ class Add_flight : Fragment() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
         // Check and request location permissions
+        checkLocationPermissions()
+    }
+
+    private fun checkLocationPermissions() {
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -83,6 +87,7 @@ class Add_flight : Fragment() {
                 LOCATION_PERMISSION_REQUEST_CODE
             )
         } else {
+            // Permissions already granted, get last known location
             getLastKnownLocation()
         }
     }
@@ -104,7 +109,6 @@ class Add_flight : Fragment() {
 
         dateRangePicker.show(parentFragmentManager, "dateRangePicker")
     }
-
 
     private fun getLastKnownLocation() {
         if (ActivityCompat.checkSelfPermission(
@@ -144,9 +148,10 @@ class Add_flight : Fragment() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                // Permissions granted, get last known location
                 getLastKnownLocation()
             } else {
-                // Permission denied
+                // Permission denied, handle accordingly
             }
         }
     }

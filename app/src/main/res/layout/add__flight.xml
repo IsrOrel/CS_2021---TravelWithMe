@@ -37,6 +37,7 @@
       android:id="@+id/textViewto"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_marginEnd="20dp"
       android:text="To: "
       android:textColor="#FFFFFF"
       android:textSize="24sp" />
@@ -45,28 +46,37 @@
       android:id="@+id/citiesspinner"
       android:layout_width="wrap_content"
       android:layout_height="40dp" />
+
  </LinearLayout>
 
- <TextView
-     android:id="@+id/selectedDate"
-     android:layout_width="184dp"
-     android:layout_height="42dp"
-     android:text="Selected Date Range"
-     android:textColor="@color/white"
-     app:layout_constraintEnd_toEndOf="parent"
-     app:layout_constraintStart_toStartOf="parent"
-     app:layout_constraintTop_toTopOf="parent" />
+ <LinearLayout
+     android:layout_width="match_parent"
+     android:layout_height="243dp"
+     android:gravity="center"
+     android:orientation="vertical">
 
- <Button
-     android:id="@+id/datePicker"
-     android:layout_width="wrap_content"
-     android:layout_height="wrap_content"
-     android:layout_marginBottom="172dp"
-     android:text="Choose dates"
-     android:textSize="20sp"
-     app:layout_constraintBottom_toBottomOf="parent"
-     app:layout_constraintEnd_toEndOf="parent"
-     app:layout_constraintStart_toStartOf="parent" />
+  <Button
+      android:id="@+id/datePicker"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:text="Choose dates"
+      android:textSize="20sp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent" />
+
+  <TextView
+      android:id="@+id/selectedDate"
+      android:layout_width="184dp"
+      android:layout_height="42dp"
+      android:gravity="center"
+      android:text="Selected Date Range"
+      android:textColor="@color/white"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+ </LinearLayout>
 
  <LinearLayout
      android:layout_width="match_parent"
