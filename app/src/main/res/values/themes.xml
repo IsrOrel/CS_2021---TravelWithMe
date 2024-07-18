@@ -1,12 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.TravelWithMe" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="buttonStyle">
-            round
-        </item>
+        <item name="buttonStyle">@style/RoundedButtonStyle</item>
     </style>
 
     <style name="Theme.TravelWithMe" parent="Base.Theme.TravelWithMe" />
+
+    <!-- Custom rounded button style -->
+    <style name="RoundedButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="cornerRadius">16dp</item>
+        <!-- You can add more customizations here, such as: -->
+        <!-- <item name="android:textColor">@color/your_text_color</item> -->
+        <!-- <item name="backgroundTint">@color/your_button_color</item> -->
+    </style>
 </resources>
