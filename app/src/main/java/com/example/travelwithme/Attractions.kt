@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.travelwithme.Data.AttractionViewModel
+import com.example.travelwithme.Data.Attraction_Data
 import com.example.travelwithme.databinding.AttractionsBinding
 
 class Attractions : Fragment() {
@@ -17,6 +19,7 @@ class Attractions : Fragment() {
     private val binding get() = _binding!!
     private lateinit var adapter_category: CategoryAdapter
     private lateinit var adapter_attraction: Attraction_Adapter
+
 
     private val attractionViewModel: AttractionViewModel by viewModels()
 

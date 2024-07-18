@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.room.runtime)
     implementation(libs.play.services.location)
+    implementation(libs.firebase.crashlytics.buildtools)
     kapt(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.room.compiler)

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="When do you like to visit:"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/dialogTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:id="@+id/dialogDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:id="@+id/dialogPlace"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date: "
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btnSelectDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Date" />
+
+        <TextView
+            android:id="@+id/tvSelectedDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time: "
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btnSelectTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Time" />
+
+        <TextView
+            android:id="@+id/tvSelectedTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnConfirm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="OK" />
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cancel" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,5 +1,5 @@
 // AttractionViewModel.kt
-package com.example.travelwithme
+package com.example.travelwithme.Data
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

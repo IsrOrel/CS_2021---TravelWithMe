@@ -1,18 +1,19 @@
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.travelwithme.Attraction_Data
+import com.example.travelwithme.Data.Attraction_Data
 import com.example.travelwithme.R
 
 class Attraction_Adapter(private val attractions: List<Attraction_Data>) :
     RecyclerView.Adapter<Attraction_Adapter.AttractionViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AttractionViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_attractions, parent, false) // Correct layout inflated here
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_attractions, parent, false)
         return AttractionViewHolder(view)
     }
 
@@ -20,7 +21,7 @@ class Attraction_Adapter(private val attractions: List<Attraction_Data>) :
         val attraction = attractions[position]
         holder.bind(attraction)
         holder.itemView.setOnClickListener {
-            
+            // Handle item click here
         }
     }
 
@@ -40,5 +41,6 @@ class Attraction_Adapter(private val attractions: List<Attraction_Data>) :
             placeTextView.text = attraction.place
             descriptionTextView.text = attraction.description
         }
+
     }
 }
