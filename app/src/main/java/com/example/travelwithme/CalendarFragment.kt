@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.travelwithme.Data.Attraction_Data
 import com.example.travelwithme.databinding.CalendarBinding
 import
 import java.util.*
