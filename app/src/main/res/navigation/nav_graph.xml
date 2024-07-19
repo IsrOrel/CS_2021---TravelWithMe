@@ -15,33 +15,37 @@
             app:destination="@id/attractions"
             app:popUpTo="@id/home_screen" />
         <action
-            android:id="@+id/action_home_screen_to_calander"
-            app:destination="@id/calander"
-            app:popUpTo="@id/home_screen" />
-        <action
             android:id="@+id/action_home_screen_to_my_Trips"
             app:destination="@id/my_Trips"
             app:popUpTo="@id/my_Trips" />
+        <action
+            android:id="@+id/action_home_screen_to_calendar"
+            app:destination="@id/calendar" />
     </fragment>
     <fragment
         android:id="@+id/attractions"
         android:name="com.example.travelwithme.Attractions"
-        android:label="attractions"
-        tools:layout="@layout/attractions" >
+        android:label="Attractions">
         <action
-            android:id="@+id/action_attractions_to_home_screen"
-            app:destination="@id/home_screen"
-            app:popUpTo="@id/home_screen" />
+            android:id="@+id/action_attractions_to_calendar"
+            app:destination="@id/calendar">
+            <argument
+                android:name="attractionTitle"
+                app:argType="string" />
+            <argument
+                android:name="eventDate"
+                app:argType="long" />
+        </action>
+
     </fragment>
     <fragment
-        android:id="@+id/calander"
-        android:name="com.example.travelwithme.Calander"
-        android:label="calander"
-        tools:layout="@layout/calander" >
+        android:id="@+id/calendar"
+        android:name="com.example.travelwithme.CalendarFragment"
+        android:label="calendar"
+        tools:layout="@layout/calendar" >
         <action
-            android:id="@+id/action_calander_to_home_screen"
-            app:destination="@id/home_screen"
-            app:popUpTo="@id/home_screen" />
+            android:id="@+id/action_calendar_to_home_screen"
+            app:destination="@id/home_screen" />
     </fragment>
     <fragment
         android:id="@+id/my_Trips"

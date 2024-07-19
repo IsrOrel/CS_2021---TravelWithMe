@@ -14,13 +14,18 @@ firebaseAuth = "23.0.0"
 materialCalendarview = "2.0.1"
 materialVersion = "1.9.0"
 navigationFragmentKtx = "2.7.7"
+navigationFragmentKtxVersion = "2.7.0"
 navigationUiKtx = "2.7.7"
+navigationUiKtxVersion = "2.7.0"
 room = "2.6.1"
 playServicesLocation = "21.3.0"
 nav_version = "2.4.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-navigation-fragment-ktx-v270 = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigationFragmentKtxVersion" }
+androidx-navigation-safe-args-gradle-plugin = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigationFragmentKtx" }
+androidx-navigation-ui-ktx-v270 = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigationUiKtxVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

@@ -1,0 +1,9 @@
+<resources>
+    <string-array name="durations">
+        <item>1 hour</item>
+        <item>2 hours</item>
+        <item>3 hours</item>
+        <item>4 hours</item>
+        <item>5 hours</item>
+    </string-array>
+</resources>

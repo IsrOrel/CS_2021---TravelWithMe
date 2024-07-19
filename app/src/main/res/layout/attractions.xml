@@ -14,6 +14,15 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- Go Back Button -->
+        <Button
+            android:id="@+id/goBackButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Go Back"
+            android:layout_gravity="center"
+            style="@style/Widget.MaterialComponents.Button"/>
+
         <!-- First RecyclerView (Categories) -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -23,34 +32,34 @@
             app:cardElevation="8dp"
             app:cardUseCompatPadding="true">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/categoriesRecyclerView"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/categoriesRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:listitem="@layout/item_category"
+                android:background="@android:color/white" />
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- Second RecyclerView (Attractions) -->
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            tools:listitem="@layout/item_category"
-            android:background="@android:color/white" />
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp"
+            app:cardUseCompatPadding="true">
 
-    </androidx.cardview.widget.CardView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/attractionsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                tools:listitem="@layout/item_attractions"
+                android:background="@android:color/white"
+                />
 
-    <!-- Second RecyclerView (Attractions) -->
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="8dp"
-        app:cardUseCompatPadding="true">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/attractionsRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        tools:listitem="@layout/item_attractions"
-        android:background="@android:color/white"
-        />
-
-</androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
-    </ScrollView>
+</ScrollView>
