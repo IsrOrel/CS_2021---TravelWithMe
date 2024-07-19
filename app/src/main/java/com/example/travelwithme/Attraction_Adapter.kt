@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.travelwithme.Attraction_Data
+import com.example.travelwithme.Data.Attraction_Data
 import com.example.travelwithme.R
 
 class Attraction_Adapter(private var attractions: List<Attraction_Data>) :

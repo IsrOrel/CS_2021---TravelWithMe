@@ -29,7 +29,7 @@ class Home_screen : Fragment() {
         }
 
         binding.CarRent.setOnClickListener {
-            findNavController().navigate(R.id.action_calendar_to_home_screen)
+            findNavController().navigate(R.id.action_calendarFragment_to_home_screen)
         }
 
         binding.Calendar.setOnClickListener {

@@ -20,7 +20,7 @@
             app:popUpTo="@id/my_Trips" />
         <action
             android:id="@+id/action_home_screen_to_calendar"
-            app:destination="@id/calendar" />
+            app:destination="@id/calendarFragment" />
     </fragment>
     <fragment
         android:id="@+id/attractions"
@@ -28,7 +28,7 @@
         android:label="Attractions">
         <action
             android:id="@+id/action_attractions_to_calendar"
-            app:destination="@id/calendar">
+            app:destination="@id/calendarFragment">
             <argument
                 android:name="attractionTitle"
                 app:argType="string" />
@@ -36,15 +36,20 @@
                 android:name="eventDate"
                 app:argType="long" />
         </action>
-
     </fragment>
+
     <fragment
-        android:id="@+id/calendar"
+        android:id="@+id/calendarFragment"
         android:name="com.example.travelwithme.CalendarFragment"
-        android:label="calendar"
-        tools:layout="@layout/calendar" >
+        android:label="CalendarFragment">
+        <argument
+            android:name="attractionTitle"
+            app:argType="string" />
+        <argument
+            android:name="eventDate"
+            app:argType="long" />
         <action
-            android:id="@+id/action_calendar_to_home_screen"
+            android:id="@+id/action_calendarFragment_to_home_screen"
             app:destination="@id/home_screen" />
     </fragment>
     <fragment
