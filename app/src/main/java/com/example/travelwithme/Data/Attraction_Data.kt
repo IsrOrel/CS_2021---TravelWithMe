@@ -1,4 +1,4 @@
-package com.example.travelwithme
+package com.example.travelwithme.Data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.travelwithme.Data.AttractionViewModel
+import com.example.travelwithme.Data.Attraction_Data
 import com.example.travelwithme.databinding.AttractionsBinding
 import com.example.travelwithme.AttractionsDirections
 import androidx.navigation.fragment.findNavController
@@ -22,6 +24,7 @@ class Attractions : Fragment() {
     private val binding get() = _binding!!
     private lateinit var adapterCategory: CategoryAdapter
     private lateinit var adapterAttraction: Attraction_Adapter
+
 
     private val attractionViewModel: AttractionViewModel by viewModels()
 

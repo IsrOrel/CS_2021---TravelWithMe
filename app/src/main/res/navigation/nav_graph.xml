@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/my_Trips">
+    app:startDestination="@id/sign_In">
 
     <fragment
         android:id="@+id/home_screen"
@@ -88,4 +88,24 @@
             app:destination="@id/home_screen"
             app:popUpTo="@id/add_flight" />
     </fragment>
+    <fragment
+        android:id="@+id/sign_In"
+        android:name="com.example.travelwithme.Sign_In"
+        android:label="Sign_In" >
+        <action
+            android:id="@+id/action_sign_In_to_sign_Up"
+            app:destination="@id/sign_Up" />
+        <action
+            android:id="@+id/action_sign_In_to_my_Trips"
+            app:destination="@id/my_Trips" />
+    </fragment>
+    <fragment
+        android:id="@+id/sign_Up"
+        android:name="com.example.travelwithme.Sign_Up"
+        android:label="Sign_Up" >
+        <action
+            android:id="@+id/action_sign_Up_to_my_Trips"
+            app:destination="@id/my_Trips" />
+    </fragment>
+
 </navigation>

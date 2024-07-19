@@ -1,5 +1,5 @@
 // AttractionDao.kt
-package com.example.travelwithme
+package com.example.travelwithme.Data
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
@@ -8,6 +8,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.example.travelwithme.Data.Attraction_Data
 
 @Dao
 interface AttractionDao {
