@@ -106,5 +106,17 @@ interface User_Dao {
             updateHotels(email, updatedHotels)
         }
     }
+    // Get take-off date
+    @Query("SELECT take_off_date FROM user_data WHERE email = :email")
+    fun getTakeOffDate(email: String): Long?
+
+    // Get landing date
+    @Query("SELECT landing_date FROM user_data WHERE email = :email")
+    fun getLandingDate(email: String): Long?
+
+    // Get destination
+    @Query("SELECT destination FROM user_data WHERE email = :email")
+    fun getDestination(email: String): String?
+
 }
 
