@@ -64,7 +64,8 @@ class Sign_Up : Fragment() {
                 landingDate = Date(),
                 destination = "",
                 selectedAttractions = emptyList(),
-                hotels = emptyList()
+                hotels = emptyList() ,
+                checklist = emptyList()
             )
 
             try {

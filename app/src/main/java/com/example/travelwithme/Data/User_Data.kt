@@ -29,7 +29,11 @@ data class User_Data(
     val selectedAttractions: List<SelectedAttraction>,
 
     @ColumnInfo(name = "Hotels")
-    val hotels: List<Hotels>
+    val hotels: List<Hotels>,
+
+    @ColumnInfo(name = "CheckList")
+    val checklist: List<ChecklistItem>
+
 
 )
 data class Hotels(
@@ -37,6 +41,12 @@ data class Hotels(
     val address: String,
     val CheckinDate: Date,
     val CheckoutDate: Date
+
+)
+data class ChecklistItem(
+    val id: Long,
+    val text: String,
+    val isChecked: Boolean
 )
 
 data class SelectedAttraction(

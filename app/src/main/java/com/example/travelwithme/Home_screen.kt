@@ -96,6 +96,9 @@ class Home_screen : Fragment() {
         binding.Calendar.setOnClickListener {
             findNavController().navigate(R.id.action_home_screen_to_calendar)
         }
+        binding.checkListBtn.setOnClickListener{
+            findNavController().navigate(R.id.action_home_screen_to_checkList)
+        }
 
         binding.facts.setOnClickListener {
             if (isExpanded) {
@@ -125,7 +128,7 @@ class Home_screen : Fragment() {
         binding.fabAttractions.setOnClickListener { findNavController().navigate(R.id.action_home_screen_to_attractions) }
         binding.fabCarRental.setOnClickListener { /* Handle car rental click */ }
         binding.fabCalendar.setOnClickListener { /* Handle calendar click */ }
-        binding.fabNotes.setOnClickListener { /* Handle notes click */ }
+        binding.fabNotes.setOnClickListener { findNavController().navigate(R.id.action_home_screen_to_checkList)}
     }
 
     private fun toggleFabMenu() {
