@@ -16,61 +16,32 @@
             android:orientation="vertical"
             tools:context=".Home_screen">
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="16dp"
-                android:layout_marginTop="20dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/orange"
-                        android:text="HI"
-                        android:textColor="@color/white"
-                        android:textSize="20dp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Welcome User"
-                        android:textSize="20dp"
-                        android:layout_marginTop="20dp" />
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:orientation="horizontal"
-                android:layout_marginTop="20dp">
+                android:layout_margin="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=" My Trip To: "
-                    android:textSize="35dp"
+                    android:text="Welcome "
+                    android:textSize="20dp"
                     android:gravity="center" />
 
                 <Space
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.8" />
+                    android:layout_weight="0.03" />
 
                 <TextView
-                    android:id="@+id/TripCity"
+                    android:id="@+id/userName"
                     android:layout_width="164dp"
                     android:layout_height="wrap_content"
                     android:gravity="start"
-                    android:text="city"
-                    android:textSize="35dp" />
+                    android:text="user"
+                    android:textSize="20dp" />
 
                 <Space
                     android:layout_width="0dp"
@@ -79,11 +50,40 @@
 
             </LinearLayout>
 
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" My Trip To:  "
+                    android:textSize="35dp"
+                    android:gravity="center" />
+
+
+
+                <TextView
+                    android:id="@+id/TripCity"
+                    android:layout_width="164dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="city"
+                    android:textSize="30dp" />
+
+
+
+            </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="30dp">
 
                 <Space
                     android:layout_width="0dp"
@@ -181,8 +181,9 @@
 
                 <TextView
                     android:id="@+id/flightnext"
-                    android:layout_width="wrap_content"
+                    android:layout_width="109dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="top"
                     android:layout_marginTop="20dp"
                     android:text="city"
                     android:textSize="20dp" />
@@ -198,7 +199,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:text="countdown"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:id="@+id/countdown"/>
 
                 <Space
                     android:layout_width="0dp"
@@ -253,7 +255,9 @@
                     android:layout_marginTop="60dp"
                     android:layout_marginBottom="30dp"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp">
+                    android:layout_marginRight="20dp"
+                    android:backgroundTint="@color/orange"
+                    >
 
                     <Button
                         android:id="@+id/facts"

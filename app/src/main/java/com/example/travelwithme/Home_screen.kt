@@ -1,12 +1,28 @@
 package com.example.travelwithme
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.travelwithme.Data.TravelDatabase
+import com.example.travelwithme.Data.UserSession
+import com.example.travelwithme.Data.User_Dao
 import com.example.travelwithme.databinding.HomeScreenBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
+
 
 class Home_screen : Fragment() {
 
@@ -15,6 +31,9 @@ class Home_screen : Fragment() {
 
     private var isExpanded = false
     private var isFabMenuOpen = false
+    private lateinit var userDao: User_Dao
+    private lateinit var usersession: UserSession
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,8 +44,44 @@ class Home_screen : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val db = TravelDatabase.getInstance(requireContext())
+        userDao = db.userDao()
+
+
+        val currentUserEmail = UserSession.getCurrentUserEmail()
+        if(currentUserEmail != null)
+        {
+            // Use coroutines to fetch data from the database
+            lifecycleScope.launch {
+                val destination = withContext(Dispatchers.IO) {
+                    userDao.getDestination(currentUserEmail)
+                }
+                binding.TripCity.text = destination
+                binding.flightnext.text = destination
+
+                val countApp = withContext(Dispatchers.IO) {
+                    userDao.getTakeOffDate(currentUserEmail)
+                }
+                if(countApp != null){
+                val timestamp = countApp.toLong()
+                val appDate = Instant.ofEpochMilli(timestamp).atZone(ZoneId.systemDefault()).toLocalDate()
+
+                // Get the current date
+                val currentDate = LocalDate.now()
+
+                // Calculate the difference in days
+                val daysBetween = ChronoUnit.DAYS.between(currentDate, appDate)
+                binding.countdown.text= "$daysBetween days"
+                    }
+            }
+
+        }
+
+
+
 
         setupFabMenu()
 
@@ -67,7 +122,7 @@ class Home_screen : Fragment() {
         binding.fabFlight.setOnClickListener { /* Handle flight click */ }
         binding.fabHotel.setOnClickListener {
             findNavController().navigate(R.id.action_home_screen_to_add_Hotel) }
-        binding.fabAttractions.setOnClickListener { /* Handle attractions click */ }
+        binding.fabAttractions.setOnClickListener { findNavController().navigate(R.id.action_home_screen_to_attractions) }
         binding.fabCarRental.setOnClickListener { /* Handle car rental click */ }
         binding.fabCalendar.setOnClickListener { /* Handle calendar click */ }
         binding.fabNotes.setOnClickListener { /* Handle notes click */ }
