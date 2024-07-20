@@ -53,12 +53,16 @@ class Home_screen : Fragment() {
             }
             isExpanded = !isExpanded
         }
+
+        binding.fabMenuOverlay.setOnClickListener { toggleFabMenu() }
     }
 
     private fun setupFabMenu() {
         binding.floatingActionButton.setOnClickListener {
             toggleFabMenu()
         }
+        // Set initial translation for fab menu (off-screen upwards)
+        binding.fabMenu.translationY = -resources.displayMetrics.heightPixels.toFloat()
 
         // Set click listeners for each sub FAB
         binding.fabFlight.setOnClickListener { /* Handle flight click */ }
@@ -80,15 +84,38 @@ class Home_screen : Fragment() {
 
     private fun showFabMenu() {
         binding.fabMenu.visibility = View.VISIBLE
-        binding.floatingActionButton.animate().rotationBy(135f)
-        binding.fabMenu.animate().translationY(0f)
+        binding.fabMenuOverlay.visibility = View.VISIBLE
+        binding.floatingActionButton.animate().rotation(135f)
+        binding.fabMenu.animate()
+            .translationY(0f)
+            .alpha(1f)
+            .setDuration(300)
+            .start()
+        binding.fabMenuOverlay.animate()
+            .alpha(1f)
+            .setDuration(300)
+            .start()
+
+        // Bring the FAB menu to the front
+        binding.fabMenu.bringToFront()
     }
 
     private fun hideFabMenu() {
-        binding.floatingActionButton.animate().rotationBy(-135f)
-        binding.fabMenu.animate().translationY(binding.fabMenu.height.toFloat()).withEndAction {
-            binding.fabMenu.visibility = View.GONE
-        }
+        binding.floatingActionButton.animate().rotation(0f)
+        binding.fabMenu.animate()
+            .translationY(-resources.displayMetrics.heightPixels.toFloat())
+            .setDuration(300)
+            .withEndAction {
+                binding.fabMenu.visibility = View.GONE
+            }
+            .start()
+        binding.fabMenuOverlay.animate()
+            .alpha(0f)
+            .setDuration(300)
+            .withEndAction {
+                binding.fabMenuOverlay.visibility = View.GONE
+            }
+            .start()
     }
 
     override fun onDestroyView() {
