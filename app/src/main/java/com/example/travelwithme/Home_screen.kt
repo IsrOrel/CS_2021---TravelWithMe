@@ -18,13 +18,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.Instant
 import java.time.LocalDate
-import java.time.LocalTime
 import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import android.content.Intent
 import android.net.Uri
-
+import android.app.AlertDialog
+import android.widget.Button
+import android.widget.TextView
+import java.time.format.DateTimeFormatter
 
 class Home_screen : Fragment() {
 
@@ -35,7 +36,6 @@ class Home_screen : Fragment() {
     private var isFabMenuOpen = false
     private lateinit var userDao: User_Dao
     private lateinit var usersession: UserSession
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,11 +52,8 @@ class Home_screen : Fragment() {
         val db = TravelDatabase.getInstance(requireContext())
         userDao = db.userDao()
 
-
         val currentUserEmail = UserSession.getCurrentUserEmail()
-        if(currentUserEmail != null)
-        {
-            // Use coroutines to fetch data from the database
+        if(currentUserEmail != null) {
             lifecycleScope.launch {
                 val destination = withContext(Dispatchers.IO) {
                     userDao.getDestination(currentUserEmail)
@@ -64,13 +61,17 @@ class Home_screen : Fragment() {
                 binding.TripCity.text = destination
                 binding.flightnext.text = destination
 
+                // Set facts for the destination
+                if (destination != null) {
+                    setFactsForDestination(destination)
+                }
+
                 val countApp = withContext(Dispatchers.IO) {
                     userDao.getTakeOffDate(currentUserEmail)
                 }
                 if (countApp != null) {
                     val timestamp = countApp.toLong()
-                    val appDate =
-                        Instant.ofEpochMilli(timestamp).atZone(ZoneId.systemDefault()).toLocalDate()
+                    val appDate = Instant.ofEpochMilli(timestamp).atZone(ZoneId.systemDefault()).toLocalDate()
 
                     // Get the current date
                     val currentDate = LocalDate.now()
@@ -83,15 +84,11 @@ class Home_screen : Fragment() {
                 val Uname = withContext(Dispatchers.IO) {
                     userDao.getUserByEmail(currentUserEmail)
                 }
-                if (Uname != null)
-                {
-                    binding.userName.text=Uname.name
+                if (Uname != null) {
+                    binding.userName.text = Uname.name
                 }
             }
-
         }
-
-
 
         setupFabMenu()
 
@@ -109,7 +106,7 @@ class Home_screen : Fragment() {
         binding.Calendar.setOnClickListener {
             findNavController().navigate(R.id.action_home_screen_to_calendar)
         }
-        binding.checkListBtn.setOnClickListener{
+        binding.checkListBtn.setOnClickListener {
             findNavController().navigate(R.id.action_home_screen_to_checkList)
         }
 
@@ -119,7 +116,7 @@ class Home_screen : Fragment() {
                 binding.facts.text = "Fun facts about the city:"
             } else {
                 binding.textViewContainer.visibility = View.VISIBLE
-                binding.facts.text = "Fun facts about the city:"
+                binding.facts.text = "Hide fun facts"
             }
             isExpanded = !isExpanded
         }
@@ -127,29 +124,32 @@ class Home_screen : Fragment() {
         binding.fabMenuOverlay.setOnClickListener { toggleFabMenu() }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setupFabMenu() {
         binding.floatingActionButton.setOnClickListener {
             toggleFabMenu()
         }
-        // Set initial translation for fab menu (off-screen upwards)
         binding.fabMenu.translationY = -resources.displayMetrics.heightPixels.toFloat()
 
-        // Set click listeners for each sub FAB
-        binding.fabFlight.setOnClickListener { /* Handle flight click */ }
-
+        binding.fabFlight.setOnClickListener { showFlightInfoDialog() }
         binding.fabHotel.setOnClickListener {
-            findNavController().navigate(R.id.action_home_screen_to_add_Hotel) }
-
-        binding.fabAttractions.setOnClickListener { findNavController().navigate(R.id.action_home_screen_to_attractions) }
-
-        binding.fabCarRental.setOnClickListener { val url = "https://www.carrentals.com/"
+            findNavController().navigate(R.id.action_home_screen_to_add_Hotel)
+        }
+        binding.fabAttractions.setOnClickListener {
+            findNavController().navigate(R.id.action_home_screen_to_attractions)
+        }
+        binding.fabCarRental.setOnClickListener {
+            val url = "https://www.carrentals.com/"
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = Uri.parse(url)
-            startActivity(intent) }
-
-        binding.fabCalendar.setOnClickListener { /* Handle calendar click */ }
-
-        binding.fabNotes.setOnClickListener { findNavController().navigate(R.id.action_home_screen_to_checkList)}
+            startActivity(intent)
+        }
+        binding.fabCalendar.setOnClickListener {
+            findNavController().navigate(R.id.action_home_screen_to_calendar)
+        }
+        binding.fabNotes.setOnClickListener {
+            findNavController().navigate(R.id.action_home_screen_to_checkList)
+        }
     }
 
     private fun toggleFabMenu() {
@@ -174,8 +174,6 @@ class Home_screen : Fragment() {
             .alpha(1f)
             .setDuration(300)
             .start()
-
-        // Bring the FAB menu to the front
         binding.fabMenu.bringToFront()
     }
 
@@ -195,6 +193,73 @@ class Home_screen : Fragment() {
                 binding.fabMenuOverlay.visibility = View.GONE
             }
             .start()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun showFlightInfoDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_layout_flight_info, null)
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .create()
+
+        dialogView.findViewById<Button>(R.id.closeButton).setOnClickListener {
+            dialog.dismiss()
+        }
+
+        val currentUserEmail = UserSession.getCurrentUserEmail()
+        if (currentUserEmail != null) {
+            lifecycleScope.launch {
+                val destination = withContext(Dispatchers.IO) {
+                    userDao.getDestination(currentUserEmail)
+                }
+                val takeOffDate = withContext(Dispatchers.IO) {
+                    userDao.getTakeOffDate(currentUserEmail)
+                }
+                val landingDate = withContext(Dispatchers.IO) {
+                    userDao.getLandingDate(currentUserEmail)
+                }
+
+                dialogView.findViewById<TextView>(R.id.flightToAnswer).text = destination ?: "Not set"
+
+                if (takeOffDate != null) {
+                    val departureDate = Instant.ofEpochMilli(takeOffDate.toLong())
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate()
+                    dialogView.findViewById<TextView>(R.id.departureDateAnswer).text =
+                        departureDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                } else {
+                    dialogView.findViewById<TextView>(R.id.departureDateAnswer).text = "Not set"
+                }
+
+                if (landingDate != null) {
+                    val returnLocalDate = Instant.ofEpochMilli(landingDate.toLong())
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate()
+                    dialogView.findViewById<TextView>(R.id.returnDateAnswer).text =
+                        returnLocalDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                } else {
+                    dialogView.findViewById<TextView>(R.id.returnDateAnswer).text = "Not set"
+                }
+            }
+        }
+
+        dialog.show()
+    }
+
+    private fun getFactsForCity(city: String): Array<String> {
+        return when {
+            city.contains("London", ignoreCase = true) -> resources.getStringArray(R.array.facts_london)
+            city.contains("Amsterdam", ignoreCase = true) -> resources.getStringArray(R.array.facts_amsterdam)
+            city.contains("Rome", ignoreCase = true) -> resources.getStringArray(R.array.facts_rome)
+            else -> arrayOf("No facts available for this city")
+        }
+    }
+
+    private fun setFactsForDestination(destination: String) {
+        val facts = getFactsForCity(destination)
+        binding.fact1.text = facts.getOrNull(0) ?: "No fact available"
+        binding.fact2.text = facts.getOrNull(1) ?: "No fact available"
+        binding.fact3.text = facts.getOrNull(2) ?: "No fact available"
     }
 
     override fun onDestroyView() {
