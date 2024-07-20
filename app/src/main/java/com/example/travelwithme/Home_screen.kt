@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.travelwithme.databinding.HomeScreenBinding
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class Home_screen : Fragment() {
 
@@ -66,7 +65,8 @@ class Home_screen : Fragment() {
 
         // Set click listeners for each sub FAB
         binding.fabFlight.setOnClickListener { /* Handle flight click */ }
-        binding.fabHotel.setOnClickListener { /* Handle hotel click */ }
+        binding.fabHotel.setOnClickListener {
+            findNavController().navigate(R.id.action_home_screen_to_add_Hotel) }
         binding.fabAttractions.setOnClickListener { /* Handle attractions click */ }
         binding.fabCarRental.setOnClickListener { /* Handle car rental click */ }
         binding.fabCalendar.setOnClickListener { /* Handle calendar click */ }

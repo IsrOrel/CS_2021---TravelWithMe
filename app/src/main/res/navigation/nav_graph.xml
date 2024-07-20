@@ -21,6 +21,9 @@
         <action
             android:id="@+id/action_home_screen_to_calendar"
             app:destination="@id/calendarFragment" />
+        <action
+            android:id="@+id/action_home_screen_to_add_Hotel"
+            app:destination="@id/add_Hotel" />
     </fragment>
     <fragment
         android:id="@+id/attractions"
