@@ -12,13 +12,21 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.travelwithme.Data.TravelDatabase
+import com.example.travelwithme.Data.UserSession
+import com.example.travelwithme.Data.User_Dao
 import com.example.travelwithme.databinding.AddFlightBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.datepicker.MaterialDatePicker
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -27,6 +35,10 @@ class Add_flight : Fragment() {
     private lateinit var selectedDate: TextView
     private lateinit var datePicker: Button
     private var _binding: AddFlightBinding? = null
+    private lateinit var userDao: User_Dao
+    private lateinit var usersession: UserSession
+    private lateinit var db: TravelDatabase
+
     private val binding get() = _binding!!
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
@@ -42,7 +54,8 @@ class Add_flight : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        db = TravelDatabase.getInstance(requireContext())
+        userDao = db.userDao()
         val citiesSpinner: Spinner = binding.citiesspinner
         val adapter: ArrayAdapter<CharSequence> = ArrayAdapter.createFromResource(
             requireContext(),
@@ -53,6 +66,18 @@ class Add_flight : Fragment() {
         citiesSpinner.adapter = adapter
 
         binding.doneBtn.setOnClickListener {
+            val destination = binding.citiesspinner.selectedItem.toString()
+            val dateRange = binding.selectedDate.text.toString()
+            val dates = dateRange.split(" - ")
+            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val takeOffDate = sdf.parse(dates[0])
+            val landingDate = sdf.parse(dates[1])
+
+            if (takeOffDate != null && landingDate != null) {
+                updateFlightDetails(takeOffDate, landingDate, destination)
+            } else {
+                Toast.makeText(context, "Please select valid dates", Toast.LENGTH_SHORT).show()
+            }
             findNavController().navigate(R.id.action_add_flight_to_add_Hotel)
         }
 
@@ -172,7 +197,20 @@ class Add_flight : Fragment() {
 
         dateRangePicker.show(parentFragmentManager, "dateRangePicker")
     }
-
+    fun updateFlightDetails(takeOffDate: Date, landingDate: Date,destination: String) {
+        val currentUserEmail = UserSession.getCurrentUserEmail()
+        if (currentUserEmail != null) {
+            lifecycleScope.launch(Dispatchers.IO) {
+                userDao.updateTripDates(currentUserEmail, takeOffDate.time, landingDate.time)
+                userDao.updateDestination(currentUserEmail,destination)
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "Flight details updated successfully", Toast.LENGTH_SHORT).show()
+                }
+            }
+        } else {
+            Toast.makeText(context, "No user logged in", Toast.LENGTH_SHORT).show()
+        }
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

@@ -7,11 +7,10 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
-@Database(entities = [Attraction_Data::class, User_Data::class], version = 1, exportSchema = false)
-
+@Database(entities = [User_Data::class, Attraction_Data::class], version = 2, exportSchema = false)
 @TypeConverters(User_Data_Convertors::class)
 abstract class TravelDatabase : RoomDatabase() {
-
+    abstract fun userDao(): User_Dao
     abstract fun attractionDao(): AttractionDao
 
     companion object {
@@ -24,7 +23,9 @@ abstract class TravelDatabase : RoomDatabase() {
                     context.applicationContext,
                     TravelDatabase::class.java,
                     "travel_database"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration() // Add this line
+                    .build()
                 INSTANCE = instance
                 instance
             }

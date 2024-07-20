@@ -6,7 +6,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 
 @Dao
-interface UserDao {
+interface User_Dao {
     // Insert or update a full User_Data object
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOrUpdateUser(userData: User_Data)
