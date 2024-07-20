@@ -22,6 +22,8 @@ import java.time.LocalTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+import android.content.Intent
+import android.net.Uri
 
 
 class Home_screen : Fragment() {
@@ -65,21 +67,29 @@ class Home_screen : Fragment() {
                 val countApp = withContext(Dispatchers.IO) {
                     userDao.getTakeOffDate(currentUserEmail)
                 }
-                if(countApp != null){
-                val timestamp = countApp.toLong()
-                val appDate = Instant.ofEpochMilli(timestamp).atZone(ZoneId.systemDefault()).toLocalDate()
+                if (countApp != null) {
+                    val timestamp = countApp.toLong()
+                    val appDate =
+                        Instant.ofEpochMilli(timestamp).atZone(ZoneId.systemDefault()).toLocalDate()
 
-                // Get the current date
-                val currentDate = LocalDate.now()
+                    // Get the current date
+                    val currentDate = LocalDate.now()
 
-                // Calculate the difference in days
-                val daysBetween = ChronoUnit.DAYS.between(currentDate, appDate)
-                binding.countdown.text= "$daysBetween days"
-                    }
+                    // Calculate the difference in days
+                    val daysBetween = ChronoUnit.DAYS.between(currentDate, appDate)
+                    binding.countdown.text = "$daysBetween days"
+                }
+
+                val Uname = withContext(Dispatchers.IO) {
+                    userDao.getUserByEmail(currentUserEmail)
+                }
+                if (Uname != null)
+                {
+                    binding.userName.text=Uname.name
+                }
             }
 
         }
-
 
 
 
@@ -90,7 +100,10 @@ class Home_screen : Fragment() {
         }
 
         binding.CarRent.setOnClickListener {
-            findNavController().navigate(R.id.action_calendarFragment_to_home_screen)
+            val url = "https://www.carrentals.com/"
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(url)
+            startActivity(intent)
         }
 
         binding.Calendar.setOnClickListener {
@@ -123,11 +136,19 @@ class Home_screen : Fragment() {
 
         // Set click listeners for each sub FAB
         binding.fabFlight.setOnClickListener { /* Handle flight click */ }
+
         binding.fabHotel.setOnClickListener {
             findNavController().navigate(R.id.action_home_screen_to_add_Hotel) }
+
         binding.fabAttractions.setOnClickListener { findNavController().navigate(R.id.action_home_screen_to_attractions) }
-        binding.fabCarRental.setOnClickListener { /* Handle car rental click */ }
+
+        binding.fabCarRental.setOnClickListener { val url = "https://www.carrentals.com/"
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(url)
+            startActivity(intent) }
+
         binding.fabCalendar.setOnClickListener { /* Handle calendar click */ }
+
         binding.fabNotes.setOnClickListener { findNavController().navigate(R.id.action_home_screen_to_checkList)}
     }
 
