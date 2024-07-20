@@ -26,9 +26,18 @@ data class User_Data(
     val destination: String,
 
     @ColumnInfo(name = "selected_attractions")
-    val selectedAttractions: List<SelectedAttraction>
-)
+    val selectedAttractions: List<SelectedAttraction>,
 
+    @ColumnInfo(name = "Hotels")
+    val hotels: List<Hotels>
+
+)
+data class Hotels(
+    val name: String,
+    val address: String,
+    val CheckinDate: Date,
+    val CheckoutDate: Date
+)
 
 data class SelectedAttraction(
     val title: String,

@@ -81,9 +81,9 @@
     </fragment>
     <fragment
         android:id="@+id/add_Hotel"
-        android:name="com.example.travelwithme.Add_Hotel"
+        android:name="com.example.travelwithme.My_hotels"
         android:label="add__hotel"
-        tools:layout="@layout/add__hotel" >
+        tools:layout="@layout/my_hotels" >
         <action
             android:id="@+id/action_add_Hotel_to_add_flight"
             app:destination="@id/add_flight"
@@ -92,6 +92,9 @@
             android:id="@+id/action_add_Hotel_to_home_screen"
             app:destination="@id/home_screen"
             app:popUpTo="@id/add_flight" />
+        <action
+            android:id="@+id/action_add_Hotel_to_add_Edit_Hotel"
+            app:destination="@id/add_Edit_Hotel" />
     </fragment>
     <fragment
         android:id="@+id/sign_In"
@@ -111,6 +114,17 @@
         <action
             android:id="@+id/action_sign_Up_to_my_Trips"
             app:destination="@id/my_Trips" />
+        <action
+            android:id="@+id/action_sign_Up_to_sign_In"
+            app:destination="@id/sign_In" />
+    </fragment>
+    <fragment
+        android:id="@+id/add_Edit_Hotel"
+        android:name="com.example.travelwithme.Add_Edit_Hotel"
+        android:label="Add_Edit_Hotel" >
+        <action
+            android:id="@+id/action_add_Edit_Hotel_to_home_screen"
+            app:destination="@id/home_screen" />
     </fragment>
 
 </navigation>

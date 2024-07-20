@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <!-- fragment_add_edit_hotel.xml -->
+<ScrollView
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/hotelNameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Hotel Name"/>
+
+    <EditText
+        android:id="@+id/hotelAddressEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Hotel Address"/>
+
+    <TextView
+        android:id="@+id/checkInDateTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Check-in Date"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/checkOutDateTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Check-out Date"
+        android:layout_marginTop="16dp"/>
+
+    <Button
+        android:id="@+id/saveHotelButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save Hotel"
+        android:layout_marginTop="24dp"/>
+
+</LinearLayout>
+</ScrollView>

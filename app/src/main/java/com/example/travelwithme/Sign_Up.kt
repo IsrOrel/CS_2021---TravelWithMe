@@ -47,7 +47,9 @@ class Sign_Up : Fragment() {
             } else {
                 Toast.makeText(context, "Please fill all fields", Toast.LENGTH_SHORT).show()
             }
-
+        }
+        binding.signInButton.setOnClickListener {
+            findNavController().navigate(R.id.action_sign_Up_to_sign_In)
         }
     }
 
@@ -61,7 +63,8 @@ class Sign_Up : Fragment() {
                 takeOffDate = Date(),
                 landingDate = Date(),
                 destination = "",
-                selectedAttractions = emptyList()
+                selectedAttractions = emptyList(),
+                hotels = emptyList()
             )
 
             try {
@@ -79,7 +82,7 @@ class Sign_Up : Fragment() {
     }
 
 
-    private fun validateInputs(name: String, email: String, password: String): Boolean {
+    private fun validateInputs(email: String, name: String, password: String): Boolean {
         if (name.isEmpty()) {
             showError("Name cannot be empty")
             return false
@@ -99,9 +102,8 @@ class Sign_Up : Fragment() {
     }
 
     private fun isValidEmail(email: String): Boolean {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+        return email.matches(Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$"))
     }
-
     private fun isValidPassword(password: String): Boolean {
         // Password must be at least 6 characters long and contain at least one number
         val passwordRegex = "^(?=.*[0-9]).{6,}$".toRegex()

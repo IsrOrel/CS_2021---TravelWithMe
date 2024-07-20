@@ -51,6 +51,7 @@ interface User_Dao {
         }
     }
 
+
     // Update the entire attractions list
     @Query("UPDATE user_data SET selected_attractions = :attractions WHERE email = :email")
     fun updateAttractions(email: String, attractions: List<SelectedAttraction>)
@@ -63,5 +64,47 @@ interface User_Dao {
     // Count total users
     @Query("SELECT COUNT(*) FROM user_data")
     fun getUserCount(): Int
+    @Query("UPDATE user_data SET Hotels = :hotels WHERE email = :email")
+    fun updateHotels(email: String, hotels: List<Hotels>)
+
+
+
+    // Add a hotel
+    @Transaction
+    fun addHotel(email: String, newHotel: Hotels) {
+        val user = getUserByEmail(email)
+        user?.let {
+            val updatedHotels = it.hotels + newHotel
+            updateHotels(email, updatedHotels)
+        }
+    }
+
+    // Update a specific hotel in the list
+    @Transaction
+    fun updateHotel(email: String, updatedHotel: Hotels) {
+        val user = getUserByEmail(email)
+        user?.let { currentUser ->
+            val updatedHotels = currentUser.hotels.map { hotel ->
+                if (hotel.name == updatedHotel.name && hotel.address == updatedHotel.address) {
+                    updatedHotel
+                } else {
+                    hotel
+                }
+            }
+            updateHotels(email, updatedHotels)
+        }
+    }
+
+    // Optional: Remove a hotel from the list
+    @Transaction
+    fun removeHotel(email: String, hotelToRemove: Hotels) {
+        val user = getUserByEmail(email)
+        user?.let { currentUser ->
+            val updatedHotels = currentUser.hotels.filter { hotel ->
+                hotel.name != hotelToRemove.name || hotel.address != hotelToRemove.address
+            }
+            updateHotels(email, updatedHotels)
+        }
+    }
 }
 

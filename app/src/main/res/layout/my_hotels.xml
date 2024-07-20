@@ -19,6 +19,12 @@
         android:text="Return"
         />
     <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/AddHotel"
+        android:text="Add Hotel"
+        />
+    <Button
         android:id="@+id/Skip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
