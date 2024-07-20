@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_home_screen_to_add_Hotel"
             app:destination="@id/add_Hotel" />
+        <action
+            android:id="@+id/action_home_screen_to_checkList"
+            app:destination="@id/checkList" />
     </fragment>
     <fragment
         android:id="@+id/attractions"
@@ -127,6 +130,14 @@
         android:label="Add_Edit_Hotel" >
         <action
             android:id="@+id/action_add_Edit_Hotel_to_home_screen"
+            app:destination="@id/home_screen" />
+    </fragment>
+    <fragment
+        android:id="@+id/checkList"
+        android:name="com.example.travelwithme.CheckList"
+        android:label="CheckList" >
+        <action
+            android:id="@+id/action_checkList_to_home_screen"
             app:destination="@id/home_screen" />
     </fragment>
 

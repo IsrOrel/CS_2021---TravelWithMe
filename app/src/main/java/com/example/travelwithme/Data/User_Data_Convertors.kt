@@ -42,4 +42,17 @@ class User_Data_Convertors {
     fun toHotelsList(list: List<Hotels>): String {
         return list.joinToString(";") { "${it.name},${it.address},${it.CheckinDate.time},${it.CheckoutDate.time}" }
     }
+    @TypeConverter
+    fun fromChecklistItemList(value: String): List<ChecklistItem> {
+        if (value.isEmpty()) return emptyList()
+        return value.split(";").map {
+            val (id, text, isChecked) = it.split(",")
+            ChecklistItem(id.toLong(), text, isChecked.toBoolean())
+        }
+    }
+
+    @TypeConverter
+    fun toChecklistItemList(list: List<ChecklistItem>): String {
+        return list.joinToString(";") { "${it.id},${it.text},${it.isChecked}" }
+    }
 }

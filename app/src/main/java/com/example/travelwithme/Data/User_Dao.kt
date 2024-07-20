@@ -118,5 +118,27 @@ interface User_Dao {
     @Query("SELECT destination FROM user_data WHERE email = :email")
     fun getDestination(email: String): String?
 
+    @Query("UPDATE user_data SET checklist = :updatedChecklist WHERE email = :email")
+    fun updateChecklist(email: String, updatedChecklist: List<ChecklistItem>)
+
+    @Transaction
+    fun updateChecklistItem(email: String, updatedItem: ChecklistItem) {
+        val user = getUserByEmail(email)
+        user?.let {
+            val updatedChecklist = it.checklist.map { item ->
+                if (item.id == updatedItem.id) updatedItem else item
+            }
+            updateChecklist(email, updatedChecklist)
+        }
+    }
+    @Transaction
+    fun addChecklistItem(email: String, newItem: ChecklistItem) {
+        val user = getUserByEmail(email)
+        user?.let {
+            val updatedChecklist = it.checklist + newItem
+            updateChecklist(email, updatedChecklist)
+        }
+    }
+
 }
 
