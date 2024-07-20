@@ -48,6 +48,7 @@ class CalendarFragment : Fragment() {
         val args: CalendarFragmentArgs by navArgs()
         val attractionTitle = args.attractionTitle
         val eventDate = Date(args.eventDate)
+        val durationHours = args.durationHours
 
         val attraction = Attraction_Data(
             id = 0, // or appropriate id
@@ -57,13 +58,26 @@ class CalendarFragment : Fragment() {
             place = "Place" // replace with actual place if available
         )
 
-        addEvent(attraction, eventDate)
+        if (events.none { it.attraction.title == attraction.title && it.date.isSameDay(eventDate) }) {
+            addEvent(attraction, eventDate, durationHours)
+        }
     }
 
-    fun addEvent(attraction: Attraction_Data, date: Date) {
-        events.add(Event(attraction, date))
+    private fun addEvent(attraction: Attraction_Data, date: Date, durationHours: Int) {
+        events.add(Event(attraction, date, durationHours))
         showEventsForDate(date)
-        Toast.makeText(requireContext(), "Event Added: ${attraction.title} on ${SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(date)}", Toast.LENGTH_SHORT).show()
+        val timeRange = calculateTimeRange(date, durationHours)
+        Toast.makeText(requireContext(), "Event Added: ${attraction.title} on ${SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(date)} $timeRange", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun calculateTimeRange(startDate: Date, durationHours: Int): String {
+        val formatter = SimpleDateFormat("HH:mm", Locale.getDefault())
+        val calendar = Calendar.getInstance()
+        calendar.time = startDate
+        val startTime = formatter.format(calendar.time)
+        calendar.add(Calendar.HOUR_OF_DAY, durationHours)
+        val endTime = formatter.format(calendar.time)
+        return "$startTime-$endTime"
     }
 
     private fun showEventsForDate(date: Date) {
@@ -77,7 +91,8 @@ class CalendarFragment : Fragment() {
             val eventView = layoutInflater.inflate(R.layout.item_event, binding.eventsContainer, false)
             eventView.findViewById<TextView>(R.id.eventTitle).text = event.attraction.title
             eventView.findViewById<TextView>(R.id.eventDescription).text = event.attraction.description
-            eventView.findViewById<TextView>(R.id.eventTime).text = SimpleDateFormat("HH:mm", Locale.getDefault()).format(event.date)
+            val timeRange = calculateTimeRange(event.date, event.durationHours)
+            eventView.findViewById<TextView>(R.id.eventTime).text = timeRange
 
             binding.eventsContainer.addView(eventView)
         }
@@ -91,10 +106,10 @@ class CalendarFragment : Fragment() {
                 cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH)
     }
 
-    data class Event(val attraction: Attraction_Data, val date: Date)
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 }
+
+data class Event(val attraction: Attraction_Data, val date: Date, val durationHours: Int)

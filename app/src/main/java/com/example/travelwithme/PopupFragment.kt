@@ -1,12 +1,10 @@
 package com.example.travelwithme
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.DialogFragment
 import com.example.travelwithme.databinding.FragmentPopupBinding
@@ -17,7 +15,7 @@ class PopupFragment : DialogFragment() {
     private val binding get() = _binding!!
 
     interface OnDateTimeSelectedListener {
-        fun onDateTimeSelected(date: Date)
+        fun onDateTimeSelected(date: Date, durationHours: Int)
     }
 
     var listener: OnDateTimeSelectedListener? = null
@@ -60,11 +58,8 @@ class PopupFragment : DialogFragment() {
                 val selectedDuration = binding.durationSpinner.selectedItem.toString()
                 val durationHours = selectedDuration.split(" ")[0].toInt()
 
-                val endCalendar = calendar.clone() as Calendar
-                endCalendar.add(Calendar.HOUR_OF_DAY, durationHours)
-
-                // Pass the selected date to the listener
-                listener?.onDateTimeSelected(calendar.time)
+                // Pass the selected date and duration to the listener
+                listener?.onDateTimeSelected(calendar.time, durationHours)
             } catch (e: Exception) {
                 Log.e("PopupFragment", "Error processing event: ${e.message}", e)
             } finally {
@@ -78,4 +73,3 @@ class PopupFragment : DialogFragment() {
         _binding = null
     }
 }
-

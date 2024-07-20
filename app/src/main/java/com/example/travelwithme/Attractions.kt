@@ -17,6 +17,7 @@ import com.example.travelwithme.Data.Attraction_Data
 import com.example.travelwithme.databinding.AttractionsBinding
 import com.example.travelwithme.AttractionsDirections
 import androidx.navigation.fragment.findNavController
+import java.text.SimpleDateFormat
 import java.util.*
 
 class Attractions : Fragment() {
@@ -77,26 +78,32 @@ class Attractions : Fragment() {
     private fun showDateTimePopup(attraction: Attraction_Data) {
         val popupFragment = PopupFragment()
         popupFragment.listener = object : PopupFragment.OnDateTimeSelectedListener {
-            override fun onDateTimeSelected(date: Date) {
-                addEventToCalendar(attraction, date)
+            override fun onDateTimeSelected(date: Date, durationHours: Int) {
+                addEventToCalendar(attraction, date, durationHours)
             }
         }
         popupFragment.show(parentFragmentManager, "PopupFragment")
     }
 
-    private fun addEventToCalendar(attraction: Attraction_Data, date: Date) {
-        val action = AttractionsDirections.actionAttractionsToCalendar(attraction.title, date.time)
+    private fun addEventToCalendar(attraction: Attraction_Data, date: Date, durationHours: Int) {
+        val action = AttractionsDirections.actionAttractionsToCalendar(attraction.title, date.time, durationHours)
         findNavController().navigate(action)
 
-        val calendarFragment = parentFragmentManager.findFragmentById(R.id.nav_host_fragment) as? CalendarFragment
-            ?: return
-
-        calendarFragment.addEvent(attraction, date)
+        val timeRange = calculateTimeRange(date, durationHours)
         Toast.makeText(
             requireContext(),
-            "Added ${attraction.title} to calendar on ${date}",
+            "Added ${attraction.title} to calendar on ${SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(date)} $timeRange",
             Toast.LENGTH_SHORT
         ).show()
+    }
+    private fun calculateTimeRange(startDate: Date, durationHours: Int): String {
+        val formatter = SimpleDateFormat("HH:mm", Locale.getDefault())
+        val calendar = Calendar.getInstance()
+        calendar.time = startDate
+        val startTime = formatter.format(calendar.time)
+        calendar.add(Calendar.HOUR_OF_DAY, durationHours)
+        val endTime = formatter.format(calendar.time)
+        return "$startTime-$endTime"
     }
 
     private fun setupCategoryRecyclerView() {

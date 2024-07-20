@@ -54,6 +54,9 @@
         <argument
             android:name="eventDate"
             app:argType="long" />
+        <argument
+            android:name="durationHours"
+            app:argType="integer" />
         <action
             android:id="@+id/action_calendarFragment_to_home_screen"
             app:destination="@id/home_screen" />
