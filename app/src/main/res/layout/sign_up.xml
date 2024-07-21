@@ -3,16 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@drawable/back3">
 
     <EditText
         android:id="@+id/nameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/fredoka_medium"
         android:hint="Name"
         android:inputType="textPersonName"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/fredoka_medium"/>
+        android:textColorHint="#A5A4A4"
+        android:textColor="@color/white"/>
 
     <EditText
         android:id="@+id/emailEditText"
@@ -21,7 +24,9 @@
         android:hint="Email"
         android:inputType="textEmailAddress"
         android:layout_marginTop="16dp"
-        android:fontFamily="@font/fredoka_medium"/>
+        android:fontFamily="@font/fredoka_medium"
+        android:textColorHint="#A5A4A4"
+        android:textColor="@color/white"/>
 
     <EditText
         android:id="@+id/passwordEditText"
@@ -30,7 +35,9 @@
         android:hint="Password"
         android:inputType="textPassword"
         android:layout_marginTop="16dp"
-        android:fontFamily="@font/fredoka_medium"/>
+        android:fontFamily="@font/fredoka_medium"
+        android:textColorHint="#A5A4A4"
+        android:textColor="@color/white"/>
 
     <Button
         android:id="@+id/signUpButton"
@@ -38,7 +45,8 @@
         android:layout_height="wrap_content"
         android:text="Sign Up"
         android:layout_marginTop="24dp"
-        android:fontFamily="@font/fredoka_medium"/>
+        android:fontFamily="@font/fredoka_medium"
+        android:backgroundTint="@color/sandyBrown"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/signInButton"
@@ -47,6 +55,7 @@
         android:layout_height="wrap_content"
         android:text="Already have an account? Sign In"
         android:layout_gravity="center"
-        android:layout_marginTop="24dp"/>
+        android:layout_marginTop="24dp"
+        android:textColor="@color/black"/>
 
 </LinearLayout>
