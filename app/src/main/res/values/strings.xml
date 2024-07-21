@@ -3,6 +3,7 @@
 
     <string name="app_name">Travel With Me</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="event_image_description" />
 
     <string-array name="cities">
         <item>London, UK</item>

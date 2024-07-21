@@ -1,10 +1,8 @@
-// AttractionViewModel.kt
 package com.example.travelwithme.Data
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -15,7 +13,13 @@ class AttractionViewModel(application: Application) : AndroidViewModel(applicati
     }
     private val attractionDao = database.attractionDao()
 
-    val attractions: LiveData<List<Attraction_Data>> = attractionDao.getAllAttractions()
+    fun getAllAttractionsForCity(city: String): LiveData<List<Attraction_Data>> {
+        return attractionDao.getAttractionsForCity(city)
+    }
+
+    fun getAttractionsForCityAndCategory(city: String, category: String): LiveData<List<Attraction_Data>> {
+        return attractionDao.getAttractionsForCityAndCategory(city, category)
+    }
 
     fun insertAttraction(attraction: Attraction_Data) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -27,13 +31,6 @@ class AttractionViewModel(application: Application) : AndroidViewModel(applicati
         viewModelScope.launch(Dispatchers.IO) {
             attractionDao.insertAttractions(attractions)
         }
-    }
-    fun getAttractionById(id: Int): LiveData<Attraction_Data?> {
-        val result = MutableLiveData<Attraction_Data?>()
-        viewModelScope.launch(Dispatchers.IO) {
-            result.postValue(attractionDao.getAttractionById(id))
-        }
-        return result
     }
 
     fun updateAttraction(attraction: Attraction_Data) {

@@ -1,35 +1,32 @@
-// AttractionDao.kt
 package com.example.travelwithme.Data
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import androidx.room.Update
-import com.example.travelwithme.Data.Attraction_Data
+import androidx.room.*
 
 @Dao
 interface AttractionDao {
+
     @Query("SELECT * FROM attractions")
     fun getAllAttractions(): LiveData<List<Attraction_Data>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAttraction(attraction: Attraction_Data)
+    suspend fun insertAttraction(attraction: Attraction_Data)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAttractions(attractions: List<Attraction_Data>)
+    suspend fun insertAttractions(attractions: List<Attraction_Data>)
 
     @Update
-    fun updateAttraction(attraction: Attraction_Data)
-
-    @Query("UPDATE attractions SET image = :image, title = :title, description = :description, place = :place WHERE id = :id")
-    fun updateAttractionById(id: Int, image: Int, title: String, description: String, place: String)
+    suspend fun updateAttraction(attraction: Attraction_Data)
 
     @Delete
-    fun deleteAttraction(attraction: Attraction_Data)
-    @Query("SELECT * FROM attractions WHERE id = :id")
-    fun getAttractionById(id: Int): Attraction_Data?
+    suspend fun deleteAttraction(attraction: Attraction_Data)
 
+    @Query("SELECT * FROM attractions WHERE city = :city")
+    fun getAttractionsForCity(city: String): LiveData<List<Attraction_Data>>
+
+    @Query("SELECT * FROM attractions WHERE city = :city AND category = :category")
+    fun getAttractionsForCityAndCategory(city: String, category: String): LiveData<List<Attraction_Data>>
+
+    @Query("SELECT COUNT(*) FROM attractions WHERE title = :title AND city = :city AND address = :address")
+    suspend fun countAttraction(title: String, city: String, address: String): Int
 }

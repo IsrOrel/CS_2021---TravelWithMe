@@ -29,7 +29,7 @@ class AttractionDialog(private val context: Context) {
 
         titleTextView.text = attraction.title
         descriptionTextView.text = attraction.description
-        placeTextView.text = attraction.place
+        placeTextView.text = attraction.city
 
         dateButton.setOnClickListener {
             showDatePicker(dateTextView)

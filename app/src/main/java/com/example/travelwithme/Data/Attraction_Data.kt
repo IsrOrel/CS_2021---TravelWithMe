@@ -10,5 +10,8 @@ data class Attraction_Data(
     val image: Int,
     val title: String,
     val description: String,
-    val place: String
+    val city: String,
+    val category: String,
+    val address: String
 )
+

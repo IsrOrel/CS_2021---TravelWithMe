@@ -58,6 +58,7 @@ dependencies {
     implementation(libs.play.services.location)
     implementation(libs.firebase.crashlytics.buildtools)
     kapt(libs.androidx.room.compiler)
+    implementation("com.google.code.gson:gson:2.10.1")
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.room.compiler)
     implementation(libs.androidx.room.common)

@@ -1,6 +1,7 @@
 package com.example.travelwithme
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,6 +39,7 @@ class Sign_In : Fragment() {
             val password = binding.passwordEditText.text.toString()
 
             if (email.isNotEmpty() && password.isNotEmpty()) {
+                Log.d("SignIn", "Attempting sign-in with email: $email")
                 signIn(email, password)
                 findNavController().navigate(R.id.action_sign_In_to_my_Trips)
             } else {

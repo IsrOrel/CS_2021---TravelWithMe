@@ -1,5 +1,6 @@
 package com.example.travelwithme
 
+import SharedViewModel
 import android.Manifest
 import android.content.pm.PackageManager
 import android.location.Geocoder
@@ -15,6 +16,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.travelwithme.Data.TravelDatabase
@@ -38,6 +40,7 @@ class Add_flight : Fragment() {
     private lateinit var userDao: User_Dao
     private lateinit var usersession: UserSession
     private lateinit var db: TravelDatabase
+    private lateinit var sharedViewModel: SharedViewModel
 
     private val binding get() = _binding!!
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -54,16 +57,7 @@ class Add_flight : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        db = TravelDatabase.getInstance(requireContext())
-        userDao = db.userDao()
-        val citiesSpinner: Spinner = binding.citiesspinner
-        val adapter: ArrayAdapter<CharSequence> = ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.cities,
-            android.R.layout.simple_spinner_item
-        )
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        citiesSpinner.adapter = adapter
+        sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
 
         binding.doneBtn.setOnClickListener {
             val destination = binding.citiesspinner.selectedItem.toString()
@@ -75,14 +69,12 @@ class Add_flight : Fragment() {
 
             if (takeOffDate != null && landingDate != null) {
                 updateFlightDetails(takeOffDate, landingDate, destination)
+                sharedViewModel.setCityName(destination) // Pass the city name to ViewModel
             } else {
                 Toast.makeText(context, "Please select valid dates", Toast.LENGTH_SHORT).show()
             }
-            findNavController().navigate(R.id.action_add_flight_to_add_Hotel)
-        }
 
-        binding.return1.setOnClickListener {
-            findNavController().navigate(R.id.action_add_flight_to_my_Trips)
+            findNavController().navigate(R.id.action_add_flight_to_home_screen)  // Navigate to home screen
         }
 
         selectedDate = binding.selectedDate
@@ -197,7 +189,7 @@ class Add_flight : Fragment() {
 
         dateRangePicker.show(parentFragmentManager, "dateRangePicker")
     }
-    fun updateFlightDetails(takeOffDate: Date, landingDate: Date,destination: String) {
+    private fun updateFlightDetails(takeOffDate: Date, landingDate: Date, destination: String) {
         val currentUserEmail = UserSession.getCurrentUserEmail()
         if (currentUserEmail != null) {
             lifecycleScope.launch(Dispatchers.IO) {

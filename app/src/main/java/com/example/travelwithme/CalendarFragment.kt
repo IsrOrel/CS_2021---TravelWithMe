@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.travelwithme.Data.Attraction_Data
+import com.example.travelwithme.Data.Event
 import com.example.travelwithme.databinding.CalendarBinding
 import java.util.*
 
@@ -44,22 +46,33 @@ class CalendarFragment : Fragment() {
             showEventsForDate(selectedDate)
         }
 
-        // Get arguments and add event
+        // Get arguments
         val args: CalendarFragmentArgs by navArgs()
+
         val attractionTitle = args.attractionTitle
-        val eventDate = Date(args.eventDate)
+        val eventDate = args.eventDate
         val durationHours = args.durationHours
 
-        val attraction = Attraction_Data(
-            id = 0, // or appropriate id
-            image = R.drawable.icon_beach, // replace with appropriate image resource
-            title = attractionTitle,
-            description = "Description", // replace with actual description if available
-            place = "Place" // replace with actual place if available
-        )
+        if (attractionTitle != null && eventDate != null) {
+            val date = Date(eventDate)
 
-        if (events.none { it.attraction.title == attraction.title && it.date.isSameDay(eventDate) }) {
-            addEvent(attraction, eventDate, durationHours)
+            // Create an Attraction_Data object
+            val attraction = Attraction_Data(
+                id = 0,
+                title = attractionTitle,
+                description = "Description", // replace with actual description if available
+                city = "City",
+                address = "Address",
+                category = "Category", // Set to a default or fetched value
+                image = R.drawable.icon_all // Set a default image or handle as needed
+            )
+
+            // Add event if it doesn't already exist
+            if (events.none { it.attraction.title == attraction.title && it.date.isSameDay(date) }) {
+                addEvent(attraction, date, durationHours)
+            }
+        } else {
+            Toast.makeText(requireContext(), "Event data is missing", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -72,8 +85,7 @@ class CalendarFragment : Fragment() {
 
     private fun calculateTimeRange(startDate: Date, durationHours: Int): String {
         val formatter = SimpleDateFormat("HH:mm", Locale.getDefault())
-        val calendar = Calendar.getInstance()
-        calendar.time = startDate
+        val calendar = Calendar.getInstance().apply { time = startDate }
         val startTime = formatter.format(calendar.time)
         calendar.add(Calendar.HOUR_OF_DAY, durationHours)
         val endTime = formatter.format(calendar.time)
@@ -94,6 +106,11 @@ class CalendarFragment : Fragment() {
             val timeRange = calculateTimeRange(event.date, event.durationHours)
             eventView.findViewById<TextView>(R.id.eventTime).text = timeRange
 
+            // Set the image resource based on the category
+            val eventImageView = eventView.findViewById<ImageView>(R.id.eventImage)
+            val categoryIconResId = CategoryIcons.getIconForCategory(event.attraction.category)
+            eventImageView.setImageResource(categoryIconResId)
+
             binding.eventsContainer.addView(eventView)
         }
     }
@@ -112,4 +129,7 @@ class CalendarFragment : Fragment() {
     }
 }
 
-data class Event(val attraction: Attraction_Data, val date: Date, val durationHours: Int)
+
+
+
+

@@ -36,14 +36,16 @@ class Attraction_Adapter(private var attractions: List<Attraction_Data>) :
         private val titleTextView: TextView = itemView.findViewById(R.id.attractionstitle)
         private val placeTextView: TextView = itemView.findViewById(R.id.attractionsplace)
         private val descriptionTextView: TextView = itemView.findViewById(R.id.attractionsdesc)
+        private val addressTextView: TextView = itemView.findViewById(R.id.attractionsaddress)
 
         fun bind(attraction: Attraction_Data) {
             Log.d("AttractionViewHolder", "Binding item: ${attraction.title}")
 
             iconImageView.setImageResource(attraction.image)
             titleTextView.text = attraction.title
-            placeTextView.text = attraction.place
+            placeTextView.text = attraction.city
             descriptionTextView.text = attraction.description
+            addressTextView.text = attraction.address
 
             iconImageView.setOnClickListener {
                 Log.d("AttractionViewHolder", "Image clicked: ${attraction.title}")
@@ -52,5 +54,3 @@ class Attraction_Adapter(private var attractions: List<Attraction_Data>) :
         }
     }
 }
-
-

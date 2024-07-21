@@ -23,6 +23,7 @@ import java.time.temporal.ChronoUnit
 import android.content.Intent
 import android.net.Uri
 import android.app.AlertDialog
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import java.time.format.DateTimeFormatter
@@ -58,6 +59,7 @@ class Home_screen : Fragment() {
                 val destination = withContext(Dispatchers.IO) {
                     userDao.getDestination(currentUserEmail)
                 }
+                Log.d("Home_screen", "Fetched destination: $destination")
                 binding.TripCity.text = destination
                 binding.flightnext.text = destination
 
@@ -104,7 +106,7 @@ class Home_screen : Fragment() {
         }
 
         binding.Calendar.setOnClickListener {
-            findNavController().navigate(R.id.action_home_screen_to_calendar)
+            findNavController().navigate(R.id.action_home_screen_to_calendarFragment)
         }
         binding.checkListBtn.setOnClickListener {
             findNavController().navigate(R.id.action_home_screen_to_checkList)
@@ -145,7 +147,7 @@ class Home_screen : Fragment() {
             startActivity(intent)
         }
         binding.fabCalendar.setOnClickListener {
-            findNavController().navigate(R.id.action_home_screen_to_calendar)
+            findNavController().navigate(R.id.action_home_screen_to_calendarFragment)
         }
         binding.fabNotes.setOnClickListener {
             findNavController().navigate(R.id.action_home_screen_to_checkList)

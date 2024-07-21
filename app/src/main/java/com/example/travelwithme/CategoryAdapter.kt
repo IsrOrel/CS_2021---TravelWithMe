@@ -1,3 +1,4 @@
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,13 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.travelwithme.Category
 import com.example.travelwithme.R
 
-class CategoryAdapter(private val categories: List<Category>) :
+class CategoryAdapter(private var categories: List<Category>) :
     RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
-    class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val icon: ImageView = itemView.findViewById(R.id.categoryIcon)
-        val description: TextView = itemView.findViewById(R.id.categoryDescription)
-    }
+    var onCategoryClick: ((Category) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -23,9 +21,31 @@ class CategoryAdapter(private val categories: List<Category>) :
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
         val category = categories[position]
-        holder.icon.setImageResource(category.iconResId)
-        holder.description.text = category.description
+        holder.bind(category)
     }
 
-    override fun getItemCount() = categories.size
+
+    override fun getItemCount(): Int = categories.size
+
+    fun updateCategories(newCategories: List<Category>) {
+        Log.d("CategoryAdapter", "Updating categories: ${newCategories.size} items")
+        categories = newCategories
+        notifyDataSetChanged()
+    }
+
+
+    inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val iconImageView: ImageView = itemView.findViewById(R.id.categoryIcon)
+        private val descriptionTextView: TextView = itemView.findViewById(R.id.categoryDescription)
+
+        fun bind(category: Category) {
+            Log.d("CategoryAdapter", "Binding category: ${category.description} with icon ID: ${category.iconResId}")
+            iconImageView.setImageResource(category.iconResId)
+            descriptionTextView.text = category.description
+
+            itemView.setOnClickListener {
+                onCategoryClick?.invoke(category)
+            }
+        }
+    }
 }

@@ -9,7 +9,7 @@
         android:id="@+id/home_screen"
         android:name="com.example.travelwithme.Home_screen"
         android:label="home_screen"
-        tools:layout="@layout/home_screen" >
+        tools:layout="@layout/home_screen">
         <action
             android:id="@+id/action_home_screen_to_attractions"
             app:destination="@id/attractions"
@@ -19,21 +19,25 @@
             app:destination="@id/my_Trips"
             app:popUpTo="@id/my_Trips" />
         <action
-            android:id="@+id/action_home_screen_to_calendar"
-            app:destination="@id/calendarFragment" />
-        <action
             android:id="@+id/action_home_screen_to_add_Hotel"
             app:destination="@id/add_Hotel" />
         <action
             android:id="@+id/action_home_screen_to_checkList"
             app:destination="@id/checkList" />
+        <action
+            android:id="@+id/action_home_screen_to_calendarFragment"
+            app:destination="@id/calendarFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/attractions"
         android:name="com.example.travelwithme.Attractions"
         android:label="Attractions">
+        <argument
+            android:name="cityName"
+            app:argType="string" />
         <action
-            android:id="@+id/action_attractions_to_calendar"
+            android:id="@+id/actionAttractionsToCalendar"
             app:destination="@id/calendarFragment">
             <argument
                 android:name="attractionTitle"
@@ -41,31 +45,24 @@
             <argument
                 android:name="eventDate"
                 app:argType="long" />
+            <argument
+                android:name="durationHours"
+                app:argType="integer" />
+            <argument
+                android:name="category"
+                app:argType="string" />
         </action>
-    </fragment>
 
-    <fragment
-        android:id="@+id/calendarFragment"
-        android:name="com.example.travelwithme.CalendarFragment"
-        android:label="CalendarFragment">
-        <argument
-            android:name="attractionTitle"
-            app:argType="string" />
-        <argument
-            android:name="eventDate"
-            app:argType="long" />
-        <argument
-            android:name="durationHours"
-            app:argType="integer" />
         <action
-            android:id="@+id/action_calendarFragment_to_home_screen"
+            android:id="@+id/action_attractions_to_home_screen"
             app:destination="@id/home_screen" />
     </fragment>
+
     <fragment
         android:id="@+id/my_Trips"
         android:name="com.example.travelwithme.My_Trips"
         android:label="my__trips"
-        tools:layout="@layout/my__trips" >
+        tools:layout="@layout/my__trips">
         <action
             android:id="@+id/action_my_Trips_to_home_screen"
             app:destination="@id/home_screen"
@@ -74,11 +71,12 @@
             android:id="@+id/action_my_Trips_to_add_flight"
             app:destination="@id/add_flight" />
     </fragment>
+
     <fragment
         android:id="@+id/add_flight"
         android:name="com.example.travelwithme.Add_flight"
         android:label="add__flight"
-        tools:layout="@layout/add__flight" >
+        tools:layout="@layout/add__flight">
         <action
             android:id="@+id/action_add_flight_to_my_Trips"
             app:destination="@id/my_Trips"
@@ -87,12 +85,16 @@
             android:id="@+id/action_add_flight_to_add_Hotel"
             app:destination="@id/add_Hotel"
             app:popUpTo="@id/add_flight" />
+        <action
+            android:id="@+id/action_add_flight_to_home_screen"
+            app:destination="@id/home_screen" />
     </fragment>
+
     <fragment
         android:id="@+id/add_Hotel"
         android:name="com.example.travelwithme.My_hotels"
         android:label="add__hotel"
-        tools:layout="@layout/my_hotels" >
+        tools:layout="@layout/my_hotels">
         <action
             android:id="@+id/action_add_Hotel_to_add_flight"
             app:destination="@id/add_flight"
@@ -105,10 +107,11 @@
             android:id="@+id/action_add_Hotel_to_add_Edit_Hotel"
             app:destination="@id/add_Edit_Hotel" />
     </fragment>
+
     <fragment
         android:id="@+id/sign_In"
         android:name="com.example.travelwithme.Sign_In"
-        android:label="Sign_In" >
+        android:label="Sign_In">
         <action
             android:id="@+id/action_sign_In_to_sign_Up"
             app:destination="@id/sign_Up" />
@@ -116,10 +119,11 @@
             android:id="@+id/action_sign_In_to_my_Trips"
             app:destination="@id/my_Trips" />
     </fragment>
+
     <fragment
         android:id="@+id/sign_Up"
         android:name="com.example.travelwithme.Sign_Up"
-        android:label="Sign_Up" >
+        android:label="Sign_Up">
         <action
             android:id="@+id/action_sign_Up_to_my_Trips"
             app:destination="@id/my_Trips" />
@@ -127,20 +131,47 @@
             android:id="@+id/action_sign_Up_to_sign_In"
             app:destination="@id/sign_In" />
     </fragment>
+
     <fragment
         android:id="@+id/add_Edit_Hotel"
         android:name="com.example.travelwithme.Add_Edit_Hotel"
-        android:label="Add_Edit_Hotel" >
+        android:label="Add_Edit_Hotel">
         <action
             android:id="@+id/action_add_Edit_Hotel_to_home_screen"
             app:destination="@id/home_screen" />
     </fragment>
+
     <fragment
         android:id="@+id/checkList"
         android:name="com.example.travelwithme.CheckList"
-        android:label="CheckList" >
+        android:label="CheckList">
         <action
             android:id="@+id/action_checkList_to_home_screen"
+            app:destination="@id/home_screen" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.example.travelwithme.CalendarFragment"
+        android:label="calendar"
+        tools:layout="@layout/calendar">
+        <argument
+            android:name="attractionTitle"
+            app:argType="string" />
+        <argument
+            android:name="eventDate"
+            app:argType="long" />
+        <argument
+            android:name="durationHours"
+            app:argType="integer" />
+        <argument
+            android:name="category"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_calendarFragment_to_attractions"
+            app:destination="@id/attractions" />
+        <action
+            android:id="@+id/action_calendarFragment_to_home_screen"
             app:destination="@id/home_screen" />
     </fragment>
 
