@@ -2,10 +2,13 @@ package com.example.travelwithme
 
 import SharedViewModel
 import android.Manifest
+import android.content.ContentValues
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
+import android.net.Uri
 import android.os.Bundle
+import android.provider.CalendarContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +17,9 @@ import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -25,13 +30,17 @@ import com.example.travelwithme.Data.User_Dao
 import com.example.travelwithme.databinding.AddFlightBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 
 class Add_flight : Fragment() {
     private lateinit var selectedDate: TextView
@@ -45,6 +54,11 @@ class Add_flight : Fragment() {
     private val binding get() = _binding!!
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
+    // Define these properties
+    private var takeOffDate: Date? = null
+    private var landingDate: Date? = null
+    private var destination: String? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -52,6 +66,24 @@ class Add_flight : Fragment() {
     ): View {
         _binding = AddFlightBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    private val calendarPermissionRequest = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        permissions.entries.forEach {
+            val isGranted = it.value
+            if (!isGranted) {
+                Toast.makeText(context, "Calendar permissions are required to add events", Toast.LENGTH_SHORT).show()
+                return@registerForActivityResult
+            }
+        }
+        // Check if dates and destination are initialized
+        if (takeOffDate != null && landingDate != null && destination != null) {
+            addEventToCalendar(takeOffDate!!, landingDate!!, destination!!)
+        } else {
+            Toast.makeText(context, "Invalid flight details", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,16 +96,23 @@ class Add_flight : Fragment() {
         setupCitySpinner()
 
         binding.doneBtn.setOnClickListener {
-            val destination = binding.citiesspinner.selectedItem.toString()
+            destination = binding.citiesspinner.selectedItem.toString()
             val dateRange = binding.selectedDate.text.toString()
             val dates = dateRange.split(" - ")
             val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-            val takeOffDate = sdf.parse(dates[0])
-            val landingDate = sdf.parse(dates[1])
+            takeOffDate = sdf.parse(dates[0])
+            landingDate = sdf.parse(dates[1])
 
             if (takeOffDate != null && landingDate != null) {
-                updateFlightDetails(takeOffDate, landingDate, destination)
-                sharedViewModel.setCityName(destination) // Pass the city name to ViewModel
+                updateFlightDetails(takeOffDate!!, landingDate!!, destination!!)
+                sharedViewModel.setCityName(destination!!) // Pass the city name to ViewModel
+
+                // Check for calendar permissions
+                if (hasCalendarPermissions()) {
+                    addEventToCalendar(takeOffDate!!, landingDate!!, destination!!)
+                } else {
+                    requestCalendarPermissions()
+                }
             } else {
                 Toast.makeText(context, "Please select valid dates", Toast.LENGTH_SHORT).show()
             }
@@ -89,6 +128,19 @@ class Add_flight : Fragment() {
 
         // Check and request location permissions
         checkLocationPermissions()
+    }
+
+    private fun hasCalendarPermissions(): Boolean {
+        val readPermission = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_CALENDAR)
+        val writePermission = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_CALENDAR)
+        return readPermission == PackageManager.PERMISSION_GRANTED && writePermission == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestCalendarPermissions() {
+        calendarPermissionRequest.launch(arrayOf(
+            Manifest.permission.READ_CALENDAR,
+            Manifest.permission.WRITE_CALENDAR
+        ))
     }
 
     private fun setupCitySpinner() {
@@ -184,8 +236,19 @@ class Add_flight : Fragment() {
     }
 
     private fun datePickerDialog() {
+        // Get today's date in milliseconds
+        val today = MaterialDatePicker.todayInUtcMilliseconds()
+
+        // Create a calendar constraint to disable past dates
+        val calendarConstraints = CalendarConstraints.Builder()
+            .setValidator(DateValidatorPointForward.now())
+            .build()
+
+        // Build the date range picker
         val builder = MaterialDatePicker.Builder.dateRangePicker()
         builder.setTitleText("Select date range")
+        builder.setSelection(androidx.core.util.Pair(today, today))
+        builder.setCalendarConstraints(calendarConstraints)
 
         val dateRangePicker = builder.build()
         dateRangePicker.addOnPositiveButtonClickListener { selection ->
@@ -200,6 +263,7 @@ class Add_flight : Fragment() {
 
         dateRangePicker.show(parentFragmentManager, "dateRangePicker")
     }
+
     private fun updateFlightDetails(takeOffDate: Date, landingDate: Date, destination: String) {
         val currentUserEmail = UserSession.getCurrentUserEmail()
         if (currentUserEmail != null) {
@@ -214,12 +278,36 @@ class Add_flight : Fragment() {
             Toast.makeText(context, "No user logged in", Toast.LENGTH_SHORT).show()
         }
     }
+
+    private fun addEventToCalendar(takeOffDate: Date, landingDate: Date, destination: String) {
+        val calStart = Calendar.getInstance()
+        calStart.time = takeOffDate
+        val calEnd = Calendar.getInstance()
+        calEnd.time = landingDate
+
+        val values = ContentValues().apply {
+            put(CalendarContract.Events.DTSTART, calStart.timeInMillis)
+            put(CalendarContract.Events.DTEND, calEnd.timeInMillis)
+            put(CalendarContract.Events.TITLE, "Flight to $destination")
+            put(CalendarContract.Events.DESCRIPTION, "Take off: $takeOffDate, Landing: $landingDate")
+            put(CalendarContract.Events.CALENDAR_ID, 1)
+            put(CalendarContract.Events.EVENT_TIMEZONE, Calendar.getInstance().timeZone.id)
+        }
+
+        val uri: Uri? = context?.contentResolver?.insert(CalendarContract.Events.CONTENT_URI, values)
+        uri?.let {
+            Toast.makeText(context, "Event added to calendar", Toast.LENGTH_SHORT).show()
+        } ?: run {
+            Toast.makeText(context, "Failed to add event to calendar", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
     companion object {
-        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 100
     }
 }
