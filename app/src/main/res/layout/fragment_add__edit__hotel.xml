@@ -5,7 +5,8 @@
 xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
-android:layout_height="match_parent">
+android:layout_height="match_parent"
+    android:background="@color/superlight">
 
 <LinearLayout
     android:layout_width="match_parent"
@@ -53,7 +54,9 @@ android:layout_height="match_parent">
         android:layout_marginTop="24dp"
         android:fontFamily="@font/fredoka_medium"
         android:text="Save Hotel"
-        android:textSize="20dp" />
+        android:textSize="20dp"
+        android:backgroundTint="@color/sandyBrown"
+        android:textColor="@color/black"/>
 
 </LinearLayout>
 </ScrollView>

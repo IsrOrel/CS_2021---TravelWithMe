@@ -35,7 +35,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:fontFamily="@font/fredoka_medium"
-        android:textSize="20dp"/>
+        android:textSize="20dp"
+        android:backgroundTint="@color/sandyBrown"
+        android:textColor="@color/black"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

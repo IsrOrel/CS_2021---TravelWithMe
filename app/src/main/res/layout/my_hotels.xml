@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:background="@drawable/travel_back"
+    android:background="@drawable/backgroun_app"
     tools:context=".My_hotels">
 
     <TextView
@@ -19,7 +19,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:fontFamily="@font/fredoka_medium"/>
+        android:fontFamily="@font/fredoka_medium"
+        android:textColor="@color/verywhite"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/hotelsRecyclerView"
@@ -61,7 +62,8 @@
             android:text="Return"
             android:layout_marginEnd="8dp"
             android:fontFamily="@font/fredoka_medium"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:textColor="@color/black"/>
 
         <Button
             android:id="@+id/Skip"
@@ -71,7 +73,8 @@
             android:text="Skip"
             android:fontFamily="@font/fredoka_medium"
             android:layout_marginEnd="8dp"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:textColor="@color/black"/>
 
         <Button
             android:id="@+id/Done"
@@ -79,7 +82,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Done"
-            android:fontFamily="@font/fredoka_medium"/>
+            android:fontFamily="@font/fredoka_medium"
+            android:backgroundTint="@color/sandyBrown"/>
 
     </LinearLayout>
 
@@ -91,6 +95,7 @@
         android:contentDescription="Add Hotel"
         app:layout_constraintBottom_toTopOf="@id/buttonContainer"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp"/>
+        android:layout_margin="16dp"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,10 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/travel_back"
-    android:gravity="center"
+    android:background="@drawable/background_a"
     android:orientation="vertical"
     tools:context=".My_Trips">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Travel With Me"
+        android:gravity="center"
+        android:textSize="40dp"
+        android:fontFamily="@font/logo"
+        android:textColor="@color/sandyBrown"
+        android:layout_margin="60dp"/>
 
     <Button
         android:id="@+id/AddTrip"
@@ -16,6 +25,8 @@
         android:text="Add Trip"
         android:fontFamily="@font/fredoka_medium"
         android:layout_marginBottom="20dp"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/brightOrange"
         />
 
     <Button
@@ -24,7 +35,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="This trip"
-        android:fontFamily="@font/fredoka_medium"/>
+        android:fontFamily="@font/fredoka_medium"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/brightOrange"/>
 
 
 

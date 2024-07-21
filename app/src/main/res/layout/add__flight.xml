@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/blur_plane"
+    android:background="@drawable/back2"
     android:orientation="vertical"
     tools:context=".Add_flight">
 
@@ -74,7 +74,8 @@
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      android:fontFamily="@font/fredoka_medium"/>
+      android:fontFamily="@font/fredoka_medium"
+      android:backgroundTint="@color/sandyBrown"/>
 
   <TextView
       android:id="@+id/selectedDate"
@@ -102,6 +103,8 @@
       android:text="Done"
       style="@style/Widget.MaterialComponents.Button.Icon"
       android:fontFamily="@font/fredoka_medium"
+      android:backgroundTint="@color/sandyBrown"
+      android:textColor="@color/black"
       />
 
   <Button
@@ -112,7 +115,9 @@
       android:gravity="center"
       android:text="return"
       android:textAlignment="gravity"
-      android:fontFamily="@font/fredoka_medium"/>
+      android:fontFamily="@font/fredoka_medium"
+      android:backgroundTint="@color/sandyBrown"
+      />
 
  </LinearLayout>
 

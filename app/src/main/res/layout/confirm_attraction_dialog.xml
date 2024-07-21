@@ -55,7 +55,8 @@
             android:layout_height="wrap_content"
             android:text="Select Date"
             android:fontFamily="@font/fredoka_medium"
-            android:textSize="20dp"/>
+            android:textSize="20dp"
+            android:backgroundTint="@color/sandyBrown"/>
 
         <TextView
             android:id="@+id/tvSelectedDate"
@@ -84,7 +85,8 @@
             android:layout_height="wrap_content"
             android:text="Select Time"
             android:fontFamily="@font/fredoka_medium"
-            android:textSize="20dp"/>
+            android:textSize="20dp"
+            android:backgroundTint="@color/sandyBrown"/>
 
         <TextView
             android:id="@+id/tvSelectedTime"
@@ -109,7 +111,8 @@
             android:layout_weight="1"
             android:text="OK"
             android:fontFamily="@font/fredoka_medium"
-            android:textSize="20dp"/>
+            android:textSize="20dp"
+            android:backgroundTint="@color/sandyBrown"/>
 
         <Space
             android:layout_width="0dp"
@@ -123,7 +126,8 @@
             android:layout_weight="1"
             android:text="Cancel"
             android:fontFamily="@font/fredoka_medium"
-            android:textSize="20dp"/>
+            android:textSize="20dp"
+            android:backgroundTint="@color/sandyBrown"/>
         <Space
             android:layout_width="0dp"
             android:layout_height="match_parent"
