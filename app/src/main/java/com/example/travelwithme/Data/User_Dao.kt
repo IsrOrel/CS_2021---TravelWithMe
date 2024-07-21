@@ -139,6 +139,14 @@ interface User_Dao {
             updateChecklist(email, updatedChecklist)
         }
     }
+    @Transaction
+    fun deleteChecklistItem(email: String, itemToDelete: ChecklistItem) {
+        val user = getUserByEmail(email)
+        user?.let {
+            val updatedChecklist = it.checklist.filter { item -> item.id != itemToDelete.id }
+            updateChecklist(email, updatedChecklist)
+        }
+    }
 
 }
 
