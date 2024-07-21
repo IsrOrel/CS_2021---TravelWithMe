@@ -19,8 +19,7 @@ class DataSeeder(private val context: Context) {
             val attractions = listOf(
                 // London
                 Attraction_Data(
-                    id = 0,
-                    image = R.drawable.icon_beach,
+                    image = R.drawable.icon_park,
                     title = "Hyde Park",
                     description = "A large park in central London.",
                     city = "London",
@@ -28,7 +27,6 @@ class DataSeeder(private val context: Context) {
                     address = "Hyde Park, London"
                 ),
                 Attraction_Data(
-                    id = 0,
                     image = R.drawable.icon_museum,
                     title = "British Museum",
                     description = "A museum dedicated to human history.",
@@ -38,7 +36,6 @@ class DataSeeder(private val context: Context) {
                 ),
                 // Rome
                 Attraction_Data(
-                    id = 0,
                     image = R.drawable.icon_museum,
                     title = "Colosseum",
                     description = "An ancient amphitheater in Rome.",
@@ -47,7 +44,6 @@ class DataSeeder(private val context: Context) {
                     address = "Piazza del Colosseo, 1, 00184 Roma RM, Italy"
                 ),
                 Attraction_Data(
-                    id = 0,
                     image = R.drawable.icon_museum,
                     title = "Vatican Museums",
                     description = "A group of art and Christian museums situated within Vatican City.",
@@ -57,8 +53,7 @@ class DataSeeder(private val context: Context) {
                 ),
                 // Amsterdam
                 Attraction_Data(
-                    id = 0,
-                    image = R.drawable.icon_beach,
+                    image = R.drawable.icon_park,
                     title = "Vondelpark",
                     description = "A large public urban park in Amsterdam.",
                     city = "Amsterdam",
@@ -66,7 +61,6 @@ class DataSeeder(private val context: Context) {
                     address = "Vondelpark, Amsterdam"
                 ),
                 Attraction_Data(
-                    id = 0,
                     image = R.drawable.icon_museum,
                     title = "Rijksmuseum",
                     description = "A Dutch national museum dedicated to arts and history.",

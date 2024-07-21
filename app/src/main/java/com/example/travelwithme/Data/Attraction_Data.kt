@@ -5,9 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "attractions")
 data class Attraction_Data(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @PrimaryKey val title: String,
     val image: Int,
-    val title: String,
     val description: String,
     val city: String,
     val category: String,
@@ -19,7 +18,6 @@ data class Attraction_Data(
 
         other as Attraction_Data
 
-        if (id != other.id) return false
         if (title != other.title) return false
         if (city != other.city) return false
 
@@ -27,8 +25,7 @@ data class Attraction_Data(
     }
 
     override fun hashCode(): Int {
-        var result = id
-        result = 31 * result + title.hashCode()
+        var result = title.hashCode()
         result = 31 * result + city.hashCode()
         return result
     }

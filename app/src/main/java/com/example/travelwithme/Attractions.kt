@@ -9,6 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.travelwithme.Data.AttractionViewModel
@@ -16,12 +20,16 @@ import com.example.travelwithme.Data.Attraction_Data
 import com.example.travelwithme.databinding.AttractionsBinding
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.travelwithme.Data.TravelDatabase
+import com.example.travelwithme.Data.UserSession
+import com.example.travelwithme.Data.User_Dao
 import java.text.SimpleDateFormat
 import java.util.*
 
 class Attractions : Fragment() {
     private var _binding: AttractionsBinding? = null
     private val binding get() = _binding!!
+    private lateinit var userDao: User_Dao
     private lateinit var categoryAdapter: CategoryAdapter
     private lateinit var attractionAdapter: Attraction_Adapter
     private val attractionViewModel: AttractionViewModel by viewModels()
@@ -33,26 +41,16 @@ class Attractions : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = AttractionsBinding.inflate(inflater, container, false)
+        userDao = TravelDatabase.getInstance(requireContext()).userDao()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Get the chosen city from arguments
-        cityName = arguments?.getString("cityName") ?:  "London"
-        Log.d("AttractionsFragment", "City selected: $cityName")
-
-
         // Initialize RecyclerViews
         setupCategoryRecyclerView()
         setupAttractionRecyclerView()
-
-        // Load categories for the chosen city
-        loadCategoriesForCity(cityName)
-
-        // Load all attractions for the chosen city
-        loadAllAttractionsForCity(cityName)
 
         // Set up category click listener
         categoryAdapter.onCategoryClick = { category ->
@@ -71,16 +69,40 @@ class Attractions : Fragment() {
         binding.goBackButton.setOnClickListener {
             findNavController().navigate(R.id.action_attractions_to_home_screen)
         }
+
+        // Load city name asynchronously
+        val currentUserEmail = UserSession.getCurrentUserEmail()
+        cityName = arguments?.getString("cityName") ?: "London"
+        if (currentUserEmail != null) {
+            lifecycleScope.launch(Dispatchers.IO) {
+                // Fetch destination from the database
+                val destination = userDao.getDestination(currentUserEmail)
+
+                // Switch to Main Thread to update UI
+                withContext(Dispatchers.Main) {
+                    cityName = destination ?: cityName
+                    Log.d("AttractionsFragment", "City from user: $cityName")
+
+                    // Reload categories and attractions with the updated city name
+                    loadCategoriesForDestination(cityName)
+                    loadAllAttractionsForCity(cityName)
+                }
+            }
+        } else {
+            Log.d("AttractionsFragment", "City selected: $cityName")
+            // Load categories and attractions
+            loadCategoriesForDestination(cityName)
+            loadAllAttractionsForCity(cityName)
+        }
     }
 
-
     private fun loadAllAttractionsForCity(city: String) {
-        attractionViewModel.getAllAttractionsForCity(city).observe(viewLifecycleOwner) { attractions ->
+        attractionViewModel.getAttractionsForCity(city).observe(viewLifecycleOwner) { attractions ->
             Log.d("Attractions", "Loaded ${attractions.size} attractions for $city")
-            val uniqueAttractions = attractions.distinctBy { it.id }
+            val uniqueAttractions = attractions.distinctBy { it.title }
             Log.d("Attractions", "Unique attractions: ${uniqueAttractions.size}")
             uniqueAttractions.forEach { attraction ->
-                Log.d("Attractions", "Attraction: ${attraction.title}, ID: ${attraction.id}")
+                Log.d("Attractions", "Attraction: ${attraction.title}, ID: ${attraction.title}")
             }
             attractionAdapter.updateAttractions(uniqueAttractions)
         }
@@ -98,18 +120,18 @@ class Attractions : Fragment() {
         binding.attractionsRecyclerView.adapter = attractionAdapter
     }
 
-    private fun loadCategoriesForCity(city: String) {
-        // This should ideally come from a database or API
+    private fun loadCategoriesForDestination(city: String) {
         val categories = when (city) {
             "London", "Rome", "Amsterdam" -> listOf(
-                Category(R.drawable.icon_all, "All"),
-                Category(R.drawable.icon_restaurant, "Restaurants"),
-                Category(R.drawable.icon_park, "Parks"),
-                Category(R.drawable.icon_museum, "Museums"),
-                Category(R.drawable.icon_shopping, "Shopping"),
-                Category(R.drawable.icon_nightlife, "Night Life")
+                Category(CategoryIcons.getIconForCategory("All"), "All"),
+                Category(CategoryIcons.getIconForCategory("Restaurant"), "Restaurant"),
+                Category(CategoryIcons.getIconForCategory("Park"), "Park"),
+                Category(CategoryIcons.getIconForCategory("Museum"), "Museum"),
+                Category(CategoryIcons.getIconForCategory("Shopping"), "Shopping"),
+                Category(CategoryIcons.getIconForCategory("Night Life"), "Night Life"),
+                Category(CategoryIcons.getIconForCategory("Beach"), "Beach")
             )
-            else -> listOf(Category(R.drawable.icon_all, "All"))
+            else -> listOf(Category(CategoryIcons.getIconForCategory("All"), "All"))
         }
 
         categoryAdapter.updateCategories(categories)

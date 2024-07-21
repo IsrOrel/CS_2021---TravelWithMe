@@ -6,22 +6,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.Date
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-
 
 class AttractionViewModel(application: Application) : AndroidViewModel(application) {
     private val database: TravelDatabase by lazy {
         TravelDatabase.getInstance(application.applicationContext)
     }
     private val attractionDao = database.attractionDao()
-    private val userDao = database.userDao() // Initialize userDao here
+    private val userDao = database.userDao()
 
-    // Existing Attraction methods
-    fun getAllAttractionsForCity(city: String): LiveData<List<Attraction_Data>> {
+    fun getAttractionsForCity(city: String): LiveData<List<Attraction_Data>> {
         return attractionDao.getAttractionsForCity(city)
+    }
+
+    fun getAttractionsForDestination(destination: String): LiveData<List<Attraction_Data>> {
+        return attractionDao.getAttractionsForDestination(destination)
     }
 
     fun getAttractionsForCityAndCategory(city: String, category: String): LiveData<List<Attraction_Data>> {
@@ -36,7 +34,16 @@ class AttractionViewModel(application: Application) : AndroidViewModel(applicati
 
     fun insertAttractions(attractions: List<Attraction_Data>) {
         viewModelScope.launch(Dispatchers.IO) {
-            attractionDao.insertAttractions(attractions)
+            // First, get existing attractions from the database
+            val existingAttractions = attractionDao.getAllAttractions()
+            val uniqueAttractions = attractions.distinctBy { it.title + it.city }
+
+            // Check for duplicates and only insert unique attractions
+            val toInsert = uniqueAttractions.filter { newAttraction ->
+                existingAttractions.none { it.title == newAttraction.title && it.city == newAttraction.city }
+            }
+
+            attractionDao.insertAttractions(toInsert)
         }
     }
 
@@ -45,7 +52,8 @@ class AttractionViewModel(application: Application) : AndroidViewModel(applicati
             attractionDao.updateAttraction(attraction)
         }
     }
-    fun updateAttractions(attractions: List<Attraction_Data>){
+
+    fun updateAttractions(attractions: List<Attraction_Data>) {
         viewModelScope.launch(Dispatchers.IO) {
             attractionDao.updateAttractions(attractions)
         }
@@ -62,8 +70,31 @@ class AttractionViewModel(application: Application) : AndroidViewModel(applicati
             userDao.addAttraction(userEmail, attraction)
         }
     }
+    fun getAllAttractionsForCity(destination: String): LiveData<List<Attraction_Data>> {
+        return attractionDao.getAttractionsForCity(destination)
+    }
 
     suspend fun getAttractionByTitle(title: String): Attraction_Data? {
         return attractionDao.getAttractionByTitle(title)
+    }
+
+    fun removeDuplicateAttractions() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val allAttractions = attractionDao.getAllAttractions()
+            val uniqueAttractions = allAttractions.distinctBy { it.title + it.city }
+
+            // Clear the database and re-insert unique attractions
+            attractionDao.clearAllAttractions()
+            attractionDao.insertAttractions(uniqueAttractions)
+        }
+    }
+    fun clearAndInsertAttractions(attractions: List<Attraction_Data>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            // Clear existing data
+            attractionDao.clearAllAttractions()
+            // Insert deduplicated data
+            val uniqueAttractions = attractions.distinctBy { it.title + it.city }
+            attractionDao.insertAttractions(uniqueAttractions)
+        }
     }
 }

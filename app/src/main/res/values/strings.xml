@@ -6,9 +6,9 @@
     <string name="event_image_description" />
 
     <string-array name="cities">
-        <item>London, UK</item>
-        <item>Amsterdam, Netherlands</item>
-        <item>Rome, Italy</item>
+        <item>London</item>
+        <item>Amsterdam</item>
+        <item>Rome</item>
     </string-array>
 
     <string-array name="facts_london">

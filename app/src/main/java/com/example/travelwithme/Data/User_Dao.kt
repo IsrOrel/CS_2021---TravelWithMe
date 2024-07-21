@@ -152,7 +152,5 @@ interface User_Dao {
         }
     }
 
-
-
 }
 
