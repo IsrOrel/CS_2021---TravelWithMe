@@ -108,6 +108,7 @@ class Home_screen : Fragment() {
         binding.Calendar.setOnClickListener {
             findNavController().navigate(R.id.action_home_screen_to_calendarFragment)
         }
+
         binding.checkListBtn.setOnClickListener {
             findNavController().navigate(R.id.action_home_screen_to_checkList)
         }

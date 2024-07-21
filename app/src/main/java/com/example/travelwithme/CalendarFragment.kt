@@ -10,7 +10,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.example.travelwithme.Data.Attraction_Data
 import com.example.travelwithme.Data.Event
 import com.example.travelwithme.databinding.CalendarBinding
@@ -45,42 +44,18 @@ class CalendarFragment : Fragment() {
             }.time
             showEventsForDate(selectedDate)
         }
-
-        // Get arguments
-        val args: CalendarFragmentArgs by navArgs()
-
-        val attractionTitle = args.attractionTitle
-        val eventDate = args.eventDate
-        val durationHours = args.durationHours
-
-        if (attractionTitle != null && eventDate != null) {
-            val date = Date(eventDate)
-
-            // Create an Attraction_Data object
-            val attraction = Attraction_Data(
-                id = 0,
-                title = attractionTitle,
-                description = "Description", // replace with actual description if available
-                city = "City",
-                address = "Address",
-                category = "Category", // Set to a default or fetched value
-                image = R.drawable.icon_all // Set a default image or handle as needed
-            )
-
-            // Add event if it doesn't already exist
-            if (events.none { it.attraction.title == attraction.title && it.date.isSameDay(date) }) {
-                addEvent(attraction, date, durationHours)
-            }
-        } else {
-            Toast.makeText(requireContext(), "Event data is missing", Toast.LENGTH_SHORT).show()
-        }
     }
 
-    private fun addEvent(attraction: Attraction_Data, date: Date, durationHours: Int) {
-        events.add(Event(attraction, date, durationHours))
-        showEventsForDate(date)
-        val timeRange = calculateTimeRange(date, durationHours)
-        Toast.makeText(requireContext(), "Event Added: ${attraction.title} on ${SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(date)} $timeRange", Toast.LENGTH_SHORT).show()
+    // Method to add event
+    fun addEvent(attraction: Attraction_Data, date: Date, durationHours: Int) {
+        if (events.none { it.attraction.title == attraction.title && it.date.isSameDay(date) }) {
+            events.add(Event(attraction, date, durationHours))
+            showEventsForDate(date)
+            val timeRange = calculateTimeRange(date, durationHours)
+            Toast.makeText(requireContext(), "Event Added: ${attraction.title} on ${SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(date)} $timeRange", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(requireContext(), "Event already exists on this date", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun calculateTimeRange(startDate: Date, durationHours: Int): String {
@@ -128,8 +103,3 @@ class CalendarFragment : Fragment() {
         _binding = null
     }
 }
-
-
-
-
-
