@@ -40,7 +40,7 @@ class Attractions : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Get the chosen city from arguments
-        cityName = arguments?.getString("cityName") ?: "Default City"
+        cityName = arguments?.getString("cityName") ?:  "London"
         Log.d("AttractionsFragment", "City selected: $cityName")
 
 
@@ -76,7 +76,13 @@ class Attractions : Fragment() {
 
     private fun loadAllAttractionsForCity(city: String) {
         attractionViewModel.getAllAttractionsForCity(city).observe(viewLifecycleOwner) { attractions ->
-            attractionAdapter.updateAttractions(attractions)
+            Log.d("Attractions", "Loaded ${attractions.size} attractions for $city")
+            val uniqueAttractions = attractions.distinctBy { it.id }
+            Log.d("Attractions", "Unique attractions: ${uniqueAttractions.size}")
+            uniqueAttractions.forEach { attraction ->
+                Log.d("Attractions", "Attraction: ${attraction.title}, ID: ${attraction.id}")
+            }
+            attractionAdapter.updateAttractions(uniqueAttractions)
         }
     }
 

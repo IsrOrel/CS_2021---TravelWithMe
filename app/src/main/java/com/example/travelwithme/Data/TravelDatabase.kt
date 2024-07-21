@@ -10,8 +10,8 @@ import androidx.room.TypeConverters
 @Database(entities = [User_Data::class, Attraction_Data::class], version = 5, exportSchema = false)
 @TypeConverters(User_Data_Convertors::class)
 abstract class TravelDatabase : RoomDatabase() {
-    abstract fun userDao(): User_Dao
     abstract fun attractionDao(): AttractionDao
+    abstract fun userDao() : User_Dao
 
     companion object {
         @Volatile

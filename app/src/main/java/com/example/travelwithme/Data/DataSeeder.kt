@@ -88,6 +88,12 @@ class DataSeeder(private val context: Context) {
                     attractionsDao.insertAttraction(attraction)
                 }
             }
+            for (attraction in attractions) {
+                val existingAttraction = attractionsDao.getAttractionByTitleAndCity(attraction.title, attraction.city)
+                if (existingAttraction == null) {
+                    attractionsDao.insertAttraction(attraction)
+                }
+            }
 
             // Log the counts after inserting data
             // This code is only for demonstration. In a real app, you would observe LiveData in a lifecycle-aware component.

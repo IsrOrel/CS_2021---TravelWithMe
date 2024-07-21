@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.Date
 
 class AttractionViewModel(application: Application) : AndroidViewModel(application) {
     private val database: TravelDatabase by lazy {
@@ -13,6 +14,7 @@ class AttractionViewModel(application: Application) : AndroidViewModel(applicati
     }
     private val attractionDao = database.attractionDao()
 
+    // Existing Attraction methods
     fun getAllAttractionsForCity(city: String): LiveData<List<Attraction_Data>> {
         return attractionDao.getAttractionsForCity(city)
     }
@@ -43,5 +45,9 @@ class AttractionViewModel(application: Application) : AndroidViewModel(applicati
         viewModelScope.launch(Dispatchers.IO) {
             attractionDao.deleteAttraction(attraction)
         }
+    }
+
+    suspend fun getAttractionByTitle(title: String): Attraction_Data? {
+        return attractionDao.getAttractionByTitle(title)
     }
 }

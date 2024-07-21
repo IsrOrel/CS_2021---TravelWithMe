@@ -29,4 +29,10 @@ interface AttractionDao {
 
     @Query("SELECT COUNT(*) FROM attractions WHERE title = :title AND city = :city AND address = :address")
     suspend fun countAttraction(title: String, city: String, address: String): Int
+
+    @Query("SELECT * FROM attractions WHERE title = :title AND city = :city LIMIT 1")
+    suspend fun getAttractionByTitleAndCity(title: String, city: String): Attraction_Data?
+
+    @Query("SELECT * FROM attractions WHERE title = :title LIMIT 1")
+    suspend fun getAttractionByTitle(title: String): Attraction_Data?
 }

@@ -27,7 +27,7 @@ class Attraction_Adapter(private var attractions: List<Attraction_Data>) :
     override fun getItemCount(): Int = attractions.size
 
     fun updateAttractions(newAttractions: List<Attraction_Data>) {
-        attractions = newAttractions
+        attractions = newAttractions.distinctBy { it.id }
         notifyDataSetChanged()
     }
 
