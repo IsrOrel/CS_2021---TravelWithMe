@@ -18,16 +18,24 @@ class User_Data_Convertors {
     fun fromSelectedAttractionList(value: String): List<SelectedAttraction> {
         if (value.isEmpty()) return emptyList()
         return value.split(";").map {
-            val (title, plannedDate, plannedTime) = it.split(",")
-            SelectedAttraction(title, Date(plannedDate.toLong()), plannedTime)
+            val parts = it.split(",")
+            // Ensure you have enough parts before accessing them
+            if (parts.size == 4) {
+                val (title, plannedDate, plannedTime, category) = parts
+                SelectedAttraction(title, Date(plannedDate.toLong()), plannedTime, category)
+            } else {
+                // Handle cases where the string is not in the expected format
+                SelectedAttraction("", Date(0), "", "") // Or throw an exception
+            }
         }
     }
 
     @TypeConverter
     fun toSelectedAttractionList(list: List<SelectedAttraction>): String {
-        return list.joinToString(";") { "${it.title},${it.plannedDate.time},${it.plannedTime}" }
+        return list.joinToString(";") {
+            "${it.title},${it.plannedDate.time},${it.plannedTime},${it.category}"
+        }
     }
-
     // New methods for Hotels conversion
     @TypeConverter
     fun fromHotelsList(value: String): List<Hotels> {

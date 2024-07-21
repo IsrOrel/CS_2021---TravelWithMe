@@ -30,6 +30,7 @@ interface User_Dao {
 
     // Add a new attraction to the list
     @Transaction
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addAttraction(email: String, newAttraction: SelectedAttraction) {
         val user = getUserByEmail(email)
         user?.let {

@@ -7,12 +7,17 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Date
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+
 
 class AttractionViewModel(application: Application) : AndroidViewModel(application) {
     private val database: TravelDatabase by lazy {
         TravelDatabase.getInstance(application.applicationContext)
     }
     private val attractionDao = database.attractionDao()
+    private val userDao = database.userDao() // Initialize userDao here
 
     // Existing Attraction methods
     fun getAllAttractionsForCity(city: String): LiveData<List<Attraction_Data>> {
@@ -40,10 +45,21 @@ class AttractionViewModel(application: Application) : AndroidViewModel(applicati
             attractionDao.updateAttraction(attraction)
         }
     }
+    fun updateAttractions(attractions: List<Attraction_Data>){
+        viewModelScope.launch(Dispatchers.IO) {
+            attractionDao.updateAttractions(attractions)
+        }
+    }
 
     fun deleteAttraction(attraction: Attraction_Data) {
         viewModelScope.launch(Dispatchers.IO) {
             attractionDao.deleteAttraction(attraction)
+        }
+    }
+
+    fun addAttractionToCalendar(userEmail: String, attraction: SelectedAttraction) {
+        viewModelScope.launch(Dispatchers.IO) {
+            userDao.addAttraction(userEmail, attraction)
         }
     }
 

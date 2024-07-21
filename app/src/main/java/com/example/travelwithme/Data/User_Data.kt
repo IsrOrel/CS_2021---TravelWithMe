@@ -52,5 +52,6 @@ data class ChecklistItem(
 data class SelectedAttraction(
     val title: String,
     val plannedDate: Date,
-    val plannedTime: String
+    val plannedTime: String,
+    val category: String
 )
