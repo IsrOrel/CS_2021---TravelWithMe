@@ -45,7 +45,6 @@ class Add_flight : Fragment() {
     private val binding get() = _binding!!
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -58,6 +57,9 @@ class Add_flight : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+
+        // Initialize Spinner with city data
+        setupCitySpinner()
 
         binding.doneBtn.setOnClickListener {
             val destination = binding.citiesspinner.selectedItem.toString()
@@ -85,6 +87,13 @@ class Add_flight : Fragment() {
 
         // Check and request location permissions
         checkLocationPermissions()
+    }
+
+    private fun setupCitySpinner() {
+        val citiesArray = resources.getStringArray(R.array.cities)
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, citiesArray)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.citiesspinner.adapter = adapter
     }
 
     override fun onResume() {
