@@ -26,7 +26,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Welcome "
+                    android:text="@string/welcome"
                     android:textSize="24dp"
                     android:gravity="center"
                     android:textColor="@color/white"
@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/fredoka_medium"
                     android:gravity="center"
-                    android:text=" My Trip To:  "
+                    android:text="@string/my_trip_to"
                     android:textColor="@color/verywhite"
                     android:textSize="38dp" />
 
@@ -178,7 +178,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
-                    android:text="your next flight to:"
+                    android:text="@string/your_next_flight_to"
                     android:textSize="20dp"
                     android:fontFamily="@font/fredoka_medium"
                     android:textColor="@color/verywhite"/>
@@ -237,7 +237,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
-                    android:text="your next event:"
+                    android:text="@string/your_next_event"
                     android:textSize="20dp"
                     android:fontFamily="@font/fredoka_medium"
                     android:textColor="@color/verywhite"/>
@@ -283,7 +283,7 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/brightOrange"
                         android:gravity="center"
-                        android:text="Fun facts about the city:"
+                        android:text="@string/fun_facts_about_the_city"
                         android:textSize="20dp"
                         android:fontFamily="@font/fredoka_medium"/>
 

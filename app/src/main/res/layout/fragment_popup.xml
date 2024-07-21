@@ -32,7 +32,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         style="@style/Widget.MaterialComponents.Button"
-        android:text="Confirm"
-        android:fontFamily="@font/fredoka_medium"/>
+        android:text="@string/confirm"
+        android:fontFamily="@font/fredoka_medium"
+        android:backgroundTint="@color/sandyBrown"/>
 
 </LinearLayout>

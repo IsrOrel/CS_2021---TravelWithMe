@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:fontFamily="@font/fredoka_medium"
-        android:text="When do you like to visit:"
+        android:text="@string/when_do_you_like_to_visit"
         android:textSize="20dp"
         android:textStyle="bold" />
 
@@ -44,7 +44,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Date: "
+            android:text="@string/date"
             android:layout_marginEnd="8dp"
             android:fontFamily="@font/fredoka_medium"
             android:textSize="20dp"/>
@@ -53,7 +53,7 @@
             android:id="@+id/btnSelectDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Select Date"
+            android:text="@string/select_date"
             android:fontFamily="@font/fredoka_medium"
             android:textSize="20dp"
             android:backgroundTint="@color/sandyBrown"/>
@@ -76,14 +76,14 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:fontFamily="@font/fredoka_medium"
-            android:text="Time: "
+            android:text="@string/time"
             android:textSize="20dp"/>
 
         <Button
             android:id="@+id/btnSelectTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Select Time"
+            android:text="@string/select_time"
             android:fontFamily="@font/fredoka_medium"
             android:textSize="20dp"
             android:backgroundTint="@color/sandyBrown"/>
@@ -109,7 +109,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="OK"
+            android:text="@string/ok"
             android:fontFamily="@font/fredoka_medium"
             android:textSize="20dp"
             android:backgroundTint="@color/sandyBrown"/>
@@ -124,7 +124,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Cancel"
+            android:text="@string/cancel"
             android:fontFamily="@font/fredoka_medium"
             android:textSize="20dp"
             android:backgroundTint="@color/sandyBrown"/>

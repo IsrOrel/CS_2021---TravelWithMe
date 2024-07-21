@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Travel With Me</string>
+    <string name="welcome">ברוך הבא</string>
+    <string name="my_trip_to">הטיול שלי:</string>
+    <string name="your_next_flight_to">הטיסה הבאה:</string>
+    <string name="fun_facts_about_the_city">עובדות מעניינות על העיר:</string>
+    <string name="your_next_event">האירוע הבא:</string>
+    <string name="don_t_have_an_account_sign_up">אין לך משתמש? הירשם כאן</string>
+    <string name="sign_in">התחבר</string>
+    <string name="name">שם</string>
+    <string name="email">איימל</string>
+    <string name="password">סיסמא</string>
+    <string name="already_have_an_account_sign_in">יש לך כבר משתמש? התחבר כאן</string>
+    <string name="when_do_you_like_to_visit">מתי תרצה לבקר?</string>
+    <string name="date">תאריך:</string>
+    <string name="select_date">בחירת תאריך</string>
+    <string name="time">שעה:</string>
+    <string name="select_time">בחירת שעה</string>
+    <string name="ok">אישור</string>
+    <string name="cancel">ביטול</string>
+    <string name="hotel_name">שם המלון</string>
+    <string name="hotel_address">כתובת המלון</string>
+    <string name="check_in_date">"צ'ק אין "</string>
+    <string name="check_out_date">צ\'ק אוט</string>
+    <string name="save_hotel">שמירה</string>
+    <string name="check_in_your_flight">רשום את הטיסה שלך</string>
+    <string name="from">המראה מ:</string>
+    <string name="to">נחיתה ב:</string>
+    <string name="choose_dates">בחירת תאריכים</string>
+    <string name="selected_date_range">בחירת טווח תאירכים</string>
+    <string name="done">אישור</string>
+    <string name="back">חזור</string>
+    <string name="add_item">הוספת פריט</string>
+    <string name="trip_checklist">רשימת ציוד</string>
+    <string name="flight_to">עיר:</string>
+    <string name="departure_date">תאריך המראה:</string>
+    <string name="return_date">תאריך חזרה:</string>
+    <string name="close">סגירה</string>
+    <string name="confirm">אישור</string>
+    <string name="this_trip">הטיול הנוכחי</string>
+    <string name="add_trip">טיול חדש</string>
+    <string name="skip">דלג</string>
+    <string name="my_hotels">המלונות שלי</string>
+    <string name="delete_item">מחיקת פריט</string>
+</resources>

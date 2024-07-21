@@ -18,7 +18,7 @@ android:layout_height="match_parent"
         android:id="@+id/hotelNameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Hotel Name"
+        android:hint="@string/hotel_name"
         android:fontFamily="@font/fredoka_medium"/>
 
 
@@ -26,23 +26,23 @@ android:layout_height="match_parent"
         android:id="@+id/hotelAddressEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Hotel Address"
+        android:hint="@string/hotel_address"
         android:fontFamily="@font/fredoka_medium"/>
 
     <TextView
         android:id="@+id/checkInDateTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Check-in Date"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/fredoka_medium"
-        android:textSize="20dp"/>
+        android:text="@string/check_in_date"
+        android:textSize="20dp" />
 
     <TextView
         android:id="@+id/checkOutDateTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Check-out Date"
+        android:text="@string/check_out_date"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/fredoka_medium"
         android:textSize="20dp"/>
@@ -53,7 +53,7 @@ android:layout_height="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:fontFamily="@font/fredoka_medium"
-        android:text="Save Hotel"
+        android:text="@string/save_hotel"
         android:textSize="20dp"
         android:backgroundTint="@color/sandyBrown"
         android:textColor="@color/black"/>
