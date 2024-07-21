@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1059143479340",
+    "project_id": "travel-with-me-14ce4",
+    "storage_bucket": "travel-with-me-14ce4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1059143479340:android:9ef79584b75fedd3236189",
+        "android_client_info": {
+          "package_name": "com.example.travelwithme"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJgjdEOvMIHxVNdeUe8zcwTf2wpqCD_qY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
