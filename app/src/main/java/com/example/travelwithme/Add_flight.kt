@@ -57,6 +57,8 @@ class Add_flight : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+        db = TravelDatabase.getInstance(requireContext())
+        userDao = db.userDao()
 
         // Initialize Spinner with city data
         setupCitySpinner()
