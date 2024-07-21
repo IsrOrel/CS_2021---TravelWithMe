@@ -94,6 +94,9 @@ class Add_flight : Fragment() {
 
         // Initialize Spinner with city data
         setupCitySpinner()
+        binding.return1.setOnClickListener{
+            findNavController().navigate(R.id.action_add_flight_to_sign_In)
+        }
 
         binding.doneBtn.setOnClickListener {
             destination = binding.citiesspinner.selectedItem.toString()
@@ -117,7 +120,7 @@ class Add_flight : Fragment() {
                 Toast.makeText(context, "Please select valid dates", Toast.LENGTH_SHORT).show()
             }
 
-            findNavController().navigate(R.id.action_add_flight_to_home_screen)  // Navigate to home screen
+            findNavController().navigate(R.id.action_add_flight_to_add_Hotel)
         }
 
         selectedDate = binding.selectedDate
