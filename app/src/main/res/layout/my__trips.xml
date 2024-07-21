@@ -13,14 +13,19 @@
         style="@style/Widget.MaterialComponents.Button.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Trip" />
+        android:text="Add Trip"
+        android:fontFamily="@font/fredoka_medium"
+        android:layout_marginBottom="20dp"
+        />
 
     <Button
         android:id="@+id/ThisTrip"
         style="@style/Widget.MaterialComponents.Button.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="This trip" />
+        android:text="This trip"
+        android:fontFamily="@font/fredoka_medium"/>
+
 
 
 </LinearLayout>

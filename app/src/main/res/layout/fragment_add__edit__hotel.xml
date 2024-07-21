@@ -17,34 +17,43 @@ android:layout_height="match_parent">
         android:id="@+id/hotelNameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Hotel Name"/>
+        android:hint="Hotel Name"
+        android:fontFamily="@font/fredoka_medium"/>
+
 
     <EditText
         android:id="@+id/hotelAddressEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Hotel Address"/>
+        android:hint="Hotel Address"
+        android:fontFamily="@font/fredoka_medium"/>
 
     <TextView
         android:id="@+id/checkInDateTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Check-in Date"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/fredoka_medium"
+        android:textSize="20dp"/>
 
     <TextView
         android:id="@+id/checkOutDateTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Check-out Date"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/fredoka_medium"
+        android:textSize="20dp"/>
 
     <Button
         android:id="@+id/saveHotelButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/fredoka_medium"
         android:text="Save Hotel"
-        android:layout_marginTop="24dp"/>
+        android:textSize="20dp" />
 
 </LinearLayout>
 </ScrollView>

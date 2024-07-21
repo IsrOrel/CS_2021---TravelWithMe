@@ -18,7 +18,8 @@
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:fontFamily="@font/fredoka_medium"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/hotelsRecyclerView"
@@ -39,7 +40,8 @@
         app:layout_constraintTop_toTopOf="@id/hotelsRecyclerView"
         app:layout_constraintBottom_toBottomOf="@id/hotelsRecyclerView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:fontFamily="@font/fredoka_medium"/>
 
     <LinearLayout
         android:id="@+id/buttonContainer"
@@ -58,6 +60,7 @@
             android:layout_weight="1"
             android:text="Return"
             android:layout_marginEnd="8dp"
+            android:fontFamily="@font/fredoka_medium"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
 
         <Button
@@ -66,6 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Skip"
+            android:fontFamily="@font/fredoka_medium"
             android:layout_marginEnd="8dp"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
 
@@ -74,7 +78,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Done"/>
+            android:text="Done"
+            android:fontFamily="@font/fredoka_medium"/>
 
     </LinearLayout>
 

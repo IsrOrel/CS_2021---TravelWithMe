@@ -5,13 +5,15 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/fredoka_medium"
         android:text="When do you like to visit:"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp"/>
+        android:textSize="20dp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/dialogTitle"
@@ -43,13 +45,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Date: "
-            android:layout_marginEnd="8dp"/>
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/fredoka_medium"
+            android:textSize="20dp"/>
 
         <Button
             android:id="@+id/btnSelectDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Select Date" />
+            android:text="Select Date"
+            android:fontFamily="@font/fredoka_medium"
+            android:textSize="20dp"/>
 
         <TextView
             android:id="@+id/tvSelectedDate"
@@ -67,14 +73,18 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/fredoka_medium"
             android:text="Time: "
-            android:layout_marginEnd="8dp"/>
+            android:textSize="20dp"/>
 
         <Button
             android:id="@+id/btnSelectTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Select Time" />
+            android:text="Select Time"
+            android:fontFamily="@font/fredoka_medium"
+            android:textSize="20dp"/>
 
         <TextView
             android:id="@+id/tvSelectedTime"
@@ -87,19 +97,36 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"/>
 
         <Button
             android:id="@+id/btnConfirm"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="OK" />
+            android:text="OK"
+            android:fontFamily="@font/fredoka_medium"
+            android:textSize="20dp"/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"/>
 
         <Button
             android:id="@+id/btnCancel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Cancel" />
+            android:text="Cancel"
+            android:fontFamily="@font/fredoka_medium"
+            android:textSize="20dp"/>
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"/>
     </LinearLayout>
 </LinearLayout>
