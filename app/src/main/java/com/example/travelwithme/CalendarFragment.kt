@@ -10,6 +10,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.travelwithme.Data.Attraction_Data
 import com.example.travelwithme.Data.Event
 import com.example.travelwithme.databinding.CalendarBinding
@@ -20,6 +22,7 @@ class CalendarFragment : Fragment() {
     private val binding get() = _binding ?: throw IllegalStateException("Binding should not be null")
 
     private val events = mutableListOf<Event>()
+    private lateinit var eventAdapter: EventAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,6 +47,11 @@ class CalendarFragment : Fragment() {
             }.time
             showEventsForDate(selectedDate)
         }
+
+        // Setup RecyclerView
+        eventAdapter = EventAdapter(events)
+        binding.eventsRecyclerView.layoutManager = LinearLayoutManager(context)
+        binding.eventsRecyclerView.adapter = eventAdapter
     }
 
     // Method to add event
@@ -69,25 +77,7 @@ class CalendarFragment : Fragment() {
 
     private fun showEventsForDate(date: Date) {
         val eventsForDate = events.filter { it.date.isSameDay(date) }
-
-        // Clear previous events
-        binding.eventsContainer.removeAllViews()
-
-        // Add events to the UI
-        for (event in eventsForDate) {
-            val eventView = layoutInflater.inflate(R.layout.item_event, binding.eventsContainer, false)
-            eventView.findViewById<TextView>(R.id.eventTitle).text = event.attraction.title
-            eventView.findViewById<TextView>(R.id.eventDescription).text = event.attraction.description
-            val timeRange = calculateTimeRange(event.date, event.durationHours)
-            eventView.findViewById<TextView>(R.id.eventTime).text = timeRange
-
-            // Set the image resource based on the category
-            val eventImageView = eventView.findViewById<ImageView>(R.id.eventImage)
-            val categoryIconResId = CategoryIcons.getIconForCategory(event.attraction.category)
-            eventImageView.setImageResource(categoryIconResId)
-
-            binding.eventsContainer.addView(eventView)
-        }
+        eventAdapter.updateEvents(eventsForDate)
     }
 
     private fun Date.isSameDay(other: Date): Boolean {
