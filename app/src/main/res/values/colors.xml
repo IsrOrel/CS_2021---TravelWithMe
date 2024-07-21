@@ -3,4 +3,13 @@
     <color name="black">#FF000000</color>
     <color name="white">#E6E6E6</color>
     <color name="orange">#D57E20</color>
+    <color name="sandyBrown">#f4a460</color>
+    <color name="brightOrange">#f29648</color>
+    <color name="lightblue">#8ccde3</color>
+    <color name="seaGreen">#52bf90</color>
+    <color name="Gigas">#403793</color>
+    <color name="Valencia">#df744a</color>
+    <color name="verywhite">#FFFFFF</color>
+    <color name="superlight">#D5E0FD</color>
+    D5E0FD
 </resources>

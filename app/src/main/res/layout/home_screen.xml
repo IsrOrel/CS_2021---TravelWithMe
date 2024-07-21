@@ -8,7 +8,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/travel_back">
+        android:background="@drawable/backgroun_app">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,6 +29,7 @@
                     android:text="Welcome "
                     android:textSize="24dp"
                     android:gravity="center"
+                    android:textColor="@color/white"
                     android:fontFamily="@font/fredoka_medium"/>
 
 
@@ -44,7 +45,8 @@
                     android:gravity="start"
                     android:text="user"
                     android:textSize="24dp"
-                    android:fontFamily="@font/fredoka_medium"/>
+                    android:fontFamily="@font/fredoka_medium"
+                    android:textColor="@color/verywhite"/>
 
                 <Space
                     android:layout_width="0dp"
@@ -61,16 +63,15 @@
                 android:orientation="horizontal"
                 >
 
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=" My Trip To:  "
-                    android:textSize="38dp"
-                    android:gravity="center"
                     android:fontFamily="@font/fredoka_medium"
-                    android:textColor="@color/white"/>
-
-
+                    android:gravity="center"
+                    android:text=" My Trip To:  "
+                    android:textColor="@color/verywhite"
+                    android:textSize="38dp" />
 
                 <TextView
                     android:id="@+id/TripCity"
@@ -80,7 +81,7 @@
                     android:text="city"
                     android:textSize="33dp"
                     android:fontFamily="@font/fredoka_medium"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/verywhite"/>
 
 
 
@@ -95,7 +96,7 @@
                 <Space
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.1"/>
+                    android:layout_weight="0.2"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/Attraction_btn"
@@ -103,15 +104,15 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     app:icon="@drawable/baseline_attractions_24"
-                    app:iconTint="@color/orange"
+
                     app:iconPadding="1dp"
                     app:iconSize="45dp"
-                    app:backgroundTint="#66FFFFFF" />
+                    app:backgroundTint="@color/lightblue" />
 
                 <Space
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.1"/>
+                    android:layout_weight="0.2"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/Car_Rent"
@@ -119,15 +120,15 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     app:icon="@drawable/baseline_car_rental_24"
-                    app:iconTint="@color/orange"
+
                     app:iconPadding="1dp"
                     app:iconSize="45dp"
-                    app:backgroundTint="#66FFFFFF"/>
+                    app:backgroundTint="@color/seaGreen"/>
 
                 <Space
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.1"/>
+                    android:layout_weight="0.2"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/Calendar"
@@ -135,31 +136,31 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     app:icon="@drawable/baseline_calendar_today_24"
-                    app:iconTint="@color/orange"
+
                     app:iconPadding="1dp"
                     app:iconSize="45dp"
-                    app:backgroundTint="#66FFFFFF" />
+                    app:backgroundTint="@color/Gigas" />
 
                 <Space
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.1"/>
+                    android:layout_weight="0.2"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/checkList_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    app:backgroundTint="@color/Valencia"
+
                     app:icon="@drawable/baseline_checklist_24"
-                    app:iconTint="@color/orange"
                     app:iconPadding="1dp"
-                    app:iconSize="45dp"
-                    app:backgroundTint="#66FFFFFF" />
+                    app:iconSize="45dp" />
 
                 <Space
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.1"/>
+                    android:layout_weight="0.2"/>
 
             </LinearLayout>
 
@@ -169,7 +170,7 @@
                 android:layout_gravity="center"
                 android:background="@drawable/rounded_background"
                 android:orientation="horizontal"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="60dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginLeft="8dp">
 
@@ -179,7 +180,8 @@
                     android:layout_margin="20dp"
                     android:text="your next flight to:"
                     android:textSize="20dp"
-                    android:fontFamily="@font/fredoka_medium"/>
+                    android:fontFamily="@font/fredoka_medium"
+                    android:textColor="@color/verywhite"/>
 
                 <Space
                     android:layout_width="0dp"
@@ -195,7 +197,8 @@
                     android:layout_marginTop="20dp"
                     android:text="city"
                     android:textSize="20dp"
-                    android:fontFamily="@font/fredoka_medium"/>
+                    android:fontFamily="@font/fredoka_medium"
+                    android:textColor="@color/verywhite"/>
 
                 <Space
                     android:layout_width="0dp"
@@ -210,7 +213,8 @@
                     android:text="countdown"
                     android:textSize="20dp"
                     android:id="@+id/countdown"
-                    android:fontFamily="@font/fredoka_medium"/>
+                    android:fontFamily="@font/fredoka_medium"
+                    android:textColor="@color/verywhite"/>
 
                 <Space
                     android:layout_width="0dp"
@@ -223,7 +227,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="35dp"
+                android:layout_marginTop="50dp"
                 android:background="@drawable/rounded_background"
                 android:orientation="horizontal"
                 android:layout_marginRight="8dp"
@@ -235,7 +239,8 @@
                     android:layout_margin="20dp"
                     android:text="your next event:"
                     android:textSize="20dp"
-                    android:fontFamily="@font/fredoka_medium"/>
+                    android:fontFamily="@font/fredoka_medium"
+                    android:textColor="@color/verywhite"/>
 
                 <Space
                     android:layout_width="0dp"
@@ -250,7 +255,8 @@
                     android:gravity="start"
                     android:text="event"
                     android:textSize="20dp"
-                    android:fontFamily="@font/fredoka_medium"/>
+                    android:fontFamily="@font/fredoka_medium"
+                    android:textColor="@color/verywhite"/>
 
             </LinearLayout>
 
@@ -268,14 +274,14 @@
                     android:layout_marginBottom="30dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    android:backgroundTint="@color/orange"
+                    android:backgroundTint="@color/brightOrange"
                     >
 
                     <Button
                         android:id="@+id/facts"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/orange"
+                        android:backgroundTint="@color/brightOrange"
                         android:gravity="center"
                         android:text="Fun facts about the city:"
                         android:textSize="20dp"
