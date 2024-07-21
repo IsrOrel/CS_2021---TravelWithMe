@@ -5,6 +5,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 
+
 @Dao
 interface User_Dao {
     // Insert or update a full User_Data object
@@ -67,6 +68,8 @@ interface User_Dao {
     @Query("UPDATE user_data SET Hotels = :hotels WHERE email = :email")
     fun updateHotels(email: String, hotels: List<Hotels>)
 
+    @Query("UPDATE user_data SET selected_attractions = :selectedAttractions WHERE email = :email")
+    suspend fun updateSelectedAttractions(email: String, selectedAttractions: List<SelectedAttraction>)
 
 
     // Add a hotel
