@@ -86,12 +86,6 @@
             android:id="@+id/action_add_flight_to_add_Hotel"
             app:destination="@id/add_Hotel"
             app:popUpTo="@id/add_flight" />
-        <action
-            android:id="@+id/action_add_flight_to_home_screen"
-            app:destination="@id/home_screen" />
-        <action
-            android:id="@+id/action_add_flight_to_sign_In"
-            app:destination="@id/sign_In" />
     </fragment>
 
     <fragment
@@ -106,10 +100,14 @@
         <action
             android:id="@+id/action_add_Hotel_to_home_screen"
             app:destination="@id/home_screen"
-            app:popUpTo="@id/add_flight" />
+            app:popUpTo="@id/home_screen" />
         <action
             android:id="@+id/action_add_Hotel_to_add_Edit_Hotel"
             app:destination="@id/add_Edit_Hotel" />
+        <argument
+            android:name="fromHomeScreen"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
 
     <fragment
@@ -118,10 +116,12 @@
         android:label="Sign_In">
         <action
             android:id="@+id/action_sign_In_to_sign_Up"
-            app:destination="@id/sign_Up" />
+            app:destination="@id/sign_Up"
+            app:popUpTo="@id/sign_In" />
         <action
             android:id="@+id/action_sign_In_to_my_Trips"
-            app:destination="@id/my_Trips" />
+            app:destination="@id/my_Trips"
+            app:popUpTo="@id/my_Trips" />
     </fragment>
 
     <fragment
@@ -130,10 +130,12 @@
         android:label="Sign_Up">
         <action
             android:id="@+id/action_sign_Up_to_my_Trips"
-            app:destination="@id/my_Trips" />
+            app:destination="@id/my_Trips"
+            app:popUpTo="@id/my_Trips" />
         <action
             android:id="@+id/action_sign_Up_to_sign_In"
-            app:destination="@id/sign_In" />
+            app:destination="@id/sign_In"
+            app:popUpTo="@id/sign_Up" />
     </fragment>
 
     <fragment
@@ -143,7 +145,7 @@
         <action
             android:id="@+id/action_add_Edit_Hotel_to_home_screen"
             app:destination="@id/home_screen"
-            app:popUpTo="@id/add_Edit_Hotel" />
+            app:popUpTo="@id/home_screen" />
     </fragment>
 
     <fragment

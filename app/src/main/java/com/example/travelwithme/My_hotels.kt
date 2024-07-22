@@ -36,6 +36,13 @@ class My_hotels : Fragment() {
         setupRecyclerView()
         loadHotels()
 
+        val fromHomeScreen = arguments?.getBoolean("fromHomeScreen") ?: false
+
+        if (fromHomeScreen) {
+            binding.Return.isEnabled = false
+            binding.Skip.isEnabled = false
+        }
+
         binding.Done.setOnClickListener {
             findNavController().navigate(R.id.action_add_Hotel_to_home_screen)
         }
