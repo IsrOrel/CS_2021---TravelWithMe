@@ -254,9 +254,9 @@ class Home_screen : Fragment() {
 
     private fun getFactsForCity(city: String): Array<String> {
         return when {
-            city.contains("London", ignoreCase = true) -> resources.getStringArray(R.array.facts_london)
-            city.contains("Amsterdam", ignoreCase = true) -> resources.getStringArray(R.array.facts_amsterdam)
-            city.contains("Rome", ignoreCase = true) -> resources.getStringArray(R.array.facts_rome)
+            city.contains("לונדון", ignoreCase = true) -> resources.getStringArray(R.array.facts_london)
+            city.contains("אמסטרדם", ignoreCase = true) -> resources.getStringArray(R.array.facts_amsterdam)
+            city.contains("רומא", ignoreCase = true) -> resources.getStringArray(R.array.facts_rome)
             else -> arrayOf("No facts available for this city")
         }
     }

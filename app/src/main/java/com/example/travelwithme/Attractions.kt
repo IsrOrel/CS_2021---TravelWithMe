@@ -126,18 +126,19 @@ class Attractions : Fragment() {
 
     private fun loadCategoriesForDestination(city: String) {
         val categories = when (city) {
-            "London", "Rome", "Amsterdam" -> listOf(
-                Category(CategoryIcons.getIconForCategory("Beach"), "Beach"),
-                Category(CategoryIcons.getIconForCategory("Museum"), "Museum"),
-                Category(CategoryIcons.getIconForCategory("Park"), "Park"),
-                Category(CategoryIcons.getIconForCategory("Shopping"), "Shopping"),
-                Category(CategoryIcons.getIconForCategory("Night Life"), "Night Life"),
-                Category(CategoryIcons.getIconForCategory("Restaurant"), "Restaurant")
+            "לונדון", "רומא", "אמסטרדם" -> listOf(
+                Category(CategoryIcons.getIconForCategory("Beach"), "חופים"),
+                Category(CategoryIcons.getIconForCategory("Museum"), "מוזיאונים"),
+                Category(CategoryIcons.getIconForCategory("Park"), "פארקים"),
+                Category(CategoryIcons.getIconForCategory("Shopping"), "קניות"),
+                Category(CategoryIcons.getIconForCategory("Night Life"), "חיי לילה"),
+                Category(CategoryIcons.getIconForCategory("Restaurant"), "מסעדות")
             )
-            else -> listOf(Category(CategoryIcons.getIconForCategory("All"), "All"))
+            else -> listOf(Category(CategoryIcons.getIconForCategory("All"), "כללי"))
         }
         categoryAdapter.updateCategories(categories)
     }
+
 
 
     private fun loadAttractionsForCategory(category: Category) {

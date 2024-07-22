@@ -36,7 +36,7 @@ class DataSeeder(private val context: Context) {
                 ),
                 Attraction_Data(
                     image = R.drawable.icon_restaurant,
-                    title = "Dishoom",
+                    title = "דישום",
                     description = "מסעדה המציעה אוכל הודי מעולה.",
                     city = "לונדון",
                     category = "מסעדות",
@@ -85,7 +85,7 @@ class DataSeeder(private val context: Context) {
                 ),
                 Attraction_Data(
                     image = R.drawable.icon_restaurant,
-                    title = "La Pergola",
+                    title = "לה פרגולה",
                     description = "מסעדת גורמה עם כוכב מישלן.",
                     city = "רומא",
                     category = "מסעדות",
@@ -93,7 +93,7 @@ class DataSeeder(private val context: Context) {
                 ),
                 Attraction_Data(
                     image = R.drawable.icon_park,
-                    title = "Villa Borghese",
+                    title = "וילה בורגהנסה",
                     description = "פארק רחב ידיים עם גן חיות ומוזיאונים.",
                     city = "רומא",
                     category = "פארקים",
@@ -109,7 +109,7 @@ class DataSeeder(private val context: Context) {
                 ),
                 Attraction_Data(
                     image = R.drawable.icon_shopping,
-                    title = "Via del Corso",
+                    title = "ויה דל קורסו",
                     description = "רחוב קניות פופולרי במרכז רומא.",
                     city = "רומא",
                     category = "קניות",
@@ -134,7 +134,7 @@ class DataSeeder(private val context: Context) {
                 ),
                 Attraction_Data(
                     image = R.drawable.icon_restaurant,
-                    title = "De Kas",
+                    title = "דה קאס",
                     description = "מסעדת שף עם גינה אורגנית.",
                     city = "אמסטרדם",
                     category = "מסעדות",
@@ -142,7 +142,7 @@ class DataSeeder(private val context: Context) {
                 ),
                 Attraction_Data(
                     image = R.drawable.icon_park,
-                    title = "Vondelpark",
+                    title = "וונדלפארק",
                     description = "פארק פופולרי עם אגמים ומסעדות.",
                     city = "אמסטרדם",
                     category = "פארקים",
@@ -158,7 +158,7 @@ class DataSeeder(private val context: Context) {
                 ),
                 Attraction_Data(
                     image = R.drawable.icon_shopping,
-                    title = "De Negen Straatjes",
+                    title = "דה נגן דטראטג'יס",
                     description = "אזור קניות ייחודי עם חנויות בוטיק.",
                     city = "אמסטרדם",
                     category = "קניות",

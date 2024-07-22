@@ -35,23 +35,22 @@ class EventAdapter(private var events: List<Event>) :
     override fun getItemCount(): Int = events.size
 
     inner class EventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val iconImageView: ImageView = itemView.findViewById(R.id.eventImage)
         private val eventImage: ImageView = itemView.findViewById(R.id.eventImage)
         val eventTitle: TextView = itemView.findViewById(R.id.eventTitle)
         val eventDescription: TextView = itemView.findViewById(R.id.eventDescription)
         val eventTime: TextView = itemView.findViewById(R.id.eventTime)
 
         fun bind(event: Event) {
-            eventTitle.text = event.attraction.title
+            eventTitle.text = event.attraction.title ?: "No Title"
             eventTime.text = calculateTimeRange(event.date, event.durationHours)
 
-            // Log the category and icon resource ID for debugging
-            val categoryIconResId = CategoryIcons.getIconForCategory(event.attraction.category)
+            val categoryIconResId = CategoryIcons.getIconForCategory(event.attraction.category ?: "Unknown")
             Log.d("EventAdapter", "Category: ${event.attraction.category}, Icon Res ID: $categoryIconResId")
-            if (categoryIconResId != 0) {  // Check if the resource ID is valid
+            if (categoryIconResId != 0) {
                 eventImage.setImageResource(categoryIconResId)
             } else {
-                // Optional: Set a default icon or hide the ImageView if the resource ID is invalid
-                eventImage.setImageResource(R.drawable.icon_all) // Example default icon
+                eventImage.setImageResource(R.drawable.icon_all)
             }
         }
 
