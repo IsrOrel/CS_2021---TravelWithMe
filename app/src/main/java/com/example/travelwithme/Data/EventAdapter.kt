@@ -22,18 +22,15 @@ class EventAdapter(private var events: List<Event>) :
         notifyDataSetChanged() // This ensures that the RecyclerView is updated
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_event, parent, false)
         return EventViewHolder(view)
     }
 
-
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
         val event = events[position]
         holder.bind(event)
     }
-
 
     override fun getItemCount(): Int = events.size
 
@@ -47,8 +44,9 @@ class EventAdapter(private var events: List<Event>) :
             eventTitle.text = event.attraction.title
             eventTime.text = calculateTimeRange(event.date, event.durationHours)
 
-            // Handle category icon
+            // Log the category and icon resource ID for debugging
             val categoryIconResId = CategoryIcons.getIconForCategory(event.attraction.category)
+            Log.d("EventAdapter", "Category: ${event.attraction.category}, Icon Res ID: $categoryIconResId")
             if (categoryIconResId != 0) {  // Check if the resource ID is valid
                 eventImage.setImageResource(categoryIconResId)
             } else {
@@ -67,3 +65,4 @@ class EventAdapter(private var events: List<Event>) :
         }
     }
 }
+

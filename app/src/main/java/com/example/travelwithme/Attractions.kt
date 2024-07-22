@@ -113,9 +113,10 @@ class Attractions : Fragment() {
     private fun setupCategoryRecyclerView() {
         binding.categoriesRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
-        categoryAdapter = CategoryAdapter(emptyList())
+        categoryAdapter = CategoryAdapter(emptyList()) // or initial list if available
         binding.categoriesRecyclerView.adapter = categoryAdapter
     }
+
 
     private fun setupAttractionRecyclerView() {
         binding.attractionsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -125,21 +126,19 @@ class Attractions : Fragment() {
 
     private fun loadCategoriesForDestination(city: String) {
         val categories = when (city) {
-            "לונדון", "רומא", "אמסטרדם" -> listOf(
-                Category(CategoryIcons.getIconForCategory("הכל"), "הכל"),
-                Category(CategoryIcons.getIconForCategory("מסעדות"), "מסעדות"),
-                Category(CategoryIcons.getIconForCategory("פארקים"), "יםפארק"),
-                Category(CategoryIcons.getIconForCategory("מוזיאונים"), "מוזיאונים"),
-                Category(CategoryIcons.getIconForCategory("קניות"), "קניות"),
-                Category(CategoryIcons.getIconForCategory("חיי לילה"), "חיי לילה"),
-                Category(CategoryIcons.getIconForCategory("חופים"), "חופים")
+            "London", "Rome", "Amsterdam" -> listOf(
+                Category(CategoryIcons.getIconForCategory("Beach"), "Beach"),
+                Category(CategoryIcons.getIconForCategory("Museum"), "Museum"),
+                Category(CategoryIcons.getIconForCategory("Park"), "Park"),
+                Category(CategoryIcons.getIconForCategory("Shopping"), "Shopping"),
+                Category(CategoryIcons.getIconForCategory("Night Life"), "Night Life"),
+                Category(CategoryIcons.getIconForCategory("Restaurant"), "Restaurant")
             )
-
-            else -> listOf(Category(CategoryIcons.getIconForCategory("הכל"), "הכל"))
+            else -> listOf(Category(CategoryIcons.getIconForCategory("All"), "All"))
         }
-
         categoryAdapter.updateCategories(categories)
     }
+
 
     private fun loadAttractionsForCategory(category: Category) {
         attractionViewModel.getAttractionsForCityAndCategory(cityName, category.description)
