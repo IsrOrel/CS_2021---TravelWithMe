@@ -95,7 +95,7 @@ class Add_flight : Fragment() {
         // Initialize Spinner with city data
         setupCitySpinner()
         binding.return1.setOnClickListener{
-            findNavController().navigate(R.id.action_add_flight_to_sign_In)
+            findNavController().navigateUp()
         }
 
         binding.doneBtn.setOnClickListener {

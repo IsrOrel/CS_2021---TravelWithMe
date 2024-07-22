@@ -53,6 +53,8 @@ class Home_screen : Fragment() {
         val db = TravelDatabase.getInstance(requireContext())
         userDao = db.userDao()
 
+
+
         val currentUserEmail = UserSession.getCurrentUserEmail()
         if(currentUserEmail != null) {
             lifecycleScope.launch {
@@ -136,7 +138,8 @@ class Home_screen : Fragment() {
 
         binding.fabFlight.setOnClickListener { showFlightInfoDialog() }
         binding.fabHotel.setOnClickListener {
-            findNavController().navigate(R.id.action_home_screen_to_add_Hotel)
+            val action = Home_screenDirections.actionHomeScreenToAddHotel(fromHomeScreen = true)
+            findNavController().navigate(action)
         }
         binding.fabAttractions.setOnClickListener {
             findNavController().navigate(R.id.action_home_screen_to_attractions)
