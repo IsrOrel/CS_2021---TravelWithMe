@@ -1,44 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_a"
-    android:orientation="vertical"
     tools:context=".My_Trips">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Travel With Me"
-        android:gravity="center"
-        android:textSize="40dp"
-        android:fontFamily="@font/logo"
-        android:textColor="@color/sandyBrown"
-        android:layout_margin="60dp"/>
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <Button
-        android:id="@+id/AddTrip"
-        style="@style/Widget.MaterialComponents.Button.Icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/add_trip"
-        android:fontFamily="@font/fredoka_medium"
-        android:layout_marginBottom="20dp"
-        android:layout_gravity="center"
-        android:backgroundTint="@color/brightOrange"
-        />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Travel With Me"
+            android:gravity="center"
+            android:textSize="40sp"
+            android:fontFamily="@font/logo"
+            android:textColor="@color/sandyBrown"
+            android:layout_margin="60dp"/>
 
-    <Button
-        android:id="@+id/ThisTrip"
-        style="@style/Widget.MaterialComponents.Button.Icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/this_trip"
-        android:fontFamily="@font/fredoka_medium"
-        android:layout_gravity="center"
-        android:backgroundTint="@color/brightOrange"/>
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/tripCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="8dp"
+            android:visibility="gone">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
 
+                <TextView
+                    android:id="@+id/destinationTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/fredoka_medium"/>
 
-</LinearLayout>
+                <TextView
+                    android:id="@+id/takeOffDateTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/fredoka_medium"/>
+
+                <TextView
+                    android:id="@+id/landingDateTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/fredoka_medium"/>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <Button
+            android:id="@+id/AddTrip"
+            style="@style/Widget.MaterialComponents.Button.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_trip"
+            android:fontFamily="@font/fredoka_medium"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/brightOrange"/>
+
+        <Button
+            android:id="@+id/ThisTrip"
+            style="@style/Widget.MaterialComponents.Button.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/this_trip"
+            android:fontFamily="@font/fredoka_medium"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/brightOrange"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+
+</ScrollView>

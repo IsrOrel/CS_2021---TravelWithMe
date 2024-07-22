@@ -41,7 +41,6 @@ class Sign_In : Fragment() {
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 Log.d("SignIn", "Attempting sign-in with email: $email")
                 signIn(email, password)
-                findNavController().navigate(R.id.action_sign_In_to_my_Trips)
             } else {
                 Toast.makeText(context, "Please enter both email and password", Toast.LENGTH_SHORT)
                     .show()
