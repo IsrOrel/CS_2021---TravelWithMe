@@ -99,6 +99,7 @@ class CalendarFragment : Fragment() {
         }
     }
 
+
     private fun setupRecyclerView() {
         eventAdapter = EventAdapter(events)
         binding.eventsRecyclerView.layoutManager = LinearLayoutManager(context)
@@ -138,6 +139,7 @@ class CalendarFragment : Fragment() {
         Log.d("CalendarFragment", "Adapter notified of data changes")
     }
 
+
     private fun calculateDurationHours(plannedTime: String): Int {
         val (start, end) = plannedTime.split("-")
         val (startHour, startMinute) = start.split(":").map { it.toInt() }
@@ -158,6 +160,7 @@ class CalendarFragment : Fragment() {
         Log.d("CalendarFragment", "Events for date $date: $eventsForDate")
         eventAdapter.updateEvents(eventsForDate)
     }
+
 
     fun addEvent(attraction: SelectedAttraction, date: Date, durationHours: Int) {
         Log.d("CalendarFragment", "Event date: $date")

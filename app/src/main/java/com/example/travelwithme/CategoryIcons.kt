@@ -9,10 +9,12 @@ object CategoryIcons {
         "Park" to R.drawable.icon_park,
         "Shopping" to R.drawable.icon_shopping,
         "Night Life" to R.drawable.icon_nightlife,
-        "Restaurant" to R.drawable.icon_restaurant
+        "Restaurant" to R.drawable.icon_restaurant,
+        "All" to R.drawable.icon_all
     )
 
     fun getIconForCategory(category: String): Int {
         return categoryIconMap[category] ?: R.drawable.icon_all
     }
 }
+

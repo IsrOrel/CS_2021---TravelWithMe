@@ -1,3 +1,5 @@
+package com.example.travelwithme
+
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -5,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.travelwithme.Category
 import com.example.travelwithme.R
 
 class CategoryAdapter(private var categories: List<Category>) :
@@ -24,7 +25,6 @@ class CategoryAdapter(private var categories: List<Category>) :
         holder.bind(category)
     }
 
-
     override fun getItemCount(): Int = categories.size
 
     fun updateCategories(newCategories: List<Category>) {
@@ -32,7 +32,6 @@ class CategoryAdapter(private var categories: List<Category>) :
         categories = newCategories
         notifyDataSetChanged()
     }
-
 
     inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val iconImageView: ImageView = itemView.findViewById(R.id.categoryIcon)

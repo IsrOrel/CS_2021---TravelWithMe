@@ -36,7 +36,6 @@ class EventAdapter(private var events: List<Event>) :
 
     inner class EventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val iconImageView: ImageView = itemView.findViewById(R.id.eventImage)
-        private val eventImage: ImageView = itemView.findViewById(R.id.eventImage)
         val eventTitle: TextView = itemView.findViewById(R.id.eventTitle)
         val eventDescription: TextView = itemView.findViewById(R.id.eventDescription)
         val eventTime: TextView = itemView.findViewById(R.id.eventTime)
@@ -48,9 +47,9 @@ class EventAdapter(private var events: List<Event>) :
             val categoryIconResId = CategoryIcons.getIconForCategory(event.attraction.category ?: "Unknown")
             Log.d("EventAdapter", "Category: ${event.attraction.category}, Icon Res ID: $categoryIconResId")
             if (categoryIconResId != 0) {
-                eventImage.setImageResource(categoryIconResId)
+                iconImageView.setImageResource(categoryIconResId)
             } else {
-                eventImage.setImageResource(R.drawable.icon_all)
+                iconImageView.setImageResource(R.drawable.icon_all)
             }
         }
 
@@ -63,5 +62,6 @@ class EventAdapter(private var events: List<Event>) :
             return "$startTime-$endTime"
         }
     }
+
 }
 

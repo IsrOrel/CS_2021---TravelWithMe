@@ -1,7 +1,7 @@
 package com.example.travelwithme
 
 import Attraction_Adapter
-import CategoryAdapter
+import com.example.travelwithme.CategoryAdapter
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -36,7 +36,6 @@ class Attractions : Fragment() {
     private val attractionViewModel: AttractionViewModel by viewModels()
     private lateinit var cityName: String
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,20 +49,17 @@ class Attractions : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize RecyclerViews
         setupCategoryRecyclerView()
         setupAttractionRecyclerView()
 
-        // Set up category click listener
         categoryAdapter.onCategoryClick = { category ->
-            if (category.description == "All") {
+            if (category.description == "כללי") {
                 loadAllAttractionsForCity(cityName)
             } else {
                 loadAttractionsForCategory(category)
             }
         }
 
-        // Set up attraction image click listener
         attractionAdapter.onImageClick = { attraction ->
             showDateTimePopup(attraction)
         }
@@ -74,25 +70,24 @@ class Attractions : Fragment() {
 
         // Load city name asynchronously
         val currentUserEmail = UserSession.getCurrentUserEmail()
-        cityName = arguments?.getString("cityName") ?: "London"
+        cityName = arguments?.getString("cityName") ?: "לונדון"
         if (currentUserEmail != null) {
             lifecycleScope.launch(Dispatchers.IO) {
-                // Fetch destination from the database
-                val destination = userDao.getDestination(currentUserEmail)
+                try {
+                    val destination = userDao.getDestination(currentUserEmail)
+                    withContext(Dispatchers.Main) {
+                        cityName = destination ?: cityName
+                        Log.d("AttractionsFragment", "City from user: $cityName")
 
-                // Switch to Main Thread to update UI
-                withContext(Dispatchers.Main) {
-                    cityName = destination ?: cityName
-                    Log.d("AttractionsFragment", "City from user: $cityName")
-
-                    // Reload categories and attractions with the updated city name
-                    loadCategoriesForDestination(cityName)
-                    loadAllAttractionsForCity(cityName)
+                        loadCategoriesForDestination(cityName)
+                        loadAllAttractionsForCity(cityName)
+                    }
+                } catch (e: Exception) {
+                    Log.e("AttractionsFragment", "Error fetching destination: ${e.message}")
                 }
             }
         } else {
             Log.d("AttractionsFragment", "City selected: $cityName")
-            // Load categories and attractions
             loadCategoriesForDestination(cityName)
             loadAllAttractionsForCity(cityName)
         }
@@ -100,12 +95,8 @@ class Attractions : Fragment() {
 
     private fun loadAllAttractionsForCity(city: String) {
         attractionViewModel.getAttractionsForCity(city).observe(viewLifecycleOwner) { attractions ->
-            Log.d("Attractions", "Loaded ${attractions.size} attractions for $city")
             val uniqueAttractions = attractions.distinctBy { it.title }
-            Log.d("Attractions", "Unique attractions: ${uniqueAttractions.size}")
-            uniqueAttractions.forEach { attraction ->
-                Log.d("Attractions", "Attraction: ${attraction.title}, ID: ${attraction.title}")
-            }
+            Log.d("Attractions", "Loaded ${uniqueAttractions.size} unique attractions for $city")
             attractionAdapter.updateAttractions(uniqueAttractions)
         }
     }
@@ -113,10 +104,9 @@ class Attractions : Fragment() {
     private fun setupCategoryRecyclerView() {
         binding.categoriesRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
-        categoryAdapter = CategoryAdapter(emptyList()) // or initial list if available
+        categoryAdapter = CategoryAdapter(emptyList())
         binding.categoriesRecyclerView.adapter = categoryAdapter
     }
-
 
     private fun setupAttractionRecyclerView() {
         binding.attractionsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -127,19 +117,20 @@ class Attractions : Fragment() {
     private fun loadCategoriesForDestination(city: String) {
         val categories = when (city) {
             "לונדון", "רומא", "אמסטרדם" -> listOf(
+                Category(CategoryIcons.getIconForCategory("All"), "כללי"),
                 Category(CategoryIcons.getIconForCategory("Beach"), "חופים"),
                 Category(CategoryIcons.getIconForCategory("Museum"), "מוזיאונים"),
                 Category(CategoryIcons.getIconForCategory("Park"), "פארקים"),
                 Category(CategoryIcons.getIconForCategory("Shopping"), "קניות"),
                 Category(CategoryIcons.getIconForCategory("Night Life"), "חיי לילה"),
                 Category(CategoryIcons.getIconForCategory("Restaurant"), "מסעדות")
+
             )
             else -> listOf(Category(CategoryIcons.getIconForCategory("All"), "כללי"))
         }
+        Log.d("AttractionsFragment", "Categories to update: $categories")
         categoryAdapter.updateCategories(categories)
     }
-
-
 
     private fun loadAttractionsForCategory(category: Category) {
         attractionViewModel.getAttractionsForCityAndCategory(cityName, category.description)
@@ -164,7 +155,6 @@ class Attractions : Fragment() {
         durationHours: Int,
         category: String
     ) {
-        // Save the selected attraction to the database
         val currentUserEmail = UserSession.getCurrentUserEmail()
         if (currentUserEmail != null) {
             val selectedAttraction = SelectedAttraction(
@@ -175,28 +165,31 @@ class Attractions : Fragment() {
             )
 
             lifecycleScope.launch(Dispatchers.IO) {
-                userDao.addSelectedAttraction(currentUserEmail, selectedAttraction)
-                withContext(Dispatchers.Main) {
-                    // Navigate to the calendar fragment after saving
-                    val action = AttractionsDirections.actionAttractionsToCalendar(
-                        attraction.title,
-                        date.time,
-                        durationHours,
-                        category
-                    )
-                    findNavController().navigate(action)
+                try {
+                    userDao.addSelectedAttraction(currentUserEmail, selectedAttraction)
+                    withContext(Dispatchers.Main) {
+                        val action = AttractionsDirections.actionAttractionsToCalendar(
+                            attraction.title,
+                            date.time,
+                            durationHours,
+                            category
+                        )
+                        findNavController().navigate(action)
 
-                    val timeRange = calculateTimeRange(date, durationHours)
-                    Toast.makeText(
-                        requireContext(),
-                        "Added ${attraction.title} to calendar on ${
-                            SimpleDateFormat(
-                                "dd MMM yyyy",
-                                Locale.getDefault()
-                            ).format(date)
-                        } $timeRange",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                        val timeRange = calculateTimeRange(date, durationHours)
+                        Toast.makeText(
+                            requireContext(),
+                            "Added ${attraction.title} to calendar on ${
+                                SimpleDateFormat(
+                                    "dd MMM yyyy",
+                                    Locale.getDefault()
+                                ).format(date)
+                            } $timeRange",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                } catch (e: Exception) {
+                    Log.e("AttractionsFragment", "Error adding event to calendar: ${e.message}")
                 }
             }
         } else {
@@ -204,21 +197,17 @@ class Attractions : Fragment() {
         }
     }
 
-
-
     private fun calculateTimeRange(startDate: Date, durationHours: Int): String {
-            val formatter = SimpleDateFormat("HH:mm", Locale.getDefault())
-            val calendar = Calendar.getInstance()
-            calendar.time = startDate
-            val startTime = formatter.format(calendar.time)
-            calendar.add(Calendar.HOUR_OF_DAY, durationHours)
-            val endTime = formatter.format(calendar.time)
-            return "$startTime-$endTime"
-        }
+        val formatter = SimpleDateFormat("HH:mm", Locale.getDefault())
+        val calendar = Calendar.getInstance().apply { time = startDate }
+        val startTime = formatter.format(calendar.time)
+        calendar.add(Calendar.HOUR_OF_DAY, durationHours)
+        val endTime = formatter.format(calendar.time)
+        return "$startTime-$endTime"
+    }
 
-        override fun onDestroyView() {
-            super.onDestroyView()
-            _binding = null
-        }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
-
