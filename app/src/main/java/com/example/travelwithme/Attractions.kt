@@ -36,6 +36,7 @@ class Attractions : Fragment() {
     private val attractionViewModel: AttractionViewModel by viewModels()
     private lateinit var cityName: String
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -124,17 +125,17 @@ class Attractions : Fragment() {
 
     private fun loadCategoriesForDestination(city: String) {
         val categories = when (city) {
-            "London", "Rome", "Amsterdam" -> listOf(
-                Category(CategoryIcons.getIconForCategory("All"), "All"),
-                Category(CategoryIcons.getIconForCategory("Restaurant"), "Restaurant"),
-                Category(CategoryIcons.getIconForCategory("Park"), "Park"),
-                Category(CategoryIcons.getIconForCategory("Museum"), "Museum"),
-                Category(CategoryIcons.getIconForCategory("Shopping"), "Shopping"),
-                Category(CategoryIcons.getIconForCategory("Night Life"), "Night Life"),
-                Category(CategoryIcons.getIconForCategory("Beach"), "Beach")
+            "לונדון", "רומא", "אמסטרדם" -> listOf(
+                Category(CategoryIcons.getIconForCategory("הכל"), "הכל"),
+                Category(CategoryIcons.getIconForCategory("מסעדות"), "מסעדות"),
+                Category(CategoryIcons.getIconForCategory("פארקים"), "יםפארק"),
+                Category(CategoryIcons.getIconForCategory("מוזיאונים"), "מוזיאונים"),
+                Category(CategoryIcons.getIconForCategory("קניות"), "קניות"),
+                Category(CategoryIcons.getIconForCategory("חיי לילה"), "חיי לילה"),
+                Category(CategoryIcons.getIconForCategory("חופים"), "חופים")
             )
 
-            else -> listOf(Category(CategoryIcons.getIconForCategory("All"), "All"))
+            else -> listOf(Category(CategoryIcons.getIconForCategory("הכל"), "הכל"))
         }
 
         categoryAdapter.updateCategories(categories)
@@ -157,51 +158,55 @@ class Attractions : Fragment() {
         popupFragment.show(parentFragmentManager, "PopupFragment")
     }
 
-        private fun addEventToCalendar(
-            attraction: Attraction_Data,
-            date: Date,
-            durationHours: Int,
-            category: String
-        ) {
-            // Save the selected attraction to the database
-            val currentUserEmail = UserSession.getCurrentUserEmail()
-            if (currentUserEmail != null) {
-                val selectedAttraction = SelectedAttraction(
-                    title = attraction.title,
-                    plannedDate = date,
-                    plannedTime = calculateTimeRange(date, durationHours),
-                    category = category
-                )
+    private fun addEventToCalendar(
+        attraction: Attraction_Data,
+        date: Date,
+        durationHours: Int,
+        category: String
+    ) {
+        // Save the selected attraction to the database
+        val currentUserEmail = UserSession.getCurrentUserEmail()
+        if (currentUserEmail != null) {
+            val selectedAttraction = SelectedAttraction(
+                title = attraction.title,
+                plannedDate = date,
+                plannedTime = calculateTimeRange(date, durationHours),
+                category = category
+            )
 
-                lifecycleScope.launch(Dispatchers.IO) {
-                    userDao.addSelectedAttraction(currentUserEmail, selectedAttraction)
+            lifecycleScope.launch(Dispatchers.IO) {
+                userDao.addSelectedAttraction(currentUserEmail, selectedAttraction)
+                withContext(Dispatchers.Main) {
+                    // Navigate to the calendar fragment after saving
+                    val action = AttractionsDirections.actionAttractionsToCalendar(
+                        attraction.title,
+                        date.time,
+                        durationHours,
+                        category
+                    )
+                    findNavController().navigate(action)
+
+                    val timeRange = calculateTimeRange(date, durationHours)
+                    Toast.makeText(
+                        requireContext(),
+                        "Added ${attraction.title} to calendar on ${
+                            SimpleDateFormat(
+                                "dd MMM yyyy",
+                                Locale.getDefault()
+                            ).format(date)
+                        } $timeRange",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
-
-            // Navigate to the calendar fragment
-            val action = AttractionsDirections.actionAttractionsToCalendar(
-                attraction.title,
-                date.time,
-                durationHours,
-                category
-            )
-            findNavController().navigate(action)
-
-            val timeRange = calculateTimeRange(date, durationHours)
-            Toast.makeText(
-                requireContext(),
-                "Added ${attraction.title} to calendar on ${
-                    SimpleDateFormat(
-                        "dd MMM yyyy",
-                        Locale.getDefault()
-                    ).format(date)
-                } $timeRange",
-                Toast.LENGTH_SHORT
-            ).show()
+        } else {
+            Log.e("AttractionsFragment", "Current user email is null")
         }
+    }
 
 
-        private fun calculateTimeRange(startDate: Date, durationHours: Int): String {
+
+    private fun calculateTimeRange(startDate: Date, durationHours: Int): String {
             val formatter = SimpleDateFormat("HH:mm", Locale.getDefault())
             val calendar = Calendar.getInstance()
             calendar.time = startDate

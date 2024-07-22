@@ -1,5 +1,6 @@
 package com.example.travelwithme
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,9 +17,11 @@ class EventAdapter(private var events: List<Event>) :
     RecyclerView.Adapter<EventAdapter.EventViewHolder>() {
 
     fun updateEvents(newEvents: List<Event>) {
-        events = newEvents
-        notifyDataSetChanged()
+        this.events = newEvents
+        Log.d("EventAdapter", "Events updated: $newEvents")
+        notifyDataSetChanged() // This ensures that the RecyclerView is updated
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_event, parent, false)
@@ -28,10 +31,9 @@ class EventAdapter(private var events: List<Event>) :
 
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
         val event = events[position]
-        holder.eventTitle.text = event.attraction.title
-        holder.eventDescription.text = event.attraction.category
-        holder.eventTime.text = event.attraction.plannedTime
+        holder.bind(event)
     }
+
 
     override fun getItemCount(): Int = events.size
 

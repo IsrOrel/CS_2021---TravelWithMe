@@ -48,9 +48,9 @@
     <string name="delete_item">Delete item</string>
 
     <string-array name="cities">
-        <item></item>
-        <item>Amsterdam</item>
-        <item>Rome</item>
+        <item>לונדון</item>
+        <item>אמסטרדם</item>
+        <item>רומא</item>
     </string-array>
 
     <string-array name="facts_london">

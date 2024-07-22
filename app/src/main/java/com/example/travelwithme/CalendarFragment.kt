@@ -1,6 +1,5 @@
 package com.example.travelwithme
 
-import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -20,6 +19,7 @@ import com.example.travelwithme.databinding.CalendarBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
 import java.util.*
 
 class CalendarFragment : Fragment() {
@@ -44,27 +44,31 @@ class CalendarFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        fetchTravelDates()
-        setupRecyclerView()
-        fetchEvents()
-        binding.goBackButton.setOnClickListener {
-            findNavController().navigateUp()
-        }
-        if (!::userDao.isInitialized) {
-            Log.e("PopupFragment", "userDao has not been initialized")
-            return
+        if (currentUserEmail != null) {
+            fetchTravelDates()
+            setupRecyclerView()
+            fetchEvents()
+            binding.goBackButton.setOnClickListener {
+                findNavController().navigateUp()
+            }
+        } else {
+            Log.e("CalendarFragment", "Current user email is null")
+            Toast.makeText(requireContext(), "User not logged in", Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun fetchTravelDates() {
-        if (currentUserEmail != null) {
-            lifecycleScope.launch(Dispatchers.IO) {
-                val userData = userDao.getUserByEmail(currentUserEmail)
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val userData = userDao.getUserByEmail(currentUserEmail!!)
                 withContext(Dispatchers.Main) {
                     takeOffDate = Calendar.getInstance().apply { time = userData?.takeOffDate ?: Date() }
                     landingDate = Calendar.getInstance().apply { time = userData?.landingDate ?: Date() }
                     setupCalendarView()
                 }
+            } catch (e: Exception) {
+                Log.e("CalendarFragment", "Error fetching travel dates: ${e.message}", e)
+                Toast.makeText(requireContext(), "Error fetching travel dates", Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -78,19 +82,20 @@ class CalendarFragment : Fragment() {
 
                     binding.calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
                         val selectedDate = Calendar.getInstance().apply {
-                            set(year, month, dayOfMonth)
+                            set(year, month, dayOfMonth, 0, 0, 0)
+                            set(Calendar.MILLISECOND, 0)
                         }.time
                         showEventsForDate(selectedDate)
                     }
                 } ?: run {
-                    Toast.makeText(requireContext(), "Landing date is not set", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), "Departure date not set", Toast.LENGTH_LONG).show()
                 }
             } ?: run {
-                Toast.makeText(requireContext(), "Take-off date is not set", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "Landing date not set", Toast.LENGTH_LONG).show()
             }
         } catch (e: Exception) {
             Log.e("CalendarFragment", "Error setting up CalendarView: ${e.message}", e)
-            Toast.makeText(requireContext(), "Error setting up calendar view.", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), "Error setting up CalendarView", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -98,20 +103,26 @@ class CalendarFragment : Fragment() {
         eventAdapter = EventAdapter(events)
         binding.eventsRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.eventsRecyclerView.adapter = eventAdapter
+        Log.d("CalendarFragment", "RecyclerView setup with adapter: $eventAdapter")
     }
 
     private fun fetchEvents() {
-        if (currentUserEmail != null) {
-            lifecycleScope.launch(Dispatchers.IO) {
-                val selectedAttractions = userDao.getSelectedAttractions(currentUserEmail)
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val selectedAttractions = userDao.getSelectedAttractions(currentUserEmail!!)
+                Log.d("CalendarFragment", "Selected attractions: $selectedAttractions")
                 withContext(Dispatchers.Main) {
                     updateEventList(selectedAttractions)
                 }
+            } catch (e: Exception) {
+                Log.e("CalendarFragment", "Error fetching events: ${e.message}", e)
+                Toast.makeText(requireContext(), "Error fetching events", Toast.LENGTH_LONG).show()
             }
         }
     }
 
     private fun updateEventList(selectedAttractions: List<SelectedAttraction>) {
+        Log.d("CalendarFragment", "Updating event list with ${selectedAttractions.size} attractions")
         events.clear()
         events.addAll(selectedAttractions.map { attraction ->
             Event(
@@ -120,64 +131,70 @@ class CalendarFragment : Fragment() {
                 durationHours = calculateDurationHours(attraction.plannedTime)
             )
         })
+        Log.d("CalendarFragment", "Updated events list: $events")
 
-        events.sortWith(compareBy<Event> { it.date }.thenBy { it.attraction.startTimeInt })
-        showEventsForDate(Calendar.getInstance().time)
+        events.sortWith(compareBy<Event> { it.date }.thenBy { it.date })
+        eventAdapter.notifyDataSetChanged()
+        Log.d("CalendarFragment", "Adapter notified of data changes")
     }
 
     private fun calculateDurationHours(plannedTime: String): Int {
         val (start, end) = plannedTime.split("-")
-        val startHour = start.split(":")[0].toInt()
-        val endHour = end.split(":")[0].toInt()
-        return endHour - startHour
+        val (startHour, startMinute) = start.split(":").map { it.toInt() }
+        val (endHour, endMinute) = end.split(":").map { it.toInt() }
+        val durationInMillis = (endHour * 60 + endMinute - (startHour * 60 + startMinute)) * 60 * 1000
+        return durationInMillis / (60 * 60 * 1000) // Convert milliseconds to hours
     }
 
     private fun showEventsForDate(date: Date) {
-        val eventsForDate = events.filter { it.date.isSameDay(date) }
-            .sortedBy { it.attraction.startTimeInt }
+        val calDate = Calendar.getInstance().apply { time = date }
+        val eventsForDate = events.filter {
+            val eventCalDate = Calendar.getInstance().apply { time = it.date }
+            eventCalDate.get(Calendar.YEAR) == calDate.get(Calendar.YEAR) &&
+                    eventCalDate.get(Calendar.MONTH) == calDate.get(Calendar.MONTH) &&
+                    eventCalDate.get(Calendar.DAY_OF_MONTH) == calDate.get(Calendar.DAY_OF_MONTH)
+        }
+
+        Log.d("CalendarFragment", "Events for date $date: $eventsForDate")
         eventAdapter.updateEvents(eventsForDate)
     }
 
     fun addEvent(attraction: SelectedAttraction, date: Date, durationHours: Int) {
-        // Ensure that travel dates are set
+        Log.d("CalendarFragment", "Event date: $date")
+        Log.d("CalendarFragment", "Duration Hours: $durationHours")
         if (takeOffDate == null || landingDate == null) {
-            Toast.makeText(requireContext(), "Travel dates are not set", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Travel dates not set", Toast.LENGTH_SHORT).show()
             return
         }
+        val timeRange = calculateTimeRange(date, durationHours)
+        Log.d("CalendarFragment", "Time Range: $timeRange")
 
-        // Debug logs
-        Log.d("CalendarFragment", "Take-off date: ${takeOffDate!!.time}")
-        Log.d("CalendarFragment", "Landing date: ${landingDate!!.time}")
-        Log.d("CalendarFragment", "Event date: $date")
-
-        // Check if the date is within the allowed range
         val takeOffTime = takeOffDate!!.time
         val landingTime = landingDate!!.time
         if (date.before(takeOffTime) || date.after(landingTime)) {
-            Toast.makeText(requireContext(), "Date is outside of your travel period", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Date is outside your travel period", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Check if the event already exists
         if (events.none { it.attraction.title == attraction.title && it.date.isSameDay(date) }) {
             val newEvent = Event(attraction, date, durationHours)
-            if (currentUserEmail != null) {
-                lifecycleScope.launch(Dispatchers.IO) {
-                    userDao.addSelectedAttraction(currentUserEmail, attraction)
+            lifecycleScope.launch(Dispatchers.IO) {
+                try {
+                    userDao.addSelectedAttraction(currentUserEmail!!, attraction)
                     withContext(Dispatchers.Main) {
                         events.add(newEvent)
                         showEventsForDate(date)
-                        val timeRange = calculateTimeRange(date, durationHours)
-                        Toast.makeText(requireContext(), "Event Added: ${attraction.title} on ${SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(date)} $timeRange", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Event added: ${attraction.title} on ${SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(date)} $timeRange", Toast.LENGTH_SHORT).show()
                     }
+                } catch (e: Exception) {
+                    Log.e("CalendarFragment", "Error adding event: ${e.message}", e)
+                    Toast.makeText(requireContext(), "Error adding event", Toast.LENGTH_LONG).show()
                 }
             }
         } else {
             Toast.makeText(requireContext(), "Event already exists on this date", Toast.LENGTH_SHORT).show()
         }
     }
-
-
 
     private fun calculateTimeRange(startDate: Date, durationHours: Int): String {
         val formatter = SimpleDateFormat("HH:mm", Locale.getDefault())
