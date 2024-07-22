@@ -19,7 +19,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Date
 
-
 class Sign_Up : Fragment() {
 
     private lateinit var binding: SignUpBinding
@@ -40,21 +39,20 @@ class Sign_Up : Fragment() {
             val name = binding.nameEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
 
-            if (validateInputs(email, name, password)) {
-                signUpUser(email, name, password)
-                UserSession.setCurrentUser(email)
-                findNavController().navigate(R.id.action_sign_Up_to_my_Trips)
-            } else {
-                Toast.makeText(context, "Please fill all fields", Toast.LENGTH_SHORT).show()
+            lifecycleScope.launch {
+                if (validateInputs(email, name, password)) {
+                    signUpUser(email, name, password)
+                }
             }
         }
+
         binding.signInButton.setOnClickListener {
             findNavController().navigate(R.id.action_sign_Up_to_sign_In)
         }
     }
 
-    private fun signUpUser(email: String, name: String, password: String) {
-        lifecycleScope.launch(Dispatchers.IO) {
+    private suspend fun signUpUser(email: String, name: String, password: String) {
+        withContext(Dispatchers.IO) {
             val hashedPassword = BCrypt.withDefaults().hashToString(12, password.toCharArray())
             val user = User_Data(
                 email = email,
@@ -64,55 +62,68 @@ class Sign_Up : Fragment() {
                 landingDate = Date(),
                 destination = "",
                 selectedAttractions = emptyList(),
-                hotels = emptyList() ,
+                hotels = emptyList(),
                 checklist = emptyList()
             )
 
             try {
                 userDao.insertOrUpdateUser(user)
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(context, "User registered successfully", Toast.LENGTH_SHORT).show()
-                    // Navigate to next screen if needed
+                    UserSession.setCurrentUser(email)
+                    showToast("User registered successfully")
+                    findNavController().navigate(R.id.action_sign_Up_to_my_Trips)
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(context, "Error registering user: ${e.message}", Toast.LENGTH_LONG).show()
+                    showToast("Error registering user: ${e.message}")
                 }
             }
         }
     }
 
-
-    private fun validateInputs(email: String, name: String, password: String): Boolean {
+    private suspend fun validateInputs(email: String, name: String, password: String): Boolean {
         if (name.isEmpty()) {
-            showError("Name cannot be empty")
+            showToast("Name cannot be empty")
             return false
         }
 
-        if (!isValidEmail(email)) {
-            showError("Please enter a valid email address")
+        if (!isValidEmailFormat(email)) {
+            showToast("Please enter a valid email address")
+            return false
+        }
+
+        if (!isEmailAvailable(email)) {
+            showToast("This email is already registered")
             return false
         }
 
         if (!isValidPassword(password)) {
-            showError("Password must be at least 6 characters long and contain at least one number")
+            showToast("Password must be at least 6 characters long and contain at least one number")
             return false
         }
 
         return true
     }
 
-    private fun isValidEmail(email: String): Boolean {
+    private fun isValidEmailFormat(email: String): Boolean {
         return email.matches(Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$"))
     }
+
+    private suspend fun isEmailAvailable(email: String): Boolean {
+        return withContext(Dispatchers.IO) {
+            val existingUser = userDao.getUserByEmail(email)
+            existingUser == null
+        }
+    }
+
     private fun isValidPassword(password: String): Boolean {
-        // Password must be at least 6 characters long and contain at least one number
         val passwordRegex = "^(?=.*[0-9]).{6,}$".toRegex()
         return passwordRegex.matches(password)
     }
 
-    private fun showError(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+    private suspend fun showToast(message: String) {
+        withContext(Dispatchers.Main) {
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+        }
     }
-
 }
