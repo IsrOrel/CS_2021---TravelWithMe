@@ -46,6 +46,7 @@
     <string name="skip">Skip</string>
     <string name="my_hotels">My Hotels</string>
     <string name="delete_item">Delete item</string>
+    <string name="sign_up">Sign Up</string>
 
     <string-array name="cities">
         <item>לונדון</item>
