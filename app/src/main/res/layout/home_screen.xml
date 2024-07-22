@@ -166,22 +166,22 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="92dp"
                 android:layout_gravity="center"
-                android:background="@drawable/rounded_background"
-                android:orientation="horizontal"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="60dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginLeft="8dp">
+                android:background="@drawable/rounded_background"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
-                    android:text="@string/your_next_flight_to"
-                    android:textSize="20dp"
                     android:fontFamily="@font/fredoka_medium"
-                    android:textColor="@color/verywhite"/>
+                    android:text="@string/your_next_flight_to"
+                    android:textColor="@color/verywhite"
+                    android:textSize="20dp" />
 
                 <Space
                     android:layout_width="0dp"
@@ -195,10 +195,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="top"
                     android:layout_marginTop="20dp"
-                    android:text="city"
-                    android:textSize="20dp"
                     android:fontFamily="@font/fredoka_medium"
-                    android:textColor="@color/verywhite"/>
+                    android:text="city"
+                    android:textColor="@color/verywhite"
+                    android:textSize="20dp" />
 
                 <Space
                     android:layout_width="0dp"
@@ -207,14 +207,14 @@
                     android:background="@drawable/rounded_background" />
 
                 <TextView
+                    android:id="@+id/countdown"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="countdown"
-                    android:textSize="20dp"
-                    android:id="@+id/countdown"
                     android:fontFamily="@font/fredoka_medium"
-                    android:textColor="@color/verywhite"/>
+                    android:text="countdown"
+                    android:textColor="@color/verywhite"
+                    android:textSize="20dp" />
 
                 <Space
                     android:layout_width="0dp"
@@ -225,67 +225,29 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="50dp"
-                android:background="@drawable/rounded_background"
-                android:orientation="horizontal"
-                android:layout_marginRight="8dp"
-                android:layout_marginLeft="8dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    android:text="@string/your_next_event"
-                    android:textSize="20dp"
-                    android:fontFamily="@font/fredoka_medium"
-                    android:textColor="@color/verywhite"/>
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.05" />
-
-                <TextView
-                    android:id="@+id/event"
-                    android:layout_width="164dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    android:gravity="start"
-                    android:text="event"
-                    android:textSize="20dp"
-                    android:fontFamily="@font/fredoka_medium"
-                    android:textColor="@color/verywhite"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="288dp"
                 android:orientation="vertical"
                 android:padding="16dp">
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="16dp"
-                    android:layout_marginTop="60dp"
-                    android:layout_marginBottom="30dp"
                     android:layout_marginLeft="20dp"
+                    android:layout_marginTop="60dp"
                     android:layout_marginRight="20dp"
+                    android:layout_marginBottom="30dp"
                     android:backgroundTint="@color/brightOrange"
-                    >
+                    app:cardCornerRadius="16dp">
 
                     <Button
                         android:id="@+id/facts"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/brightOrange"
+                        android:fontFamily="@font/fredoka_medium"
                         android:gravity="center"
                         android:text="@string/fun_facts_about_the_city"
-                        android:textSize="20dp"
-                        android:fontFamily="@font/fredoka_medium"/>
+                        android:textSize="20dp" />
 
                 </androidx.cardview.widget.CardView>
 
@@ -294,44 +256,44 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="gone"
-                    android:paddingTop="8dp">
+                    android:paddingTop="8dp"
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/fact1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="facts1"
-                        android:textSize="20dp"
-                        android:background="@drawable/rounded_background"
-                        android:textColor="@color/black"
-                        android:padding="10dp"
                         android:layout_margin="8dp"
-                        android:fontFamily="@font/fredoka_medium"/>
+                        android:background="@drawable/rounded_background"
+                        android:fontFamily="@font/fredoka_medium"
+                        android:padding="10dp"
+                        android:text="facts1"
+                        android:textColor="@color/black"
+                        android:textSize="20dp" />
 
                     <TextView
                         android:id="@+id/fact2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="facts2"
-                        android:textSize="20dp"
-                        android:background="@drawable/rounded_background"
-                        android:textColor="@color/black"
-                        android:padding="10dp"
                         android:layout_margin="8dp"
-                        android:fontFamily="@font/fredoka_medium"/>
+                        android:background="@drawable/rounded_background"
+                        android:fontFamily="@font/fredoka_medium"
+                        android:padding="10dp"
+                        android:text="facts2"
+                        android:textColor="@color/black"
+                        android:textSize="20dp" />
 
                     <TextView
                         android:id="@+id/fact3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="facts3"
-                        android:textSize="20dp"
-                        android:background="@drawable/rounded_background"
-                        android:textColor="@color/black"
-                        android:padding="10dp"
                         android:layout_margin="8dp"
-                        android:fontFamily="@font/fredoka_medium"/>
+                        android:background="@drawable/rounded_background"
+                        android:fontFamily="@font/fredoka_medium"
+                        android:padding="10dp"
+                        android:text="facts3"
+                        android:textColor="@color/black"
+                        android:textSize="20dp" />
                 </LinearLayout>
 
             </LinearLayout>
