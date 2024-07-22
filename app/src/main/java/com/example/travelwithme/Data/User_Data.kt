@@ -54,4 +54,8 @@ data class SelectedAttraction(
     val plannedDate: Date,
     val plannedTime: String,
     val category: String
-)
+
+) {
+    val startTimeInt: Int
+        get() = plannedTime.split("-")[0].replace(":", "").toInt()
+}

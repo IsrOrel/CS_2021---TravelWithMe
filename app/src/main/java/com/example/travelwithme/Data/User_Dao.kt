@@ -96,6 +96,8 @@ interface User_Dao {
         val currentAttractions = getSelectedAttractions(email).toMutableList()
         currentAttractions.add(attraction)
         updateSelectedAttractions(email, currentAttractions)
+        currentAttractions.sortWith(compareBy<SelectedAttraction> { it.plannedDate }.thenBy { it.startTimeInt })
+        updateSelectedAttractions(email, currentAttractions)
     }
 
 

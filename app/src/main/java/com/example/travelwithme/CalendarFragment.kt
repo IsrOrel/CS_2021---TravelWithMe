@@ -87,6 +87,7 @@ class CalendarFragment : Fragment() {
                 durationHours = 1 // You might want to store and use the actual duration
             )
         })
+        events.sortWith(compareBy<Event> { it.date }.thenBy { it.attraction.startTimeInt })
         showEventsForDate(Calendar.getInstance().time)
     }
 
