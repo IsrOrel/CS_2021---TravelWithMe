@@ -30,6 +30,10 @@
             android:id="@+id/action_home_screen_to_calendarFragment"
             app:destination="@id/calendarFragment"
             app:popUpTo="@id/home_screen" />
+        <action
+            android:id="@+id/action_home_screen_to_my_Trips2"
+            app:destination="@id/my_Trips"
+            app:popUpTo="@id/my_Trips" />
     </fragment>
 
     <fragment
@@ -75,6 +79,9 @@
         <action
             android:id="@+id/action_my_Trips_to_add_flight"
             app:destination="@id/add_flight" />
+        <action
+            android:id="@+id/action_my_Trips_to_add_flight2"
+            app:destination="@id/add_flight" />
     </fragment>
 
     <fragment
@@ -100,7 +107,7 @@
         <action
             android:id="@+id/action_add_Hotel_to_home_screen"
             app:destination="@id/home_screen"
-            app:popUpTo="@id/home_screen" />
+            app:popUpTo="@id/my_Trips" />
         <action
             android:id="@+id/action_add_Hotel_to_add_Edit_Hotel"
             app:destination="@id/add_Edit_Hotel" />
@@ -145,7 +152,7 @@
         <action
             android:id="@+id/action_add_Edit_Hotel_to_home_screen"
             app:destination="@id/home_screen"
-            app:popUpTo="@id/home_screen" />
+            app:popUpTo="@id/my_Trips" />
     </fragment>
 
     <fragment

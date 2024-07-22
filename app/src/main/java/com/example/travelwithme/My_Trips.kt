@@ -14,6 +14,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import android.app.AlertDialog
+import java.text.SimpleDateFormat
+import java.util.*
 
 class My_Trips : Fragment() {
     private var _binding: MyTripsBinding? = null
@@ -48,6 +51,44 @@ class My_Trips : Fragment() {
         binding.tripCardView.setOnClickListener {
             findNavController().navigate(R.id.action_my_Trips_to_home_screen)
         }
+
+        binding.deleteTrip.setOnClickListener {
+            showDeleteConfirmationDialog()
+        }
+    }
+
+    private fun showDeleteConfirmationDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Delete Trip")
+            .setMessage("Are you sure you want to delete this trip?")
+            .setPositiveButton("Yes") { _, _ ->
+                deleteTrip()
+            }
+            .setNegativeButton("No", null)
+            .show()
+    }
+
+    private fun deleteTrip() {
+        GlobalScope.launch(Dispatchers.IO) {
+            val userEmail = UserSession.getCurrentUserEmail()
+            if (userEmail != null) {
+                val userDao = TravelDatabase.getInstance(requireContext()).userDao()
+
+                // Reset trip details
+                userDao.updateDestination(userEmail, "")
+                userDao.updateTripDates(userEmail, 0, 0)
+
+                // Clear other related data
+                userDao.updateAttractions(userEmail, emptyList())
+                userDao.updateHotels(userEmail, emptyList())
+                userDao.updateChecklist(userEmail, emptyList())
+
+                withContext(Dispatchers.Main) {
+                    hideTripDetails()
+                    loadTrip() // Reload to reflect changes
+                }
+            }
+        }
     }
 
     private fun loadTrip() {
@@ -79,8 +120,17 @@ class My_Trips : Fragment() {
 
         // Populate trip details
         binding.destinationTextView.text = currentTrip?.destination
-        binding.takeOffDateTextView.text = "Take-off: ${currentTrip?.takeOffDate}"
-        binding.landingDateTextView.text = "Landing: ${currentTrip?.landingDate}"
+        binding.takeOffDateTextView.text = "Take-off: ${formatDate(currentTrip?.takeOffDate)}"
+        binding.landingDateTextView.text = "Landing: ${formatDate(currentTrip?.landingDate)}"
+    }
+
+    private fun formatDate(date: Date?): String {
+        return if (date != null) {
+            val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            formatter.format(date)
+        } else {
+            "Not set"
+        }
     }
 
     private fun hideTripDetails() {

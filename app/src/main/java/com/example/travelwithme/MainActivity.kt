@@ -5,9 +5,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.navigation.fragment.NavHostFragment
 import com.example.travelwithme.Data.DataSeeder
 import com.example.travelwithme.Data.UserSession
+import androidx.activity.addCallback
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.NavHostFragment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,24 +24,23 @@ class MainActivity : AppCompatActivity() {
 
         // Seed data when the app starts
         DataSeeder(this).seedData()
-    }
 
-    override fun onBackPressed() {
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as? NavHostFragment
-        val navController = navHostFragment?.navController
+        // Set up the NavController
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
 
-        when {
-            navController?.currentDestination?.id == R.id.home_screen -> {
-                // If we're on the home screen, close the app
-                finish()
-            }
-            navController?.currentDestination?.id == R.id.my_Trips -> {
-                // If we're on the My Trips screen (which might be your home screen), close the app
-                finish()
-            }
-            else -> {
-                // For all other screens, use the default back button behavior
-                super.onBackPressed()
+        // Handle back press for the entire app
+        onBackPressedDispatcher.addCallback(this) {
+            when (navController.currentDestination?.id) {
+                R.id.my_Trips -> finish()
+                R.id.home_screen -> {
+                    // Navigate back to My_Trips from home screen
+                    val navOptions = NavOptions.Builder()
+                        .setPopUpTo(R.id.home_screen, true)
+                        .build()
+                    navController.navigate(R.id.action_home_screen_to_my_Trips, null, navOptions)
+                }
+                else -> navController.navigateUp()
             }
         }
     }

@@ -1,10 +1,10 @@
 package com.example.travelwithme.Data
+
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-
 
 @Dao
 interface User_Dao {
@@ -30,7 +30,6 @@ interface User_Dao {
 
     // Add a new attraction to the list
     @Transaction
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addAttraction(email: String, newAttraction: SelectedAttraction) {
         val user = getUserByEmail(email)
         user?.let {
@@ -53,11 +52,9 @@ interface User_Dao {
         }
     }
 
-
     // Update the entire attractions list
     @Query("UPDATE user_data SET selected_attractions = :attractions WHERE email = :email")
     fun updateAttractions(email: String, attractions: List<SelectedAttraction>)
-
 
     // Delete a user
     @Query("DELETE FROM user_data WHERE email = :email")
@@ -66,13 +63,16 @@ interface User_Dao {
     // Count total users
     @Query("SELECT COUNT(*) FROM user_data")
     fun getUserCount(): Int
+
+    // Update hotels
     @Query("UPDATE user_data SET Hotels = :hotels WHERE email = :email")
     fun updateHotels(email: String, hotels: List<Hotels>)
 
+    // Get selected attractions (raw)
     @Query("SELECT selected_attractions FROM user_data WHERE email = :email")
     fun getSelectedAttractionsRaw(email: String): String?
 
-    // Add this method
+    // Get selected attractions
     fun getSelectedAttractions(email: String): List<SelectedAttraction> {
         val rawData = getSelectedAttractionsRaw(email)
         return if (rawData != null) {
@@ -82,24 +82,23 @@ interface User_Dao {
         }
     }
 
+    // Update selected attractions (raw)
     @Query("UPDATE user_data SET selected_attractions = :attractions WHERE email = :email")
     fun updateSelectedAttractionsRaw(email: String, attractions: String)
 
-    // Add this method
+    // Update selected attractions
     fun updateSelectedAttractions(email: String, attractions: List<SelectedAttraction>) {
         val rawData = User_Data_Convertors().toSelectedAttractionList(attractions)
         updateSelectedAttractionsRaw(email, rawData)
     }
 
-    // You can add this convenience method
+    // Add a selected attraction
     fun addSelectedAttraction(email: String, attraction: SelectedAttraction) {
         val currentAttractions = getSelectedAttractions(email).toMutableList()
         currentAttractions.add(attraction)
-        updateSelectedAttractions(email, currentAttractions)
         currentAttractions.sortWith(compareBy<SelectedAttraction> { it.plannedDate }.thenBy { it.startTimeInt })
         updateSelectedAttractions(email, currentAttractions)
     }
-
 
     // Add a hotel
     @Transaction
@@ -127,7 +126,7 @@ interface User_Dao {
         }
     }
 
-    // Optional: Remove a hotel from the list
+    // Remove a hotel from the list
     @Transaction
     fun removeHotel(email: String, hotelToRemove: Hotels) {
         val user = getUserByEmail(email)
@@ -138,6 +137,7 @@ interface User_Dao {
             updateHotels(email, updatedHotels)
         }
     }
+
     // Get take-off date
     @Query("SELECT take_off_date FROM user_data WHERE email = :email")
     fun getTakeOffDate(email: String): Long?
@@ -150,9 +150,11 @@ interface User_Dao {
     @Query("SELECT destination FROM user_data WHERE email = :email")
     fun getDestination(email: String): String?
 
+    // Update checklist
     @Query("UPDATE user_data SET checklist = :updatedChecklist WHERE email = :email")
     fun updateChecklist(email: String, updatedChecklist: List<ChecklistItem>)
 
+    // Update a specific checklist item
     @Transaction
     fun updateChecklistItem(email: String, updatedItem: ChecklistItem) {
         val user = getUserByEmail(email)
@@ -163,6 +165,8 @@ interface User_Dao {
             updateChecklist(email, updatedChecklist)
         }
     }
+
+    // Add a checklist item
     @Transaction
     fun addChecklistItem(email: String, newItem: ChecklistItem) {
         val user = getUserByEmail(email)
@@ -171,6 +175,8 @@ interface User_Dao {
             updateChecklist(email, updatedChecklist)
         }
     }
+
+    // Delete a checklist item
     @Transaction
     fun deleteChecklistItem(email: String, itemToDelete: ChecklistItem) {
         val user = getUserByEmail(email)
@@ -179,6 +185,4 @@ interface User_Dao {
             updateChecklist(email, updatedChecklist)
         }
     }
-
 }
-
