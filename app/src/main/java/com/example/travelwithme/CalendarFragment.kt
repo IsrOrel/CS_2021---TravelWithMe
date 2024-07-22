@@ -144,9 +144,13 @@ class CalendarFragment : Fragment() {
         val (start, end) = plannedTime.split("-")
         val (startHour, startMinute) = start.split(":").map { it.toInt() }
         val (endHour, endMinute) = end.split(":").map { it.toInt() }
-        val durationInMillis = (endHour * 60 + endMinute - (startHour * 60 + startMinute)) * 60 * 1000
-        return durationInMillis / (60 * 60 * 1000) // Convert milliseconds to hours
+
+        val startInMinutes = startHour * 60 + startMinute
+        val endInMinutes = endHour * 60 + endMinute
+
+        return (endInMinutes - startInMinutes) / 60 // Duration in hours
     }
+
 
     private fun showEventsForDate(date: Date) {
         val calDate = Calendar.getInstance().apply { time = date }
@@ -162,14 +166,17 @@ class CalendarFragment : Fragment() {
     }
 
 
-    fun addEvent(attraction: SelectedAttraction, date: Date, durationHours: Int) {
+    fun addEvent(attraction: SelectedAttraction, date: Date, plannedTime: String, durationHours: Int) {
         Log.d("CalendarFragment", "Event date: $date")
         Log.d("CalendarFragment", "Duration Hours: $durationHours")
+        Log.d("CalendarFragment", "Planned Time: $plannedTime")
+
         if (takeOffDate == null || landingDate == null) {
             Toast.makeText(requireContext(), "Travel dates not set", Toast.LENGTH_SHORT).show()
             return
         }
-        val timeRange = calculateTimeRange(date, durationHours)
+
+        val timeRange = calculateTimeRange(date, plannedTime, durationHours)
         Log.d("CalendarFragment", "Time Range: $timeRange")
 
         val takeOffTime = takeOffDate!!.time
@@ -199,14 +206,26 @@ class CalendarFragment : Fragment() {
         }
     }
 
-    private fun calculateTimeRange(startDate: Date, durationHours: Int): String {
+    private fun calculateTimeRange(startDate: Date, plannedTime: String, durationHours: Int): String {
         val formatter = SimpleDateFormat("HH:mm", Locale.getDefault())
+        val (start, _) = plannedTime.split("-")
         val calendar = Calendar.getInstance().apply { time = startDate }
-        val startTime = formatter.format(calendar.time)
-        calendar.add(Calendar.HOUR_OF_DAY, durationHours)
-        val endTime = formatter.format(calendar.time)
-        return "$startTime-$endTime"
+
+        // Set start time from plannedTime
+        val (startHour, startMinute) = start.split(":").map { it.toInt() }
+        calendar.set(Calendar.HOUR_OF_DAY, startHour)
+        calendar.set(Calendar.MINUTE, startMinute)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+
+        // End time
+        val endTime = Calendar.getInstance().apply { time = calendar.time }
+        endTime.add(Calendar.HOUR_OF_DAY, durationHours)
+
+        return "${formatter.format(calendar.time)}-${formatter.format(endTime.time)}"
     }
+
+
 
     private fun Date.isSameDay(other: Date): Boolean {
         val cal1 = Calendar.getInstance().apply { time = this@isSameDay }

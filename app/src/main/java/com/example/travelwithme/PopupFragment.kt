@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import com.example.travelwithme.Data.TravelDatabase
@@ -19,95 +18,90 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 
 class PopupFragment : DialogFragment() {
-    private var _binding: FragmentPopupBinding? = null
-    private val binding get() = _binding!!
-    private lateinit var userDao: User_Dao
-    private val currentUserEmail = UserSession.getCurrentUserEmail()
+
+    private lateinit var binding: FragmentPopupBinding
+    var listener: OnDateTimeSelectedListener? = null
 
     interface OnDateTimeSelectedListener {
         fun onDateTimeSelected(date: Date, durationHours: Int)
     }
 
-    var listener: OnDateTimeSelectedListener? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        // Initialize userDao here
-        userDao = TravelDatabase.getInstance(requireContext()).userDao()
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentPopupBinding.inflate(inflater, container, false)
-        return binding.root
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val builder = AlertDialog.Builder(requireContext())
+        val inflater = requireActivity().layoutInflater
+        binding = FragmentPopupBinding.inflate(inflater)
+        builder.setView(binding.root)
+            .setPositiveButton("Confirm") { _, _ -> onConfirm() }
+            .setNegativeButton("Cancel") { _, _ -> dismiss() }
+        return builder.create()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Setup spinner
-        val durations = resources.getStringArray(R.array.durations)
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, durations)
+        // Set up the DatePicker
+        binding.datePicker.init(
+            Calendar.getInstance().get(Calendar.YEAR),
+            Calendar.getInstance().get(Calendar.MONTH),
+            Calendar.getInstance().get(Calendar.DAY_OF_MONTH),
+            null
+        )
+
+        // Set up the TimePicker
+        binding.timePicker.setIs24HourView(true)
+
+        // Set up the Spinner
+        val durationOptions = resources.getStringArray(R.array.durations)
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, durationOptions)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.durationSpinner.adapter = adapter
+    }
 
-        // Fetch takeoff and landing dates and set them to the DatePicker
-        lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                val takeOffDateTimestamp = currentUserEmail?.let { userDao.getTakeOffDate(it) }
-                val landingDateTimestamp = currentUserEmail?.let { userDao.getLandingDate(it) }
-                withContext(Dispatchers.Main) {
-                    if (takeOffDateTimestamp != null && landingDateTimestamp != null) {
-                        val takeOffDate = Date(takeOffDateTimestamp)
-                        val landingDate = Date(landingDateTimestamp)
-                        binding.datePicker.minDate = takeOffDate.time
-                        binding.datePicker.maxDate = landingDate.time
-                    }
-                }
-            } catch (e: Exception) {
-                Log.e("PopupFragment", "Error fetching travel dates: ${e.message}", e)
-            }
+    private fun onConfirm() {
+        if (listener == null) {
+            Log.e("PopupFragment", "No listener attached!")
+            dismiss()
+            return
         }
 
-        binding.confirmButton.setOnClickListener {
-            if (listener == null) {
-                Log.e("PopupFragment", "No listener attached!")
-                dismiss()
-                return@setOnClickListener
+        try {
+            val calendar = Calendar.getInstance().apply {
+                set(
+                    binding.datePicker.year,
+                    binding.datePicker.month,
+                    binding.datePicker.dayOfMonth
+                )
             }
 
-            try {
-                val calendar = Calendar.getInstance().apply {
-                    set(
-                        binding.datePicker.year,
-                        binding.datePicker.month,
-                        binding.datePicker.dayOfMonth
-                    )
-                }
+            // Set selected time from TimePicker
+            calendar.set(Calendar.HOUR_OF_DAY, binding.timePicker.hour)
+            calendar.set(Calendar.MINUTE, binding.timePicker.minute)
+            calendar.set(Calendar.SECOND, 0) // Optional: Set seconds to 0 for consistency
 
-                val selectedDuration = binding.durationSpinner.selectedItem.toString()
-                val durationHours = selectedDuration.split(" ")[0].toInt()
+            val selectedDuration = binding.durationSpinner.selectedItem.toString()
+            val durationHours = selectedDuration.split(" ")[0].toInt()
 
-                // Pass the selected date and duration to the listener
-                listener?.onDateTimeSelected(calendar.time, durationHours)
-            } catch (e: Exception) {
-                Log.e("PopupFragment", "Error processing event: ${e.message}", e)
-            } finally {
-                dismiss()
-            }
+            // Log current time
+            val currentCalendar = Calendar.getInstance()
+            Log.d("PopupFragment", "Current Time: ${currentCalendar.time}")
+
+            // Log selected time
+            Log.d("PopupFragment", "Selected Time: ${calendar.time}")
+
+            listener?.onDateTimeSelected(calendar.time, durationHours)
+        } catch (e: Exception) {
+            Log.e("PopupFragment", "Error processing event: ${e.message}", e)
+        } finally {
+            dismiss()
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    fun setOnDateTimeSelectedListener(listener: OnDateTimeSelectedListener) {
+        this.listener = listener
     }
 }
 
