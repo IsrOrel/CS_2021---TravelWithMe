@@ -49,9 +49,9 @@
     <string name="sign_up">Sign Up</string>
 
     <string-array name="cities">
-        <item>London</item>
-        <item>Amsterdam</item>
-        <item>Rome</item>
+        <item>לונדון</item>
+        <item>אמסטרדם</item>
+        <item>רומא</item>
     </string-array>
 
     <string-array name="facts_london">
