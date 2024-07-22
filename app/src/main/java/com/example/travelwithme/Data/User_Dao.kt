@@ -69,8 +69,34 @@ interface User_Dao {
     @Query("UPDATE user_data SET Hotels = :hotels WHERE email = :email")
     fun updateHotels(email: String, hotels: List<Hotels>)
 
-    @Query("UPDATE user_data SET selected_attractions = :selectedAttractions WHERE email = :email")
-    suspend fun updateSelectedAttractions(email: String, selectedAttractions: List<SelectedAttraction>)
+    @Query("SELECT selected_attractions FROM user_data WHERE email = :email")
+    fun getSelectedAttractionsRaw(email: String): String?
+
+    // Add this method
+    fun getSelectedAttractions(email: String): List<SelectedAttraction> {
+        val rawData = getSelectedAttractionsRaw(email)
+        return if (rawData != null) {
+            User_Data_Convertors().fromSelectedAttractionList(rawData)
+        } else {
+            emptyList()
+        }
+    }
+
+    @Query("UPDATE user_data SET selected_attractions = :attractions WHERE email = :email")
+    fun updateSelectedAttractionsRaw(email: String, attractions: String)
+
+    // Add this method
+    fun updateSelectedAttractions(email: String, attractions: List<SelectedAttraction>) {
+        val rawData = User_Data_Convertors().toSelectedAttractionList(attractions)
+        updateSelectedAttractionsRaw(email, rawData)
+    }
+
+    // You can add this convenience method
+    fun addSelectedAttraction(email: String, attraction: SelectedAttraction) {
+        val currentAttractions = getSelectedAttractions(email).toMutableList()
+        currentAttractions.add(attraction)
+        updateSelectedAttractions(email, currentAttractions)
+    }
 
 
     // Add a hotel

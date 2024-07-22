@@ -2,24 +2,30 @@ package com.example.travelwithme
 
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.travelwithme.Data.Attraction_Data
 import com.example.travelwithme.Data.Event
+import com.example.travelwithme.Data.SelectedAttraction
+import com.example.travelwithme.Data.TravelDatabase
+import com.example.travelwithme.Data.UserSession
+import com.example.travelwithme.Data.User_Dao
 import com.example.travelwithme.databinding.CalendarBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
 class CalendarFragment : Fragment() {
     private var _binding: CalendarBinding? = null
     private val binding get() = _binding ?: throw IllegalStateException("Binding should not be null")
+    private lateinit var userDao: User_Dao
 
     private val events = mutableListOf<Event>()
     private lateinit var eventAdapter: EventAdapter
@@ -29,8 +35,12 @@ class CalendarFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = CalendarBinding.inflate(inflater, container, false)
+        userDao = TravelDatabase.getInstance(requireContext()).userDao()
         return binding.root
     }
+
+    // Fetch current user's email
+    private val currentUserEmail = UserSession.getCurrentUserEmail()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -52,12 +62,43 @@ class CalendarFragment : Fragment() {
         eventAdapter = EventAdapter(events)
         binding.eventsRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.eventsRecyclerView.adapter = eventAdapter
+        fetchSelectedAttractions()
+
+    }
+
+    private fun fetchSelectedAttractions() {
+        val currentUserEmail = UserSession.getCurrentUserEmail()
+        if (currentUserEmail != null) {
+            lifecycleScope.launch(Dispatchers.IO) {
+                val selectedAttractions = userDao.getSelectedAttractions(currentUserEmail)
+                withContext(Dispatchers.Main) {
+                    updateEventList(selectedAttractions)
+                }
+            }
+        }
+    }
+
+    private fun updateEventList(selectedAttractions: List<SelectedAttraction>) {
+        events.clear()
+        events.addAll(selectedAttractions.map { attraction ->
+            Event(
+                attraction = attraction,
+                date = attraction.plannedDate,
+                durationHours = 1 // You might want to store and use the actual duration
+            )
+        })
+        showEventsForDate(Calendar.getInstance().time)
     }
 
     // Method to add event
-    fun addEvent(attraction: Attraction_Data, date: Date, durationHours: Int) {
+    fun addEvent(attraction: SelectedAttraction, date: Date, durationHours: Int) {
         if (events.none { it.attraction.title == attraction.title && it.date.isSameDay(date) }) {
-            events.add(Event(attraction, date, durationHours))
+            val newEvent = Event(attraction, date, durationHours)
+            if (currentUserEmail != null) {
+                // Add attraction to database
+                userDao.addAttraction(currentUserEmail, attraction)
+            }
+            events.add(newEvent)
             showEventsForDate(date)
             val timeRange = calculateTimeRange(date, durationHours)
             Toast.makeText(requireContext(), "Event Added: ${attraction.title} on ${SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(date)} $timeRange", Toast.LENGTH_SHORT).show()

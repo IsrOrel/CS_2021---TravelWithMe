@@ -20,6 +20,7 @@ import com.example.travelwithme.Data.Attraction_Data
 import com.example.travelwithme.databinding.AttractionsBinding
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.travelwithme.Data.SelectedAttraction
 import com.example.travelwithme.Data.TravelDatabase
 import com.example.travelwithme.Data.UserSession
 import com.example.travelwithme.Data.User_Dao
@@ -109,7 +110,8 @@ class Attractions : Fragment() {
     }
 
     private fun setupCategoryRecyclerView() {
-        binding.categoriesRecyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+        binding.categoriesRecyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         categoryAdapter = CategoryAdapter(emptyList())
         binding.categoriesRecyclerView.adapter = categoryAdapter
     }
@@ -131,6 +133,7 @@ class Attractions : Fragment() {
                 Category(CategoryIcons.getIconForCategory("Night Life"), "Night Life"),
                 Category(CategoryIcons.getIconForCategory("Beach"), "Beach")
             )
+
             else -> listOf(Category(CategoryIcons.getIconForCategory("All"), "All"))
         }
 
@@ -138,9 +141,10 @@ class Attractions : Fragment() {
     }
 
     private fun loadAttractionsForCategory(category: Category) {
-        attractionViewModel.getAttractionsForCityAndCategory(cityName, category.description).observe(viewLifecycleOwner) { attractions ->
-            attractionAdapter.updateAttractions(attractions)
-        }
+        attractionViewModel.getAttractionsForCityAndCategory(cityName, category.description)
+            .observe(viewLifecycleOwner) { attractions ->
+                attractionAdapter.updateAttractions(attractions)
+            }
     }
 
     private fun showDateTimePopup(attraction: Attraction_Data) {
@@ -153,36 +157,63 @@ class Attractions : Fragment() {
         popupFragment.show(parentFragmentManager, "PopupFragment")
     }
 
-    private fun addEventToCalendar(attraction: Attraction_Data, date: Date, durationHours: Int, category: String) {
-        val action = AttractionsDirections.actionAttractionsToCalendar(
-            attraction.title,
-            date.time,
-            durationHours,
-            category
-        )
+        private fun addEventToCalendar(
+            attraction: Attraction_Data,
+            date: Date,
+            durationHours: Int,
+            category: String
+        ) {
+            // Save the selected attraction to the database
+            val currentUserEmail = UserSession.getCurrentUserEmail()
+            if (currentUserEmail != null) {
+                val selectedAttraction = SelectedAttraction(
+                    title = attraction.title,
+                    plannedDate = date,
+                    plannedTime = calculateTimeRange(date, durationHours),
+                    category = category
+                )
 
-        findNavController().navigate(action)
+                lifecycleScope.launch(Dispatchers.IO) {
+                    userDao.addSelectedAttraction(currentUserEmail, selectedAttraction)
+                }
+            }
 
-        val timeRange = calculateTimeRange(date, durationHours)
-        Toast.makeText(
-            requireContext(),
-            "Added ${attraction.title} to calendar on ${SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(date)} $timeRange",
-            Toast.LENGTH_SHORT
-        ).show()
-    }
+            // Navigate to the calendar fragment
+            val action = AttractionsDirections.actionAttractionsToCalendar(
+                attraction.title,
+                date.time,
+                durationHours,
+                category
+            )
+            findNavController().navigate(action)
 
-    private fun calculateTimeRange(startDate: Date, durationHours: Int): String {
-        val formatter = SimpleDateFormat("HH:mm", Locale.getDefault())
-        val calendar = Calendar.getInstance()
-        calendar.time = startDate
-        val startTime = formatter.format(calendar.time)
-        calendar.add(Calendar.HOUR_OF_DAY, durationHours)
-        val endTime = formatter.format(calendar.time)
-        return "$startTime-$endTime"
-    }
+            val timeRange = calculateTimeRange(date, durationHours)
+            Toast.makeText(
+                requireContext(),
+                "Added ${attraction.title} to calendar on ${
+                    SimpleDateFormat(
+                        "dd MMM yyyy",
+                        Locale.getDefault()
+                    ).format(date)
+                } $timeRange",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+
+        private fun calculateTimeRange(startDate: Date, durationHours: Int): String {
+            val formatter = SimpleDateFormat("HH:mm", Locale.getDefault())
+            val calendar = Calendar.getInstance()
+            calendar.time = startDate
+            val startTime = formatter.format(calendar.time)
+            calendar.add(Calendar.HOUR_OF_DAY, durationHours)
+            val endTime = formatter.format(calendar.time)
+            return "$startTime-$endTime"
+        }
+
+        override fun onDestroyView() {
+            super.onDestroyView()
+            _binding = null
+        }
 }
+
